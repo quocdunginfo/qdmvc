@@ -10,10 +10,13 @@ class Qdmvc_RegisterAdminMenu{
         /*
         add_submenu_page( 'qd_main_page', 'Quản lý profile', 'Quản lý profile', 'manage_options', 'qd_sub_page_1', 'qd_fn_sub_page_1' );
         */
+        add_submenu_page( 'qd_main_page', 'Quản lý SP', 'Quản lý SP', 'manage_options', 'qd_sub_page_1', array($this,'qd_fn_sub_page_1' ));
     }
-
     public function qd_custom_menu_page(){
         require_once(Qdmvc::getController().'main.php');
+    }
+    public function qd_fn_sub_page_1(){
+        require_once(Qdmvc::getController().'sanpham.php');
     }
 }
 $Qdmvc_RegisterAdminMenu = new Qdmvc_RegisterAdminMenu();
