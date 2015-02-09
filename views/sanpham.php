@@ -16,12 +16,14 @@
             {
                 datatype: "json",
                 datafields: [
-                    {name: 'countryName'},
+                    {name: 'id'},
+                    {name: 'name'},
+                    {name: 'parent_id'}
                 ],
-                url: 'http://api.geonames.org/searchJSON?q=london&maxRows=30&username=demo',
-                root: 'geonames',
+                url: 'http://localhost/mpd_2015/?qd-api=sanpham_port',
+                root: 'Rows',
                 beforeprocessing: function (data) {
-                    source.totalrecords = 60;//data[0].TotalRows;
+                    source.totalrecords = data.Total;
                 }
             };
 
@@ -30,7 +32,7 @@
             // initialize jqxGrid
             $("#jqxgrid").jqxGrid(
                 {
-                    width: 600,
+                    width: 800,
                     source: dataadapter,
                     theme: theme,
                     autoheight: true,
@@ -40,7 +42,9 @@
                         return dataadapter.records;
                     },
                     columns: [
-                        {text: 'Country Name', datafield: 'countryName', width: 250}
+                        {text: 'ID', datafield: 'id', width: 250},
+                        {text: 'Name', datafield: 'name', width: 250},
+                        {text: 'Parent id', datafield: 'parent_id'}
                     ]
                 });
         });
