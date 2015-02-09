@@ -4,10 +4,15 @@
 Plugin Name: qdmvc
 */
 
+//Load model 1st
+//require_once('load-model.php');
+//then Helper declare outside because of public provider for other part use
+require_once(Qdmvc::getHelper() . 'index.php');
+
 class Qdmvc
 {
-    private $included_file = array('db-init.php', 'shortcode.php', 'register-admin-menu.php'
-    , 'menu-nav-provider.php', 'notification/index.php'
+    private $included_file = array('db-init.php', 'load-model.php', 'shortcode.php'
+    , 'menu-nav-provider.php', 'notification/index.php', 'register-admin-menu.php'
     );
 
     function __construct()
@@ -54,6 +59,5 @@ class Qdmvc
         return Qdmvc::getPluginDirPath() . 'models/';
     }
 }
-$Qdmvc = new Qdmvc();
-//Helper declare outside because of public provider for other part use
-require_once(Qdmvc::getHelper().'index.php');
+$qdmvc = new Qdmvc();
+var_dump(QdProductCat::all());

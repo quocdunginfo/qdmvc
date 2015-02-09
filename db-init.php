@@ -1,4 +1,5 @@
 <?php
+//init model
 //WP
 global $wpdb;
 //User define
