@@ -11,11 +11,12 @@ class QdProductCat extends QdRoot
             $tmp[$count] = array();
             $tmp[$count]['id'] = $item->id;
             $tmp[$count]['name'] = $item->name;
+            $tmp[$count]['avatar'] = $item->avatar;
             $tmp[$count]['parent_id'] = $item->parent_id;
             $count++;
         }
         $tmp2 = array(
-            'Total' => count($tmp),
+            'Total' => QdProductCat::count(),//need to add filter first//YourModel::count(array('conditions' => 'amount > 3.14159265'));
             'Rows' => $tmp
         );
         return json_encode($tmp2);
