@@ -1,5 +1,4 @@
 <?php
-
 /*
 Plugin Name: qdmvc
 */
@@ -14,10 +13,21 @@ class Qdmvc
     private $included_file = array('router.php', 'db-init.php', 'load-model.php', 'shortcode.php'
     , 'menu-nav-provider.php', 'notification/index.php', 'register-admin-menu.php'
     );
-
+	private $dependencies = array('phpactiverecords', 'jqwidgets');
     function __construct()
     {
-        $this->init();
+		require_once(ABSPATH.'wp-admin/includes/plugin.php');
+		foreach($this->dependencies as $item)
+		{
+			//check dependency
+			if (!is_plugin_active($item . "/$item.php" ) ) {
+			  //plugin is not activated
+			  echo 'Require plugin '.$item;
+			  return;
+			} 
+		}
+		
+		$this->init();
     }
 
     private function init()
@@ -60,4 +70,3 @@ class Qdmvc
     }
 }
 $qdmvc = new Qdmvc();
-

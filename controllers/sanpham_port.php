@@ -11,32 +11,37 @@ header('Content-Type: application/json');
 if(isset($_POST["submit"]))
 {
     $msg = '';
-    $add = ($_POST['data']['id'] == '0') || ($_POST['data']['id']=='');
-
-    //init obj
-    if($add) {
-        //insert
-        $obj = new QdProductCat();
-    }
-    else
+    $obj = null;
+    if($_POST["action"]=='delete')
     {
-        //update
         $obj = QdProductCat::find($_POST['data']['id']);
-    }
-    //assign value
-    $obj->name = $_POST['data']['name'];
-    $obj->avatar = $_POST['data']['avatar'];
-    $obj->parent_id = $_POST['data']['parent_id'];
-    //action
-    $obj->save();
-    if($add) {
-        //insert
-        $msg = 'Thêm thành công, ID='.$obj->id;
+        $obj->delete();
+        $msg = 'Xóa thành công, ID='.$obj->id;
     }
     else
     {
-        //update
-        $msg = 'Cập nhật thành công, ID='.$obj->id;
+        $add = ($_POST['data']['id'] == '0') || ($_POST['data']['id'] == '');
+        //init obj
+        if ($add) {
+            //insert
+            $obj = new QdProductCat();
+        } else {
+            //update
+            $obj = QdProductCat::find($_POST['data']['id']);
+        }
+        //assign value
+        $obj->name = $_POST['data']['name'];
+        $obj->avatar = $_POST['data']['avatar'];
+        $obj->parent_id = $_POST['data']['parent_id'];
+        //action
+        $obj->save();
+        if ($add) {
+            //insert
+            $msg = 'Thêm thành công, ID=' . $obj->id;
+        } else {
+            //update
+            $msg = 'Cập nhật thành công, ID=' . $obj->id;
+        }
     }
     $arr = array(
         'msg' => $msg,
@@ -55,7 +60,7 @@ else
         array(
             'limit' => $pagesize,
             'offset' => $recordstartindex,
-            'order' => 'id asc',
+            'order' => 'id desc',
             'conditions' => array($filterdatafield0.' LIKE \'%'.$filtervalue0.'%\''))
         )
     );

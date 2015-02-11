@@ -5,12 +5,30 @@
  * Date: 08/02/2015
  * Time: 11:32 PM
  */
-Qdmvc_Helper::qd_media_choose('cavatar','avatar',false);
+Qdmvc_Helper::qd_media_choose('cavatar', 'avatar', false);
 ?>
 <script type="text/javascript">
     (function ($) {
 
         $(document).ready(function () {
+            var formObj = {name: "mac dinh", id: "0", parent_id: "0", avatar: "/"};
+            //defining a 'watcher' for the object
+
+            watch(formObj, function () {
+                $("#id").val(formObj.id);
+                $("#name").val(formObj.name);
+                $("#avatar").val(formObj.avatar);
+                $("#parent_id").val(formObj.parent_id);
+            });
+            /*
+             $("#testForm").my({ui:{
+             "#id": "id",
+             "#name": "name",
+             "#avatar": "avatar",
+             "#parent_id": "parent_id"
+             }}, formObj);*/
+
+
             // prepare the data
             var data_port = 'http://localhost/mpd_2015/?qd-api=sanpham_port';
 
@@ -54,14 +72,13 @@ Qdmvc_Helper::qd_media_choose('cavatar','avatar',false);
                     columns: [
                         {text: 'ID', datafield: 'id', columntype: 'textbox', filtertype: 'input', width: 50},
                         {text: 'Name', datafield: 'name', columntype: 'textbox', filtertype: 'input', width: 250},
-                        {text: 'Avatar', datafield: 'avatar',columntype: 'textbox', filtertype: 'input', width: 250},
-                        {text: 'Parent id', datafield: 'parent_id',columntype: 'textbox', filtertype: 'input'}
+                        {text: 'Avatar', datafield: 'avatar', columntype: 'textbox', filtertype: 'input', width: 250},
+                        {text: 'Parent id', datafield: 'parent_id', columntype: 'textbox', filtertype: 'input'}
                     ]
                 });
 
             //event
-            $("#jqxgrid").on("filter", function (event)
-            {
+            $("#jqxgrid").on("filter", function (event) {
                 $('#jqxgrid').jqxGrid('updatebounddata');//refresh grid when typing in filter box
             });
             $('#jqxgrid').on('rowselect', function (event) {
@@ -70,22 +87,21 @@ Qdmvc_Helper::qd_media_choose('cavatar','avatar',false);
                 // row's bound index.
                 //var rowBoundIndex = args.rowindex;
                 // row's data. The row's data object or null(when all rows are being selected or unselected with a single action). If you have a datafield called "firstName", to access the row's firstName, use var firstName = rowData.firstName;
-                var rowData = args.row;
-
-                $("#id").val(rowData.id);
-                $("#name").val(rowData.name);
-                $("#avatar").val(rowData.avatar);
-                $("#parent_id").val(rowData.parent_id);
+                //formObj = args.row;
+                formObj.id = args.row.id;
+                formObj.name = args.row.name;
+                formObj.avatar = args.row.avatar;
+                formObj.parent_id = args.row.parent_id;
             });
 
             //card form event
             $('#update').bind('click', function (event) {
                 //alert('Button is Clicked');
                 //var x = $("#testForm").serializeArray();
-                var json = form2js('testForm', '.', false, null,true);//skip empty some time cause lack field
+                var json = form2js('testForm', '.', false, null, true);//skip empty some time cause lack field
                 //begin lock
                 $('#update').attr('disabled', 'disabled');
-                $.post(data_port, {submit: "submit", data: json})
+                $.post(data_port, {submit: "submit", action: "update", data: json})
                     .done(function (data) {
                         //data JSON
                         var obj = data;//"ok";//jQuery.parseJSON( data );//may throw error if data aldreay JSON format
@@ -94,10 +110,10 @@ Qdmvc_Helper::qd_media_choose('cavatar','avatar',false);
                         $("#jqxMsg").jqxNotification("open");
                         $("#id").val(obj.id);
                     })
-                    .fail(function() {
-                        alert( "error" );
+                    .fail(function () {
+                        alert("error");
                     })
-                    .always(function() {
+                    .always(function () {
                         //release lock
                         $('#update').removeAttr('disabled');
                     });
@@ -109,6 +125,34 @@ Qdmvc_Helper::qd_media_choose('cavatar','avatar',false);
                 $('#testForm')[0].reset();
                 $('#id').val("0");
                 $('#new').removeAttr('disabled');
+            });
+            $('#delete').bind('click', function (event) {
+
+                if (!confirm("Xác nhận ?")) {
+                    return false;
+                }
+                //alert('Button is Clicked');
+                //var x = $("#testForm").serializeArray();
+                //var json = form2js('testForm', '.', false, null,true);//skip empty some time cause lack field
+                //begin lock
+                var id = $("#id").val();
+                $('#delete').attr('disabled', 'disabled');
+                $.post(data_port, {submit: "submit", action: "delete", data: {id: id}})
+                    .done(function (data) {
+                        //data JSON
+                        var obj = data;//"ok";//jQuery.parseJSON( data );//may throw error if data aldreay JSON format
+                        $('#jqxgrid').jqxGrid('updatebounddata');
+                        $("#jqxMsgContent").html(obj.msg);
+                        $("#jqxMsg").jqxNotification("open");
+                        //$("#id").val(obj.id);
+                    })
+                    .fail(function () {
+                        alert("error");
+                    })
+                    .always(function () {
+                        //release lock
+                        $('#delete').removeAttr('disabled');
+                    });
             });
             //register notification
             $("#jqxMsg").jqxNotification({
@@ -147,6 +191,7 @@ Qdmvc_Helper::qd_media_choose('cavatar','avatar',false);
                             <input type="hidden" id="id" name="id" value="0">
                             <input type="text" id="name" name="name" class="text-input"/>
                         </td>
+                        <td></td>
                     </tr>
                     <tr>
                         <td>Avatar:</td>
@@ -154,17 +199,23 @@ Qdmvc_Helper::qd_media_choose('cavatar','avatar',false);
                             <input size="70" type="text" id="avatar" name="avatar" class="text-input"/>
                             <button id="cavatar" value="...">...</button>
                         </td>
+                        <td></td>
                     </tr>
                     <tr>
                         <td>Parent ID:</td>
                         <td><input type="text" id="parent_id" name="parent_id" class="text-input"/></td>
                     </tr>
                     <tr>
-                        <td>
-                            <button type="button" id="update" value="Save">Save</button>
-                        </td>
-                        <td>
-                            <button type="button" id="new" value="New">New</button>
+                        <td colspan="3">
+                        <span>
+                            <button type="button" id="update">Save</button>---
+                        </span>
+                        <span>
+                            <button type="button" id="new">New</button>---
+                        </span>
+                        <span>
+                            <button type="button" id="delete">Delete</button>---
+                        </span>
                         </td>
                     </tr>
                 </table>
