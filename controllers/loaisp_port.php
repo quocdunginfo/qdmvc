@@ -14,7 +14,7 @@ if(isset($_POST["submit"]))
     $obj = null;
     if($_POST["action"]=='delete')
     {
-        $obj = QdProduct::find($_POST['data']['id']);
+        $obj = QdProductCat::find($_POST['data']['id']);
         $obj->delete();
         $msg = 'Xóa thành công, ID='.$obj->id;
     }
@@ -24,15 +24,15 @@ if(isset($_POST["submit"]))
         //init obj
         if ($add) {
             //insert
-            $obj = new QdProduct();
+            $obj = new QdProductCat();
         } else {
             //update
-            $obj = QdProduct::find($_POST['data']['id']);
+            $obj = QdProductCat::find($_POST['data']['id']);
         }
         //assign value
         $obj->name = $_POST['data']['name'];
         $obj->avatar = $_POST['data']['avatar'];
-        $obj->product_cat_id = $_POST['data']['product_cat_id'];
+        $obj->parent_id = $_POST['data']['parent_id'];
         //action
         $obj->save();
         if ($add) {
@@ -56,7 +56,7 @@ else
     $pagesize = isset($_REQUEST['pagesize'])?$_REQUEST['pagesize']:10;
     $filterdatafield0 = isset($_REQUEST['filterdatafield0'])?$_REQUEST['filterdatafield0']:'id';
     $filtervalue0 = isset($_REQUEST['filtervalue0'])?$_REQUEST['filtervalue0']:'';
-    echo QdProduct::toJSON(QdProduct::all(
+    echo QdProductCat::toJSON(QdProductCat::all(
         array(
             'limit' => $pagesize,
             'offset' => $recordstartindex,

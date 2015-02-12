@@ -50,7 +50,7 @@ class Qdmvc_Helper
                 <?=$btnID?>_file_frame = wp.media.frames.<?=$btnID?>_file_frame = wp.media({
                     title: jQuery(this).data('uploader_title'),
                     button: {
-                        text: jQuery(this).data('uploader_button_text'),
+                        text: jQuery(this).data('uploader_button_text')
                     },
                     multiple: false  // Set to true to allow multiple files to be selected
                 });

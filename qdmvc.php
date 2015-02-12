@@ -11,7 +11,7 @@ require_once(Qdmvc::getHelper() . 'index.php');
 class Qdmvc
 {
     private $included_file = array('router.php', 'db-init.php', 'load-model.php', 'shortcode.php'
-    , 'menu-nav-provider.php', 'notification/index.php', 'register-admin-menu.php'
+    , 'menu-nav-provider.php', 'notification/index.php', 'load-layout.php', 'register-admin-menu.php'
     );
 	private $dependencies = array('phpactiverecords', 'jqwidgets');
     function __construct()

@@ -9,4 +9,4 @@
 $data['data_port'] = 'http://localhost/mpd_2015/?qd-api=sanpham_port';
 $data['view_style'] = 'compact';
 Qdmvc_Helper::requestCompact();
-require_once(Qdmvc::getView() . 'sanpham_card.php');
+require_once(Qdmvc::getView() . 'sanpham_list.php');
