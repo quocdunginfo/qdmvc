@@ -28,7 +28,7 @@ class Qdmvc_Helper
     /**
      * Init media uploader
      */
-    public static function qd_media_choose($btnID, $txtID, $getID = true)
+    public static function qd_media_choose($btnID, $txtID, $getID = false)
     {
         wp_enqueue_media();
         ?>
@@ -68,5 +68,26 @@ class Qdmvc_Helper
             });
         </script>
     <?php
+    }
+    public static function requestCompact()
+    {
+        ?>
+        <style>
+            @media all, screen {
+                #wpadminbar, #adminmenuback, #adminmenuwrap, #wpfooter {
+                    display: none !important;
+                }
+
+                #wpcontent, #wpbody {
+                    margin: 0px !important;
+                    padding: 0px !important;
+                }
+
+                html.wp-toolbar {
+                    padding: 0 !important;
+                }
+            }
+        </style>
+        <?php
     }
 }

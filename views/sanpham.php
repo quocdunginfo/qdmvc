@@ -8,19 +8,32 @@
 Qdmvc_Helper::qd_media_choose('cavatar', 'avatar', false);
 ?>
 <script type="text/javascript">
+    function updateGrid() {
+        //update databound
+        jQuery('#jqxgrid').jqxGrid('updatebounddata');
+    };
     (function ($) {
 
-        $(document).ready(function () {
-            var formObj = {name: "mac dinh", id: "0", parent_id: "0", avatar: "/"};
-            //defining a 'watcher' for the object
 
-            watch(formObj, function () {
-                $("#id").val(formObj.id);
-                $("#name").val(formObj.name);
-                $("#avatar").val(formObj.avatar);
-                $("#parent_id").val(formObj.parent_id);
-            });
-            /*
+        $(document).ready(function () {
+            // prepare the data
+            var data_port = '<?=$data['data_port']?>';
+            //dataSourceDefine
+            var dataSourceDefine = [
+                {name: 'id'},
+                {name: 'name'},
+                {name: 'avatar'},
+                {name: 'parent_id'}
+            ];
+            //dataGrid define
+            var dataGridDefine = [
+                {text: 'ID', datafield: 'id', columntype: 'textbox', filtertype: 'input', width: 50},
+                {text: 'Name', datafield: 'name', columntype: 'textbox', filtertype: 'input', width: 250},
+                {text: 'Avatar', datafield: 'avatar', columntype: 'textbox', filtertype: 'input', width: 250},
+                {text: 'Parent id', datafield: 'parent_id', columntype: 'textbox', filtertype: 'input'}
+            ];
+
+            /* 2 ways data binding
              $("#testForm").my({ui:{
              "#id": "id",
              "#name": "name",
@@ -28,21 +41,11 @@ Qdmvc_Helper::qd_media_choose('cavatar', 'avatar', false);
              "#parent_id": "parent_id"
              }}, formObj);*/
 
-
-            // prepare the data
-            var data_port = 'http://localhost/mpd_2015/?qd-api=sanpham_port';
-
             var theme = 'classic';
-
             var source =
             {
                 datatype: "json",
-                datafields: [
-                    {name: 'id'},
-                    {name: 'name'},
-                    {name: 'avatar'},
-                    {name: 'parent_id'}
-                ],
+                datafields: dataSourceDefine,
                 url: data_port,
                 root: 'Rows',
                 beforeprocessing: function (data) {
@@ -65,16 +68,14 @@ Qdmvc_Helper::qd_media_choose('cavatar', 'avatar', false);
                     showgroupsheader: true,
                     groupable: true,
                     virtualmode: true,
+                    pagesize: 5,
+                    editable: true,
+                    editmode: "dblclick",
                     columnsresize: true,
                     rendergridrows: function () {
                         return dataadapter.records;
                     },
-                    columns: [
-                        {text: 'ID', datafield: 'id', columntype: 'textbox', filtertype: 'input', width: 50},
-                        {text: 'Name', datafield: 'name', columntype: 'textbox', filtertype: 'input', width: 250},
-                        {text: 'Avatar', datafield: 'avatar', columntype: 'textbox', filtertype: 'input', width: 250},
-                        {text: 'Parent id', datafield: 'parent_id', columntype: 'textbox', filtertype: 'input'}
-                    ]
+                    columns: dataGridDefine
                 });
 
             //event
@@ -88,75 +89,19 @@ Qdmvc_Helper::qd_media_choose('cavatar', 'avatar', false);
                 //var rowBoundIndex = args.rowindex;
                 // row's data. The row's data object or null(when all rows are being selected or unselected with a single action). If you have a datafield called "firstName", to access the row's firstName, use var firstName = rowData.firstName;
                 //formObj = args.row;
-                formObj.id = args.row.id;
-                formObj.name = args.row.name;
-                formObj.avatar = args.row.avatar;
-                formObj.parent_id = args.row.parent_id;
+
+                //call pass obj to CARD
+                //...
+                //var $f = $("#sanpham_card");
+                //$f[0].contentWindow.setObj2();  //works
+                document.getElementById('sanpham_card').contentWindow.setObj(args.row);
             });
 
-            //card form event
-            $('#update').bind('click', function (event) {
-                //alert('Button is Clicked');
-                //var x = $("#testForm").serializeArray();
-                var json = form2js('testForm', '.', false, null, true);//skip empty some time cause lack field
-                //begin lock
-                $('#update').attr('disabled', 'disabled');
-                $.post(data_port, {submit: "submit", action: "update", data: json})
-                    .done(function (data) {
-                        //data JSON
-                        var obj = data;//"ok";//jQuery.parseJSON( data );//may throw error if data aldreay JSON format
-                        $('#jqxgrid').jqxGrid('updatebounddata');
-                        $("#jqxMsgContent").html(obj.msg);
-                        $("#jqxMsg").jqxNotification("open");
-                        $("#id").val(obj.id);
-                    })
-                    .fail(function () {
-                        alert("error");
-                    })
-                    .always(function () {
-                        //release lock
-                        $('#update').removeAttr('disabled');
-                    });
-            });
-            //card form event
-            $('#new').bind('click', function (event) {
-                //To disable
-                $('#new').attr('disabled', 'disabled');
-                $('#testForm')[0].reset();
-                $('#id').val("0");
-                $('#new').removeAttr('disabled');
-            });
-            $('#delete').bind('click', function (event) {
 
-                if (!confirm("Xác nhận ?")) {
-                    return false;
-                }
-                //alert('Button is Clicked');
-                //var x = $("#testForm").serializeArray();
-                //var json = form2js('testForm', '.', false, null,true);//skip empty some time cause lack field
-                //begin lock
-                var id = $("#id").val();
-                $('#delete').attr('disabled', 'disabled');
-                $.post(data_port, {submit: "submit", action: "delete", data: {id: id}})
-                    .done(function (data) {
-                        //data JSON
-                        var obj = data;//"ok";//jQuery.parseJSON( data );//may throw error if data aldreay JSON format
-                        $('#jqxgrid').jqxGrid('updatebounddata');
-                        $("#jqxMsgContent").html(obj.msg);
-                        $("#jqxMsg").jqxNotification("open");
-                        //$("#id").val(obj.id);
-                    })
-                    .fail(function () {
-                        alert("error");
-                    })
-                    .always(function () {
-                        //release lock
-                        $('#delete').removeAttr('disabled');
-                    });
-            });
+
             //register notification
             $("#jqxMsg").jqxNotification({
-                width: 300, position: "bottom-right", opacity: 0.7,
+                width: 400, position: "bottom-right", opacity: 0.6,
                 autoOpen: false, animationOpenDelay: 300, autoClose: true, autoCloseDelay: 4000, template: "info"
             });
         });
@@ -183,43 +128,9 @@ Qdmvc_Helper::qd_media_choose('cavatar', 'avatar', false);
             </div>
         </div>
         <div>
-            <form style="width: 100%" id="testForm" action="" onsubmit="return false">
-                <table class="register-table">
-                    <tr>
-                        <td>Name:</td>
-                        <td>
-                            <input type="hidden" id="id" name="id" value="0">
-                            <input type="text" id="name" name="name" class="text-input"/>
-                        </td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>Avatar:</td>
-                        <td>
-                            <input size="70" type="text" id="avatar" name="avatar" class="text-input"/>
-                            <button id="cavatar" value="...">...</button>
-                        </td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>Parent ID:</td>
-                        <td><input type="text" id="parent_id" name="parent_id" class="text-input"/></td>
-                    </tr>
-                    <tr>
-                        <td colspan="3">
-                        <span>
-                            <button type="button" id="update">Save</button>---
-                        </span>
-                        <span>
-                            <button type="button" id="new">New</button>---
-                        </span>
-                        <span>
-                            <button type="button" id="delete">Delete</button>---
-                        </span>
-                        </td>
-                    </tr>
-                </table>
-            </form>
+            <iframe id="sanpham_card" src="http://localhost/mpd_2015/wp-admin/admin.php?page=qd_sub_page_2" width="100%" scrolling="no" marginheight="0" marginwidth="0" frameborder="0" >
+                <p>Your browser does not support iframes</p>
+            </iframe>
         </div>
         <div>
             <div style='margin-top: 2px;'>

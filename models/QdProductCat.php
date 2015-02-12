@@ -16,7 +16,7 @@ class QdProductCat extends QdRoot
             $count++;
         }
         $tmp2 = array(
-            'Total' => QdProductCat::count(),//need to add filter first//YourModel::count(array('conditions' => 'amount > 3.14159265'));
+            'Total' => QdProductCat::count(),
             'Rows' => $tmp
         );
         return json_encode($tmp2);
