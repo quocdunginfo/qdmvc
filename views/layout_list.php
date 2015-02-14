@@ -70,10 +70,21 @@ class Qdmvc_Layout_List
                         //formObj = args.row;
 
                         //call pass obj to CARD
-                        //...
-                        //var $f = $("#sanpham_card");
-                        //$f[0].contentWindow.setObj2();  //works
-                        parent.setObj(args.row);
+                        <?php
+                        if($place_holder->data['role']=='navigate')
+                        {
+                            echo 'parent.setObj(args.row);';
+                        }
+                        else
+                        {
+                            echo 'parent.setLookupResult(args.row.id, "'.$place_holder->data['returnid'].'");';
+                        }
+                        ?>
+
+                    });
+                    $('#jqxgrid').on('rowdoubleclick', function (event)
+                    {
+                        parent.doubleClickObj(event.args.row);
                     });
 
                     //register notification

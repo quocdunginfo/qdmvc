@@ -59,7 +59,7 @@ class Qdmvc_Helper
                 <?=$btnID?>_file_frame.on('select', function () {
                     // We set multiple to false so only get one image from the uploader
                     attachment = <?=$btnID?>_file_frame.state().get('selection').first().toJSON();
-                    jQuery('#<?=$txtID?>').val(<?=$getID===true?'attachment.id':'attachment.url'?>);
+                    jQuery('#<?=$txtID?>').val(<?=$getID===true?'attachment.id':'attachment.url'?>).change();
                     // Do something with attachment.id and/or attachment.url here
                 });
 

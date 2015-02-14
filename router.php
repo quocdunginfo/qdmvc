@@ -22,8 +22,9 @@ class Qdmvc_Router {
         add_filter( 'query_vars', 'qd_addnew_query_vars', 10, 1 );
         function qd_addnew_query_vars($vars)
         {
-            $vars[] = 'qd-api'; // var1 is the name of variable you want to add
-            //$vars[] = 'user_id'; // var1 is the name of variable you want to add
+            $vars[] = 'qd-api'; // for data port
+            $vars[] = 'qdrole'; // for view
+            $vars[] = 'qdreturnid'; // for lookup (parent id)
             //$vars[] = 'download'; // var1 is the name of variable you want to add
             return $vars;
         }

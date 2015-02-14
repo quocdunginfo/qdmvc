@@ -26,7 +26,6 @@ class Qdmvc
 			  return;
 			} 
 		}
-		
 		$this->init();
     }
 

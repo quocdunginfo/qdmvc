@@ -6,7 +6,6 @@
  * Time: 11:35 PM
 
  */
-
 header('Content-Type: application/json');
 if(isset($_POST["submit"]))
 {
@@ -25,13 +24,25 @@ if(isset($_POST["submit"]))
         if ($add) {
             //insert
             $obj = new QdProduct();
+            $obj->owner_id = get_current_user_id();
         } else {
             //update
             $obj = QdProduct::find($_POST['data']['id']);
+            $obj->lasteditor_id = get_current_user_id();
         }
         //assign value
         $obj->name = $_POST['data']['name'];
         $obj->avatar = $_POST['data']['avatar'];
+        $obj->code = $_POST['data']['code'];
+        $obj->xuatxu = $_POST['data']['xuatxu'];
+        $obj->congsuat = $_POST['data']['congsuat'];
+        $obj->dongco = $_POST['data']['dongco'];
+        $obj->trongluong = $_POST['data']['trongluong'];
+        $obj->active = $_POST['data']['active'];
+        if($obj->active==null || $obj->active!=1)
+        {
+            $obj->active = 0;
+        }
         $obj->product_cat_id = $_POST['data']['product_cat_id'];
         //action
         $obj->save();
@@ -43,6 +54,7 @@ if(isset($_POST["submit"]))
             $msg = 'Cập nhật thành công, ID=' . $obj->id;
         }
     }
+
     $arr = array(
         'msg' => $msg,
         'id' => $obj->id

@@ -12,7 +12,13 @@ class QdProduct extends QdRoot
             $tmp[$count]['id'] = $item->id;
             $tmp[$count]['name'] = $item->name;
             $tmp[$count]['avatar'] = $item->avatar;
+            $tmp[$count]['code'] = $item->code;
+            $tmp[$count]['xuatxu'] = $item->xuatxu;
+            $tmp[$count]['congsuat'] = $item->congsuat;
+            $tmp[$count]['dongco'] = $item->dongco;
+            $tmp[$count]['trongluong'] = $item->trongluong;
             $tmp[$count]['product_cat_id'] = $item->product_cat_id;
+            $tmp[$count]['active'] = $item->active;
             $tmp[$count]['_product_cat_name'] = $item->getProductCatObj()->name;
             $count++;
         }

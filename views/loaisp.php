@@ -1,34 +1,44 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: quocd_000
  * Date: 08/02/2015
  * Time: 11:32 PM
  */
-class Qdmvc_View_LoaiSP {
-    private $data = null;
-    function __construct($data){
+class Qdmvc_View_LoaiSP
+{
+    public $data = null;
+
+    function __construct($data)
+    {
         $this->data = $data;
     }
+
     public function placeHolder3()
     {
         ?>
         <script>
             // prepare the data
             var data_port = '<?=$this->data['data_port']?>';
-            var fieldlist = {id: 0, name: "mac dinh", avatar: "/", parent_id: "0"};
-            //gate way to comunicate with parent windows
-            function setObj(obj) {//do not change func name
-                (function($){
-                    $("#id").val(obj.id);
-                    $("#name").val(obj.name);
-                    $("#avatar").val(obj.avatar);
-                    $("#parent_id").val(obj.parent_id);
-                })(jQuery);
-            };
+            (function ($) {
+                $(document).ready(function () {
+                    requestFormValidate(
+                        [
+                            {
+                                input: '#name',
+                                message: 'Name is required!',
+                                action: 'keyup, blur',
+                                rule: 'required'
+                            }
+                        ]
+                    );
+                });
+            })(jQuery);
         </script>
     <?php
     }
+
     public function placeHolder1()
     {
         Qdmvc_Helper::qd_media_choose('cavatar', 'avatar', false);
@@ -55,14 +65,17 @@ class Qdmvc_View_LoaiSP {
         </tr>
     <?php
     }
+
     public function placeHolder2()
     {
         ?>
-        <iframe id="list" src="http://localhost/mpd_2015/wp-admin/admin.php?page=qd_sub_page_2" width="100%" scrolling="no" frameborder="0" height="420px">
+        <iframe id="list" src="http://localhost/mpd_2015/wp-admin/admin.php?page=qd_sub_page_2&qdrole=navigate"
+                width="100%" scrolling="no" frameborder="0" height="420px">
             <p>Your browser does not support iframes</p>
         </iframe>
     <?php
     }
 }
+
 $Qdmvc_Layout_Card = new Qdmvc_Layout_Card();
 $Qdmvc_Layout_Card->render(new Qdmvc_View_LoaiSP($data));

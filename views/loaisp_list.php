@@ -9,7 +9,7 @@
 
 class Qdmvc_View_LoaiSP_List
 {
-    private $data = null;
+    public $data = null;
     function __construct($data)
     {
         $this->data = $data;

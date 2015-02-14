@@ -7,6 +7,8 @@
  */
 
 $data['data_port'] = 'http://localhost/mpd_2015/?qd-api=sanpham_port';
-$data['view_style'] = 'compact';
+$data['role'] = isset($_REQUEST['qdrole'])?$_REQUEST['qdrole']:'navigate';//lookup, navigate
+$data['returnid'] = isset($_REQUEST['qdreturnid'])?$_REQUEST['qdreturnid']:'';//lookup, navigate
+$data['view_style'] = 'compact';//compact, full
 Qdmvc_Helper::requestCompact();
 require_once(Qdmvc::getView() . 'sanpham_list.php');

@@ -7,6 +7,8 @@
  */
 
 $data['data_port'] = 'http://localhost/mpd_2015/?qd-api=loaisp_port';
+$data['role'] = isset($_REQUEST['qdrole'])?$_REQUEST['qdrole']:'navigate';//lookup, navigate
+$data['returnid'] = isset($_REQUEST['qdreturnid'])?$_REQUEST['qdreturnid']:'';//lookup, navigate
 $data['view_style'] = 'compact';
 Qdmvc_Helper::requestCompact();
 require_once(Qdmvc::getView() . 'loaisp_list.php');

@@ -9,7 +9,7 @@
 
 class Qdmvc_View_Sanpham_List
 {
-    private $data = null;
+    public $data = null;
     function __construct($data)
     {
         $this->data = $data;
@@ -25,13 +25,20 @@ class Qdmvc_View_Sanpham_List
             {name: 'id'},
             {name: 'name'},
             {name: 'avatar'},
+            {name: 'code'},
+            {name: 'xuatxu'},
+            {name: 'congsuat'},
+            {name: 'dongco'},
+            {name: 'trongluong'},
+            {name: 'active'},
             {name: 'product_cat_id'},
             {name: '_product_cat_name'}
             ];
             //dataGrid define
             var dataGridDefine = [
             {text: 'ID', datafield: 'id', columntype: 'textbox', filtertype: 'input', width: 50},
-            {text: 'Name', datafield: 'name', columntype: 'textbox', filtertype: 'input', width: 250},
+            {text: 'Code', datafield: 'code', columntype: 'textbox', filtertype: 'input', width: 70},
+            {text: 'Name', datafield: 'name', columntype: 'textbox', filtertype: 'input', width: 100},
             {text: 'Avatar', datafield: 'avatar', columntype: 'textbox', filtertype: 'input', width: 250},
             {text: 'Product Cat.', datafield: '_product_cat_name', columntype: 'textbox', filtertype: 'input'}
             ];
