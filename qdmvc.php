@@ -10,8 +10,8 @@ require_once(Qdmvc::getHelper() . 'index.php');
 
 class Qdmvc
 {
-    private $included_file = array('controllers/index.php','router.php', 'db-init.php', 'load-model.php', 'shortcode.php'
-    , 'menu-nav-provider.php', 'notification/index.php', 'load-layout.php', 'register-admin-menu.php'
+    private $included_file = array('page-meta-box.php','controllers/index.php','router.php', 'db-init.php', 'load-model.php', 'shortcode.php'
+    /*, 'menu-nav-provider.php'*/, 'notification/index.php', 'load-layout.php', 'register-admin-menu.php'
     );
 	private $dependencies = array('phpactiverecords', 'jqwidgets');
     function __construct()
@@ -31,11 +31,13 @@ class Qdmvc
 
     private function init()
     {
+        //include files...
         foreach ($this->included_file as $item) {
             require_once(Qdmvc::getPluginDirPath() . $item);
         }
         //loading widgets
         require_once(Qdmvc::getWidget() . 'index.php');
+
     }
 
     public static function getPluginDirPath()
@@ -60,12 +62,17 @@ class Qdmvc
 
     public static function getController()
     {
+        Qdmvc::loadUIKit();
         return Qdmvc::getPluginDirPath() . 'controllers/';
     }
 
     public static function getModel()
     {
         return Qdmvc::getPluginDirPath() . 'models/';
+    }
+    private static function loadUIKit()
+    {
+        QdJqwidgets::registerResource(true);
     }
 }
 $qdmvc = new Qdmvc();

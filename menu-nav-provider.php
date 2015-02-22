@@ -21,19 +21,19 @@ if ( !class_exists('qd_Custom_Nav')) {
                             
                             <?php
                             $count = 1;
-                            foreach(Hocsinh::all() as $item): ?>
+                            if(true=='dddddddddddd'): ?>
                             <label class="menu-item-title">
         						<input type="checkbox" class="menu-item-checkbox" name="menu-item[-<?=$count?>][menu-item-object-id]" value="-<?=$count?>">
-                                <?php echo $item->name; ?>
+                                <?php //echo $item->name; ?>
         					</label>
         					<input type="hidden" class="menu-item-type" name="menu-item[-<?=$count?>][menu-item-type]" value="custom">
-        					<input type="hidden" class="menu-item-title" name="menu-item[-<?=$count?>][menu-item-title]" value="<?=$item->name?>">
+        					<input type="hidden" class="menu-item-title" name="menu-item[-<?=$count?>][menu-item-title]" value="<?php //$item->name?>">
         					<input type="hidden" class="menu-item-url" name="menu-item[-<?=$count?>][menu-item-url]" value="<?=do_shortcode('[qd_hocsinh_link id="'.$item->id.'"]');?>">
         					<input type="hidden" class="menu-item-classes" name="menu-item[-<?=$count?>][menu-item-classes]" value="wl-login-pop">
                             <br />
                             <?php
-                            $count++;
-                            endforeach; ?>
+                            //$count++;
+                            endif; ?>
         				</li>
         			</ul>
         		</div>
