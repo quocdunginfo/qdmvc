@@ -45,4 +45,10 @@ class QdProduct extends QdRoot
         $query = add_query_arg( array('id' => $this->id), $query );
         return $query;
     }
+    public function getBreadcrumbs()
+    {
+        $re = $this->getProductCatObj()->getBreadcrumbs();
+        array_push($re,array('name' => $this->name, 'url'=>$this->getPermalink()));
+        return $re;
+    }
 }

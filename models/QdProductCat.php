@@ -32,4 +32,22 @@ class QdProductCat extends QdRoot
         $query = add_query_arg( array('id' => $this->id), $query );
         return $query;
     }
+    public function getProductsSegmentURL($offset=0)
+    {
+        $query =  get_permalink($this->getPermalink());
+        $query = add_query_arg( array('id' => $this->id, 'product-offset' => $offset), $query );
+        return $query;
+    }
+    public function getProductsSegment($limit=2, $offset=0)
+    {
+        return QdProduct::all(array('conditions' => 'product_cat_id = '.$this->id, 'limit' => $limit, 'offset' => $offset, 'order' => 'id desc'));
+    }
+    public function getBreadcrumbs()
+    {
+        $re = array();
+        array_push($re,array('name' => 'Trang chủ', 'url'=>get_home_url()));
+        array_push($re,array('name' => 'Sản phẩm', 'url'=>$this->getPermalink()));
+        array_push($re,array('name' => $this->name, 'url'=>$this->getPermalink()));
+        return $re;
+    }
 }
