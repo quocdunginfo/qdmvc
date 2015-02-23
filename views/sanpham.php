@@ -21,9 +21,11 @@ class Qdmvc_View_Sanpham {
             //trigger open windows
             (function($){
                 $(document).ready(function(){
+                    //lookup
                     $('#cproduct_cat_id').click(function () {
-                        requestLookupWindow('http://localhost/mpd_2015/wp-admin/admin.php?page=qd_sub_page_2&qdrole=lookup&qdreturnid=product_cat_id');
+                        requestLookupWindow("<?=Qdmvc_Helper::getLSPLookupPath('product_cat_id')?>");
                     });
+                    //validate
                     requestFormValidate(
                         [
 

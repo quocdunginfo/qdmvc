@@ -2,9 +2,40 @@
 
 class Qdmvc_Helper
 {
+
     function __construct()
     {
 
+    }
+    public static function getLSPLookupPath($return_id)
+    {
+        return get_admin_url(null, 'admin.php?page=qd_sub_page_2&qdrole=lookup&qdreturnid='.$return_id);
+    }
+
+    public static function getPageIdByTemplate($template_path_from_theme)
+    {
+        $re = 0;
+        $args = array(
+            'post_type' => 'page',//it is a Page right?
+            'post_status' => 'publish',
+            'meta_query' => array(
+                array(
+                    'key' => '_wp_page_template',
+                    'value' => $template_path_from_theme, // template name as stored in the dB
+                )
+            )
+        );
+        $the_query = new WP_Query($args);
+        // The Loop
+        if ( $the_query->have_posts() ) {
+            $the_query->the_post();
+            $re = get_the_ID();
+        } else {
+            // no posts found
+        }
+        /* Restore original Post Data */
+        wp_reset_postdata();
+        return $re;
     }
 
     public static function qd_datetime_to_js($datetime)

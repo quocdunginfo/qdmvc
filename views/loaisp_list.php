@@ -25,6 +25,7 @@ class Qdmvc_View_LoaiSP_List
                 {name: 'id'},
                 {name: 'name'},
                 {name: 'avatar'},
+                {name: 'order'},
                 {name: 'parent_id'}
             ];
             //dataGrid define
@@ -32,6 +33,7 @@ class Qdmvc_View_LoaiSP_List
                 {text: 'ID', datafield: 'id', columntype: 'textbox', filtertype: 'input', width: 50},
                 {text: 'Name', datafield: 'name', columntype: 'textbox', filtertype: 'input', width: 250},
                 {text: 'Avatar', datafield: 'avatar', columntype: 'textbox', filtertype: 'input', width: 250},
+                {text: 'Order', datafield: 'order', columntype: 'textbox', filtertype: 'input', width: 70},
                 {text: 'Parent id', datafield: 'parent_id', columntype: 'textbox', filtertype: 'input'}
             ];
         </script>

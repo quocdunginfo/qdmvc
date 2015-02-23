@@ -39,4 +39,10 @@ class QdProduct extends QdRoot
             }
         }
     }
+    public function getPermalink()
+    {
+        $query =  get_permalink(Qdmvc_Helper::getPageIdByTemplate('page-templates/product-detail.php'));
+        $query = add_query_arg( array('id' => $this->id), $query );
+        return $query;
+    }
 }

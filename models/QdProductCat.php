@@ -12,6 +12,7 @@ class QdProductCat extends QdRoot
             $tmp[$count]['id'] = $item->id;
             $tmp[$count]['name'] = $item->name;
             $tmp[$count]['avatar'] = $item->avatar;
+            $tmp[$count]['order'] = $item->order;
             $tmp[$count]['parent_id'] = $item->parent_id;
             $count++;
         }
@@ -20,5 +21,15 @@ class QdProductCat extends QdRoot
             'Rows' => $tmp
         );
         return json_encode($tmp2);
+    }
+    public function getProducts()
+    {
+        return QdProduct::all(array('conditions' => 'product_cat_id = '.$this->id));
+    }
+    public function getPermalink()
+    {
+        $query =  get_permalink(Qdmvc_Helper::getPageIdByTemplate('page-templates/product-cat.php'));
+        $query = add_query_arg( array('id' => $this->id), $query );
+        return $query;
     }
 }

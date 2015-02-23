@@ -23,6 +23,12 @@ class Qdmvc_View_LoaiSP
             var data_port = '<?=$this->data['data_port']?>';
             (function ($) {
                 $(document).ready(function () {
+                    //lookup
+                    //lookup
+                    $('#cproduct_cat_id').click(function () {
+                        requestLookupWindow("<?=Qdmvc_Helper::getLSPLookupPath('parent_id')?>");
+                    });
+                    //validate
                     requestFormValidate(
                         [
                             {
@@ -43,6 +49,17 @@ class Qdmvc_View_LoaiSP
     {
         Qdmvc_Helper::qd_media_choose('cavatar', 'avatar', false);
         ?>
+        <script>
+            (function($) {
+                $(document).ready(function(){
+                    // Here's my data model
+                    var mViewModel = function() {
+                        this.AvatarImgUrl = ko.observable("");
+                    };
+                    ko.applyBindings(new mViewModel());
+                });
+            })(jQuery);
+        </script>
         <tr>
             <td>Name:</td>
             <td>
@@ -53,15 +70,20 @@ class Qdmvc_View_LoaiSP
         </tr>
         <tr>
             <td>Avatar:</td>
-            <td>
-                <input size="70" type="text" id="avatar" name="avatar" class="text-input"/>
-                <button id="cavatar" value="...">...</button>
+            <td colspan="3">
+                <input type="text" id="avatar" data-bind="textInput: AvatarImgUrl" name="avatar" class="text-input"/>
+                <button id="cavatar" value="...">...</button><img data-bind="attr:{src: AvatarImgUrl}" style="width: 50px; height: 50px" >
             </td>
-            <td></td>
+
         </tr>
         <tr>
             <td>Parent ID:</td>
-            <td><input type="text" id="parent_id" name="parent_id" class="text-input"/></td>
+            <td><input type="text" id="parent_id" name="parent_id" class="text-input"/>
+
+                <button id="cproduct_cat_id" value="...">...</button>
+            </td>
+            <td>Order:</td>
+            <td><input type="text" id="order" name="order" class="text-input"/></td>
         </tr>
     <?php
     }
