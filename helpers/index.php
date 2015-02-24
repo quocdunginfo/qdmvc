@@ -2,7 +2,10 @@
 
 class Qdmvc_Helper
 {
-
+    public static function loadPHPDOMLibrary()
+    {
+        require('simple_html_dom.php');
+    }
     function __construct()
     {
 
@@ -13,6 +16,8 @@ class Qdmvc_Helper
     }
     public static function getSlider($metaslider_id)
     {
+        self::loadPHPDOMLibrary();
+
         $slider_html = do_shortcode("[metaslider id=$metaslider_id]");
         $html = str_get_html($slider_html);
         $ret = $html->find('img');
@@ -128,4 +133,3 @@ class Qdmvc_Helper
         <?php
     }
 }
-require('simple_html_dom.php');
