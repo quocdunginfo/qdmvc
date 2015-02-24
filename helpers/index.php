@@ -11,7 +11,13 @@ class Qdmvc_Helper
     {
         return get_admin_url(null, 'admin.php?page=qd_sub_page_2&qdrole=lookup&qdreturnid='.$return_id);
     }
-
+    public static function getSlider($metaslider_id)
+    {
+        $slider_html = do_shortcode("[metaslider id=$metaslider_id]");
+        $html = str_get_html($slider_html);
+        $ret = $html->find('img');
+        return $ret;
+    }
     public static function getPageIdByTemplate($template_path_from_theme)
     {
         $re = 0;
@@ -122,3 +128,4 @@ class Qdmvc_Helper
         <?php
     }
 }
+require('simple_html_dom.php');

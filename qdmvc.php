@@ -76,4 +76,3 @@ class Qdmvc
     }
 }
 $qdmvc = new Qdmvc();
-require('plugin/simple_html_dom.php');
