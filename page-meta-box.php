@@ -10,7 +10,7 @@
  * For more information, please visit:
  * @link http://metabox.io/docs/registering-meta-boxes/
  */
-class QdCPT_TrangLienHe
+class QdP_TrangLienHe
 {
     /**
      * prefix of meta keys (optional)
@@ -26,7 +26,7 @@ class QdCPT_TrangLienHe
     }
     public static function email()
     {
-        return QdCPT_TrangLienHe::$prefix.'email';
+        return QdP_TrangLienHe::$prefix.'email';
     }
     private function init()
     {
@@ -63,7 +63,7 @@ class QdCPT_TrangLienHe
                     // Field name - Will be used as label
                     'name' => __('Email', 'meta-box'),
                     // Field ID, i.e. the meta key
-                    'id' => QdCPT_TrangLienHe::$prefix."email",
+                    'id' => QdP_TrangLienHe::$prefix."email",
                     // Field description (optional)
                     'desc' => __('Left panel email', 'meta-box'),
                     'type' => 'text',
@@ -75,4 +75,4 @@ class QdCPT_TrangLienHe
         return $meta_boxes;
     }
 }
-$QdCPT_TrangLienHe = new QdCPT_TrangLienHe();
+$QdCPT_TrangLienHe = new QdP_TrangLienHe();
