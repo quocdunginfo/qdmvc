@@ -2,6 +2,10 @@
 
 class Qdmvc_Helper
 {
+    public static $data_type = array(
+        'image' => 'image',
+        'flowfield' => 'flowfield'
+    );
     public static function loadPHPDOMLibrary()
     {
         require('simple_html_dom.php');

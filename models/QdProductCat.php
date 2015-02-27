@@ -50,4 +50,11 @@ class QdProductCat extends QdRoot
         array_push($re,array('name' => $this->name, 'url'=>$this->getPermalink()));
         return $re;
     }
+
+
+
+    public static function getTbName()
+    {
+        return self::$table_name;
+    }
 }

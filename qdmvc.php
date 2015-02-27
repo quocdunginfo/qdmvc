@@ -10,23 +10,23 @@ require_once(Qdmvc::getHelper() . 'index.php');
 
 class Qdmvc
 {
-    private $included_file = array('page-meta-box.php','controllers/index.php','router.php', 'db-init.php', 'load-model.php', 'shortcode.php'
-    /*, 'menu-nav-provider.php'*/, 'notification/index.php', 'load-layout.php', 'register-admin-menu.php'
+    private $included_file = array('page-meta-box.php', 'controllers/index.php', 'router.php', 'db-init.php', 'load-model.php', 'shortcode.php'
+    , 'menu-nav-provider.php', 'notification/index.php', 'load-layout.php', 'register-admin-menu.php'
     );
-	private $dependencies = array('phpactiverecords', 'jqwidgets');
+    private $dependencies = array('phpactiverecords', 'jqwidgets');
+
     function __construct()
     {
-		require_once(ABSPATH.'wp-admin/includes/plugin.php');
-		foreach($this->dependencies as $item)
-		{
-			//check dependency
-			if (!is_plugin_active($item . "/$item.php" ) ) {
-			  //plugin is not activated
-			  echo 'Require plugin '.$item;
-			  return;
-			} 
-		}
-		$this->init();
+        require_once(ABSPATH . 'wp-admin/includes/plugin.php');
+        foreach ($this->dependencies as $item) {
+            //check dependency
+            if (!is_plugin_active($item . "/$item.php")) {
+                //plugin is not activated
+                echo 'Require plugin ' . $item;
+                return;
+            }
+        }
+        $this->init();
     }
 
     private function init()
@@ -70,9 +70,11 @@ class Qdmvc
     {
         return Qdmvc::getPluginDirPath() . 'models/';
     }
+
     private static function loadUIKit()
     {
         QdJqwidgets::registerResource(true);
     }
 }
+
 $qdmvc = new Qdmvc();

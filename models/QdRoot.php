@@ -38,4 +38,26 @@ class QdRoot extends ActiveRecord\Model
         }
         return json_encode($tmp);
     }
+    protected static $fields = array(
+        'id' => array(
+            'name' => 'id',
+            'caption' => 'ID'
+        )
+    );
+
+    public static function getTbName()
+    {
+        return static::$table_name;
+    }
+    public static function getPF($field_name)//get Physical Field
+    {
+        return static::$fields[$field_name];
+    }
+    public static function getType($field_name)
+    {
+        if (array_key_exists('type', static::$fields[$field_name]))
+        {
+            return static::$fields[$field_name]['type'];
+        }
+    }
 }
