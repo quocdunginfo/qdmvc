@@ -25,9 +25,9 @@ class Qdmvc_Layout_List
                         datatype: "json",
                         datafields: dataSourceDefine,
                         url: data_port,
-                        root: 'Rows',
+                        root: 'rows',
                         beforeprocessing: function (data) {
-                            source.totalrecords = data.Total;
+                            source.totalrecords = data.total;
                         }
                     };
 

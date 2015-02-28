@@ -6,7 +6,7 @@
  * Time: 11:35 PM
  */
 
-$data['data_port'] = 'http://localhost/mpd_2015/?qd-api=sanpham_port';
+$data['data_port'] = get_site_url().'?qd-api=sanpham_port';
 $data['role'] = isset($_REQUEST['qdrole'])?$_REQUEST['qdrole']:'navigate';//lookup, navigate
 $data['returnid'] = isset($_REQUEST['qdreturnid'])?$_REQUEST['qdreturnid']:'';//lookup, navigate
 $data['view_style'] = 'compact';//compact, full
