@@ -6,5 +6,5 @@
  * Time: 11:35 PM
  */
 
-$data['data_port'] = get_site_url().'?qd-api=sanpham_port';
+$data['data_port'] = 'http://localhost/mpd_2015/?qd-api=sanpham_port';
 require_once(Qdmvc::getView() . 'sanpham.php');
