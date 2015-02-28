@@ -10,9 +10,9 @@ class Qdmvc_LSP_Controller
 {
     function __construct()
     {
-        $this->init();
+
     }
-    function init()
+    public function run()
     {
         $data['data_port'] = get_site_url().'?qd-api=loaisp_port';
         $data['role'] = isset($_REQUEST['qdrole'])?$_REQUEST['qdrole']:'navigate';//lookup, navigate
@@ -22,4 +22,4 @@ class Qdmvc_LSP_Controller
         require_once(Qdmvc::getView() . 'loaisp_list.php');
     }
 }
-$Qdmvc_LSP_Controller = new Qdmvc_LSP_Controller();
+(new Qdmvc_LSP_Controller())->run();

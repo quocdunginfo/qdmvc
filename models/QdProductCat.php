@@ -16,11 +16,7 @@ class QdProductCat extends QdRoot
             $tmp[$count]['parent_id'] = $item->parent_id;
             $count++;
         }
-        $tmp2 = array(
-            'Total' => QdProductCat::count(),
-            'Rows' => $tmp
-        );
-        return json_encode($tmp2);
+        return $tmp;
     }
     public function getProducts()
     {

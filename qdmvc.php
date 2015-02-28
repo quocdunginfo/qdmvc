@@ -2,7 +2,6 @@
 /*
 Plugin Name: qdmvc
 */
-
 //Load model 1st
 //require_once('load-model.php');
 //then Helper declare outside because of public provider for other part use

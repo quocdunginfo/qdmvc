@@ -30,4 +30,4 @@ class Qdmvc_SanPham_DP extends Qdmvc_Dataport{
         $this->obj->product_cat_id = $this->data['product_cat_id'];
     }
 }
-$Qdmvc_SanPham_DP = new Qdmvc_SanPham_DP();
+(new Qdmvc_SanPham_DP())->run();

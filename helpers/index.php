@@ -10,6 +10,10 @@ class Qdmvc_Helper
     {
         require('simple_html_dom.php');
     }
+    public static  function getDataPortPath($name)
+    {
+        return get_site_url()."?qd-api={$name}";
+    }
     function __construct()
     {
 
