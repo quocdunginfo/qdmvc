@@ -29,6 +29,8 @@ class Qdmvc_Search {
     }
     public function run()
     {
+        header('Content-Type: application/json');
+
         $this->key_word = $_GET['key_word'];
         $this->limit = $_GET['limit'];
         $this->offset = $_GET['offset'];
