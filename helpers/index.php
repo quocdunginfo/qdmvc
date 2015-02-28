@@ -12,7 +12,7 @@ class Qdmvc_Helper
     }
     public static  function getDataPortPath($name)
     {
-        return get_site_url()."?qd-api={$name}";
+        return get_site_url()."/?qd-api={$name}";// .../?qd-api != ...?qd-api [VERY IMPORTANT SINCE AJAX POST NOT WORK]
     }
     function __construct()
     {
