@@ -15,10 +15,6 @@ class Qdmvc_Dataport {
     private $filter = array();
     function __construct()
     {
-
-    }
-    public function run()
-    {
         $this->setClass();
         header('Content-Type: application/json');
 
@@ -42,14 +38,14 @@ class Qdmvc_Dataport {
         }
         else
         {
-            $this->list_return();
+            $this->loadGetValue();
         }
         //exit
         $this->finish();
     }
     protected function setClass()
     {
-
+        //$this->class = '';
     }
     private function finish()
     {
@@ -75,8 +71,7 @@ class Qdmvc_Dataport {
     private function insert()
     {
         //insert
-        $c = $this->class;
-        $this->obj = new $c();
+        $this->obj = new $this->class();
         $this->beforeInsertAssign();
         $this->assign();
         //action
@@ -102,14 +97,17 @@ class Qdmvc_Dataport {
     }
     protected function assign()
     {
-
+        //assign value
+        //$this->obj->name = $this->data['name'];
+        //$this->obj->avatar = $this->data['avatar'];
+        //$this->obj->parent_id = $this->data['parent_id'];
     }
     private function loadPostValue()
     {
         $this->data = $_POST['data'];
         $this->action = $_POST['action'];
     }
-    private function list_return()
+    private function loadGetValue()
     {
         $recordstartindex = isset($_REQUEST['recordstartindex'])?$_REQUEST['recordstartindex']:0;
         $pagesize = isset($_REQUEST['pagesize'])?$_REQUEST['pagesize']:10;
@@ -120,17 +118,25 @@ class Qdmvc_Dataport {
             $count++;
         }
         $c = $this->class;
-        $record = new $c();
+        echo $c::toJSON($c::all(
+                array(
+                    'limit' => $pagesize,
+                    'offset' => $recordstartindex,
+                    'order' => 'id desc',
+                    'conditions' => array($this->getFilterString()))
+            )
+        );
+    }
+    private function getFilterString()
+    {
+        $tmp = '';
+        // correct approach
+        while ( ($item = current($this->filter)) !== FALSE ) {
 
-        $record->SETFILTER($this->filter);
-        $record->SETLIMIT($pagesize);
-        $record->SETOFFSET($recordstartindex);
-        $record->SETORDERBY('id', 'desc');
-
-        echo json_encode(array(
-            'rows' => $c::toJSON($record->GETLIST()),
-            'total' => $record->COUNTLIST(),
-            'msg' => 'List Card Return'
-        ));
+            $tmp .= key($this->filter) .' LIKE \'%'.$item.'%\' AND';
+            next($this->filter);
+        }
+        $tmp .=' 1=1';
+        return $tmp;
     }
 }

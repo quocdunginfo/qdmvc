@@ -160,7 +160,7 @@ class Qdmvc_Layout_Card
                                 $("#jqxMsg").jqxNotification("open");
                             })
                             .fail(function (data) {
-                                console.log("FAIL:" + data);
+                                console.log(data);
                             })
                             .always(function () {
                                 //release lock
@@ -246,9 +246,6 @@ class Qdmvc_Layout_Card
                         </span>
                         <span>
                             <button type="button" id="clone">Clone</button>
-                        </span>
-                                    <span>
-                            <button type="button" id="test">Test</button>
                         </span>
                                 </td>
                             </tr>

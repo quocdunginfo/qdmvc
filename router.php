@@ -41,6 +41,17 @@ class Qdmvc_Router {
             }
             return;
         }
+
+        //auto start session
+//        function qd_register_session(){
+//            if( !session_id() )
+//            {
+//                session_start();
+//            }
+//        }
+//        add_action('init','qd_register_session');
+//
+//        require_once('register-admin-menu.php');
     }
 
 }

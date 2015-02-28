@@ -13,4 +13,4 @@ class Qdmvc_LoaiSP_DP extends Qdmvc_Dataport{
         $this->obj->parent_id = $this->data['parent_id'];
     }
 }
-(new Qdmvc_LoaiSP_DP())->run();
+$Qdmvc_LoaiSP_DP = new Qdmvc_LoaiSP_DP();

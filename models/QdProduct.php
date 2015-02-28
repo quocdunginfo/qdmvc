@@ -86,7 +86,11 @@ class QdProduct extends QdRoot
             $tmp[$count]['_product_cat_name'] = $item->getProductCatObj()->name;
             $count++;
         }
-        return $tmp;
+        $tmp2 = array(
+            'Total' => QdProduct::count(),
+            'Rows' => $tmp
+        );
+        return json_encode($tmp2);
     }
     public function getProductCatObj()
     {

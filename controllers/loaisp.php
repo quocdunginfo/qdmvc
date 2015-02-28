@@ -6,5 +6,5 @@
  * Time: 11:35 PM
  */
 
-$data['data_port'] = Qdmvc_Helper::getDataPortPath('loaisp_port');
+$data['data_port'] = 'http://localhost/mpd_2015/?qd-api=loaisp_port';
 require_once(Qdmvc::getView() . 'loaisp.php');
