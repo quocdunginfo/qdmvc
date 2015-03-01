@@ -18,6 +18,14 @@ class Qdmvc_Helper
     {
 
     }
+    public static function getSPCompactListLink()
+    {
+        return admin_url('admin.php?page=qd_sub_page_4&qdrole=navigate');
+    }
+    public static function getLSPCompactListLink()
+    {
+        return admin_url('admin.php?page=qd_sub_page_2&qdrole=navigate');
+    }
     public static function  getNoneLink()
     {
         return 'javascript:void(0)';

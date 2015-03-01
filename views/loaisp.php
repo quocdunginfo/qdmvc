@@ -6,16 +6,15 @@
  * Date: 08/02/2015
  * Time: 11:32 PM
  */
-class Qdmvc_View_LoaiSP
+Qdmvc::loadLayout('layout_card');
+class Qdmvc_View_LoaiSP extends Qdmvc_Layout_Card
 {
-    public $data = null;
-
     function __construct($data)
     {
         $this->data = $data;
     }
 
-    public function placeHolder3()
+    protected function placeHolder3()
     {
         ?>
         <script>
@@ -45,7 +44,7 @@ class Qdmvc_View_LoaiSP
     <?php
     }
 
-    public function placeHolder1()
+    protected function placeHolder1()
     {
         Qdmvc_Helper::qd_media_choose('cavatar', 'avatar', false);
         ?>
@@ -88,16 +87,14 @@ class Qdmvc_View_LoaiSP
     <?php
     }
 
-    public function placeHolder2()
+    protected function placeHolder2()
     {
         ?>
-        <iframe id="list" src="http://localhost/mpd_2015/wp-admin/admin.php?page=qd_sub_page_2&qdrole=navigate"
+        <iframe id="list" src="<?=Qdmvc_Helper::getLSPCompactListLink()?>"
                 width="100%" scrolling="no" frameborder="0" height="420px">
             <p>Your browser does not support iframes</p>
         </iframe>
     <?php
     }
 }
-
-$Qdmvc_Layout_Card = new Qdmvc_Layout_Card();
-$Qdmvc_Layout_Card->render(new Qdmvc_View_LoaiSP($data));
+(new Qdmvc_View_LoaiSP($data))->render();

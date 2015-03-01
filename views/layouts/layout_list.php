@@ -8,10 +8,15 @@
 //Qdmvc_Helper::qd_media_choose('cavatar', 'avatar', false);
 class Qdmvc_Layout_List
 {
-    public function render($place_holder)
+    protected $data = null;
+    protected function placeHolder1()
+    {
+
+    }
+    public function render()
     {
         ?>
-        <?=$place_holder->placeHolder1()?>
+        <?=$this->placeHolder1()?>
         <script type="text/javascript">
             function updateGrid() {
                 //update databound
@@ -71,13 +76,13 @@ class Qdmvc_Layout_List
 
                         //call pass obj to CARD
                         <?php
-                        if($place_holder->data['role']=='navigate')
+                        if($this->data['role']=='navigate')
                         {
                             echo 'parent.setObj(args.row);';
                         }
                         else
                         {
-                            echo 'parent.setLookupResult(args.row.id, "'.$place_holder->data['returnid'].'");';
+                            echo 'parent.setLookupResult(args.row.id, "'.$this->data['returnid'].'");';
                         }
                         ?>
 

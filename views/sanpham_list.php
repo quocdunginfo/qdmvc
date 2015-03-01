@@ -7,14 +7,14 @@
  */
 //Qdmvc_Helper::qd_media_choose('cavatar', 'avatar', false);
 
-class Qdmvc_View_Sanpham_List
+Qdmvc::loadLayout('layout_list');
+class Qdmvc_View_Sanpham_List extends Qdmvc_Layout_List
 {
-    public $data = null;
     function __construct($data)
     {
         $this->data = $data;
     }
-    public function placeHolder1()
+    protected function placeHolder1()
     {
         ?>
         <script>
@@ -46,5 +46,4 @@ class Qdmvc_View_Sanpham_List
         <?php
     }
 }
-$Qdmvc_Layout_List = new Qdmvc_Layout_List();
-$Qdmvc_Layout_List->render(new Qdmvc_View_Sanpham_List($data));
+(new Qdmvc_View_Sanpham_List($data))->render();

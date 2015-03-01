@@ -8,11 +8,24 @@
 //Qdmvc_Helper::qd_media_choose('cavatar', 'avatar', false);
 class Qdmvc_Layout_Card
 {
-    public function render($place_holder)
+    protected $data = null;
+    protected function placeHolder1()
+    {
+
+    }
+    protected function placeHolder2()
+    {
+
+    }
+    protected function placeHolder3()
+    {
+
+    }
+    public function render()
     {
         ?>
         <!-- Content Place Holder 3 -->
-        <?= $place_holder->placeHolder3() ?>
+        <?= $this->placeHolder3() ?>
         <!-- ENd Content Place Holder 3 -->
         <script>
             //gate way to comunicate with parent windows
@@ -231,7 +244,7 @@ class Qdmvc_Layout_Card
                           onsubmit="return false">
                         <table class="register-table">
                             <!-- Content place Holder -->
-                            <?= $place_holder->placeHolder1() ?>
+                            <?= $this->placeHolder1() ?>
                             <!-- End content place holder -->
                             <tr>
                                 <td colspan="3">
@@ -264,7 +277,7 @@ class Qdmvc_Layout_Card
                 </div>
                 <div>
                     <!-- Content Place Holder 2 -->
-                    <?= $place_holder->placeHolder2() ?>
+                    <?= $this->placeHolder2() ?>
                     <!-- ENd Content Place Holder 2 -->
                 </div>
             </div>

@@ -73,6 +73,11 @@ class Qdmvc
     {
         QdJqwidgets::registerResource(true);
     }
+
+    public static function loadLayout($name)
+    {
+        require_once(Qdmvc::getView().'/layouts/'. $name .'.php');
+    }
 }
 
 $qdmvc = new Qdmvc();

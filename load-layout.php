@@ -7,13 +7,14 @@
  */
 class Qdmvc_Layout
 {
+    private static $prefix = 'layouts/';
     private $layouts = array('layout_card.php', 'layout_list.php');
     function __construct()
     {
+        /*
         foreach($this->layouts as $item)
         {
-            require_once(Qdmvc::getView() . $item);
-        }
+            require_once(Qdmvc::getView().static::$prefix. $item);
+        }*/
     }
 }
-$Qdmvc_Layout = new Qdmvc_Layout();
