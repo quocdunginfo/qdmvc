@@ -85,6 +85,7 @@ class QdRoot extends ActiveRecord\Model
     }
 
     protected $record = array(
+        'filter_default' => array(),//array('field' => 'value_filter');
         'filter' => array(),//array('field' => 'value_filter');
         'limit' => 10,
         'offset' => 0,
@@ -93,13 +94,21 @@ class QdRoot extends ActiveRecord\Model
         'filter_raw' => '1=1 OR 2=2',//raw SQL Condition
         'filter_relation' => 'AND'
     );
-
+    public function SETFILTERDEFAULT($filter)
+    {
+        $this->record['filter_default'] = $filter;
+    }
+    public function REMOVEFILTERDEFAULT()
+    {
+        $this->record['filter_default'] = array();
+    }
     /**
      * @param $limit
      */
     public function SETLIMIT($limit)
     {
         $this->record['limit'] = $limit;
+        return $this;
     }
 
     /**
@@ -108,6 +117,7 @@ class QdRoot extends ActiveRecord\Model
     public function REMOVELIMIT()
     {
         $this->record['limit'] = -1;
+        return $this;
     }
 
     /**
@@ -116,6 +126,7 @@ class QdRoot extends ActiveRecord\Model
     public function REMOVEOFFSET()
     {
         $this->record['offset'] = -1;
+        return $this;
     }
 
     /**
@@ -124,6 +135,7 @@ class QdRoot extends ActiveRecord\Model
     public function SETOFFSET($offset)
     {
         $this->record['offset'] = $offset;
+        return $this;
     }
 
     /**
@@ -133,6 +145,7 @@ class QdRoot extends ActiveRecord\Model
     public function SETORDERBY($field, $asc = 'asc')
     {
         $this->record['order'] = array('field' => $field, 'direction' => $asc);
+        return $this;
     }
 
     /**
@@ -142,6 +155,7 @@ class QdRoot extends ActiveRecord\Model
     public function SETRANGE($field, $value)
     {
         $this->record['filter'][$field] = $value;
+        return $this;
     }
 
     /**
@@ -152,14 +166,17 @@ class QdRoot extends ActiveRecord\Model
     public function SETFILTER($where_array)
     {
         $this->record['filter'] = $where_array;
+        return $this;
     }
     public function SETFILTERRELATION($relation='AND')
     {
         $this->record['filter_relation'] = $relation;
+        return $this;
     }
     public function REMOVEFILTERRELATION()
     {
         $this->record['filter_relation'] = 'AND';
+        return $this;
     }
     /**
      * @param $field
@@ -167,6 +184,7 @@ class QdRoot extends ActiveRecord\Model
     public function REMOVERANGE($field)
     {
         unset($this->record['filter'][static::getPF($field)]);
+        return $this;
     }
 
     /**

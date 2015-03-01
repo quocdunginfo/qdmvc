@@ -2,9 +2,10 @@
 class QdProductCat extends QdRoot
 {
     static $table_name = 'mpd_product_cat';
+    /*
     static $has_many = array(
         array('product_list', 'class_name' => 'QdProduct', 'primary_key' => 'id', 'foreign_key' => 'product_cat_id')
-    );
+    );*/
     public static function toJSON($list)
     {
         $tmp = array();
@@ -22,8 +23,10 @@ class QdProductCat extends QdRoot
     }
     public function getProducts()
     {
-        return QdProduct::all(array('conditions' => 'product_cat_id = '.$this->id));
-        //return $this->product_list;
+        $obj = new QdProduct();
+        $obj->SETRANGE('product_cat_id', $this->id);
+        return $obj;
+        //return QdProduct::all(array('conditions' => 'product_cat_id = '.$this->id));
     }
     public function getPermalink()
     {
@@ -39,8 +42,8 @@ class QdProductCat extends QdRoot
     }
     public function getProductsSegment($limit=2, $offset=0)
     {
-        return QdProduct::all(array('conditions' => 'product_cat_id = '.$this->id, 'limit' => $limit, 'offset' => $offset, 'order' => 'id desc'));
-        //return $this->product_list;
+        //return QdProduct::all(array('conditions' => 'product_cat_id = '.$this->id, 'limit' => $limit, 'offset' => $offset, 'order' => 'id desc'));
+        return $this->getProducts()->SETLIMIT($limit)->SETOFFSET($offset)->SETORDERBY('id','desc')->GETLIST();
     }
     public function getBreadcrumbs()
     {
