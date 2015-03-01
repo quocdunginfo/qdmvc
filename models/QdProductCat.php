@@ -24,7 +24,7 @@ class QdProductCat extends QdRoot
     public function getProducts()
     {
         $obj = new QdProduct();
-        $obj->SETRANGE('product_cat_id', $this->id);
+        $obj->SETFILTERDEFAULT(array('product_cat_id' => $this->id));
         return $obj;
         //return QdProduct::all(array('conditions' => 'product_cat_id = '.$this->id));
     }
@@ -43,7 +43,13 @@ class QdProductCat extends QdRoot
     public function getProductsSegment($limit=2, $offset=0)
     {
         //return QdProduct::all(array('conditions' => 'product_cat_id = '.$this->id, 'limit' => $limit, 'offset' => $offset, 'order' => 'id desc'));
-        return $this->getProducts()->SETLIMIT($limit)->SETOFFSET($offset)->SETORDERBY('id','desc')->GETLIST();
+        return $this
+            ->getProducts()
+            ->REMOVEFILTER()
+            ->SETLIMIT($limit)
+            ->SETOFFSET($offset)
+            ->SETORDERBY('id','desc')
+            ->GETLIST();
     }
     public function getBreadcrumbs()
     {

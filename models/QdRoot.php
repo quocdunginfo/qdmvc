@@ -94,14 +94,21 @@ class QdRoot extends ActiveRecord\Model
         'filter_raw' => '1=1 OR 2=2',//raw SQL Condition
         'filter_relation' => 'AND'
     );
-    public function SETFILTERDEFAULT($filter)
+    public function SETFILTERDEFAULT($filter=array())
     {
         $this->record['filter_default'] = $filter;
+        return $this->SETFILTER($filter);
     }
     public function REMOVEFILTERDEFAULT()
     {
-        $this->record['filter_default'] = array();
+        return $this->SETFILTERDEFAULT(array());
     }
+    public function REMOVEFILTER()
+    {
+        $this->record['filter'] = $this->record['filter_default'];
+        return $this;
+    }
+
     /**
      * @param $limit
      */
