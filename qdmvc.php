@@ -6,7 +6,6 @@ Plugin Name: qdmvc
 //require_once('load-model.php');
 //then Helper declare outside because of public provider for other part use
 require_once(Qdmvc::getHelper() . 'index.php');
-
 class Qdmvc
 {
     private $included_file = array('page-meta-box.php', 'controllers/index.php', 'router.php', 'db-init.php', 'load-model.php', 'shortcode.php'

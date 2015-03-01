@@ -88,7 +88,10 @@ class QdRoot extends ActiveRecord\Model
         'filter' => array(),//array('field' => 'value_filter');
         'limit' => 10,
         'offset' => 0,
-        'order' => array('field' => 'id', 'direction' => 'asc')//true: asc, false: desc
+        'order' => array('field' => 'id', 'direction' => 'asc'),//true: asc, false: desc
+        //Since 01032015
+        'filter_raw' => '1=1 OR 2=2',//raw SQL Condition
+        'filter_relation' => 'AND'
     );
 
     /**
@@ -138,7 +141,7 @@ class QdRoot extends ActiveRecord\Model
      */
     public function SETRANGE($field, $value)
     {
-        $this->record['filter'][static::getPF($field)] = $value;
+        $this->record['filter'][$field] = $value;
     }
 
     /**
@@ -150,7 +153,14 @@ class QdRoot extends ActiveRecord\Model
     {
         $this->record['filter'] = $where_array;
     }
-
+    public function SETFILTERRELATION($relation='AND')
+    {
+        $this->record['filter_relation'] = $relation;
+    }
+    public function REMOVEFILTERRELATION()
+    {
+        $this->record['filter_relation'] = 'AND';
+    }
     /**
      * @param $field
      */
@@ -184,9 +194,16 @@ class QdRoot extends ActiveRecord\Model
         if(is_array($record['filter']) && count($record['filter'])>0) {
             $where = '';
             foreach ($record['filter'] as $key => $value) {
-                $where .= "`{$key}` LIKE '%{$value}%' AND ";
+                $where .= "`{$key}` LIKE '%{$value}%' ".$record['filter_relation']." ";
             }
-            $where .= '1=1';
+            if(strtoupper($record['filter_relation'])=='AND')
+            {
+                $where .= '1=1';
+            }
+            else
+            {
+                $where .= '1=2';
+            }
             return array($where);
         }
         return array();

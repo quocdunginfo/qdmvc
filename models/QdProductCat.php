@@ -2,7 +2,9 @@
 class QdProductCat extends QdRoot
 {
     static $table_name = 'mpd_product_cat';
-
+    static $has_many = array(
+        array('product_list', 'class_name' => 'QdProduct', 'primary_key' => 'id', 'foreign_key' => 'product_cat_id')
+    );
     public static function toJSON($list)
     {
         $tmp = array();
@@ -21,11 +23,12 @@ class QdProductCat extends QdRoot
     public function getProducts()
     {
         return QdProduct::all(array('conditions' => 'product_cat_id = '.$this->id));
+        //return $this->product_list;
     }
     public function getPermalink()
     {
         $query =  get_permalink(Qdmvc_Helper::getPageIdByTemplate('page-templates/product-cat.php'));
-        $query = add_query_arg( array('id' => $this->id), $query );
+        $query = add_query_arg( array('id' => $this->id, 'title' => $this->name), $query );
         return $query;
     }
     public function getProductsSegmentURL($offset=0)
@@ -37,18 +40,15 @@ class QdProductCat extends QdRoot
     public function getProductsSegment($limit=2, $offset=0)
     {
         return QdProduct::all(array('conditions' => 'product_cat_id = '.$this->id, 'limit' => $limit, 'offset' => $offset, 'order' => 'id desc'));
+        //return $this->product_list;
     }
     public function getBreadcrumbs()
     {
         $re = array();
-        array_push($re,array('name' => 'Trang chủ', 'url'=>get_home_url()));
         array_push($re,array('name' => 'Sản phẩm', 'url'=>$this->getPermalink()));
         array_push($re,array('name' => $this->name, 'url'=>$this->getPermalink()));
         return $re;
     }
-
-
-
     public static function getTbName()
     {
         return self::$table_name;

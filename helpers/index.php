@@ -18,6 +18,10 @@ class Qdmvc_Helper
     {
 
     }
+    public static function  getNoneLink()
+    {
+        return 'javascript:void(0)';
+    }
     public static function getLSPLookupPath($return_id)
     {
         return get_admin_url(null, 'admin.php?page=qd_sub_page_2&qdrole=lookup&qdreturnid='.$return_id);

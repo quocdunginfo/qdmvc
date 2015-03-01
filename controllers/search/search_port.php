@@ -16,10 +16,13 @@ class Qdmvc_Search {
         $re = array();
         $record = new QdProduct();
         $record->SETRANGE('name', $this->key_word);
-        //$record->REMOVERANGE('name');
+        $record->SETRANGE('model', $this->key_word);
+        $record->SETRANGE('xuatxu', $this->key_word);
+        $record->SETFILTERRELATION('OR');
         $record->SETLIMIT($this->limit);
 
         $products = $record->GETLIST();
+
         //var_dump($products);
         foreach($products as $item)
         {
@@ -31,11 +34,12 @@ class Qdmvc_Search {
     {
         header('Content-Type: application/json');
 
-        $this->key_word = $_GET['key_word'];
-        $this->limit = $_GET['limit'];
-        $this->offset = $_GET['offset'];
+        $this->key_word = isset($_GET['key_word'])?$_GET['key_word']:'';
+        $this->limit = isset($_GET['limit'])?$_GET['limit']:-1;
+        $this->offset = isset($_GET['offset'])?$_GET['offset']:0;
 
         echo $this->getResult();
+        //echo $record::connection()->last_query;
         $this->finish();
     }
 }
