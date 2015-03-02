@@ -84,7 +84,12 @@ class Qdmvc_Layout_Card
             ;
             //update grid
             function updateGrid() {
-                document.getElementById('list').contentWindow.updateGrid();
+                try {
+                    document.getElementById('list').contentWindow.updateGrid();
+                }catch(error)
+                {
+                    console.log(error);
+                }
             }
             (function ($) {
                 $(document).ready(function () {
@@ -140,10 +145,15 @@ class Qdmvc_Layout_Card
                     //card button event
                     $('#new').bind('click', function (event) {
                         //To disable
-                        $('#new').attr('disabled', 'disabled');
-                        $('#testForm')[0].reset();
-                        $('#id').val("0").change();
-                        $('#new').removeAttr('disabled');
+                        try {
+                            $('#new').attr('disabled', 'disabled');
+                            $('#testForm')[0].reset();
+                            $('#id').val("0").change();
+                            $('#new').removeAttr('disabled');
+                        }catch(error)
+                        {
+                            console.log(error);
+                        }
                     });
                     //card button event
                     $('#clone').bind('click', function (event) {
@@ -260,9 +270,10 @@ class Qdmvc_Layout_Card
                         <span>
                             <button type="button" id="clone">Clone</button>
                         </span>
-                                    <span>
+                                    <!--
+                        <span>
                             <button type="button" id="test">Test</button>
-                        </span>
+                        </span> -->
                                 </td>
                             </tr>
                         </table>

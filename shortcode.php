@@ -14,4 +14,4 @@ class Qdmvc_Shortcode
         return 'http://qd_hocsinh_link_' . $id;
     }
 }
-$Qdmvc_Shortcode = new Qdmvc_Shortcode();
+//(new Qdmvc_Shortcode());

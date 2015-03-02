@@ -1,5 +1,5 @@
 <?php
-class Qdmvc_Search {
+class Qdmvc_DataPort_Search {
     private $key_word = '';
     private $limit = 10;
     private $offset = 0;
@@ -51,4 +51,4 @@ class Qdmvc_Search {
         $this->finish();
     }
 }
-(new Qdmvc_Search())->run();
+(new Qdmvc_DataPort_Search())->run();

@@ -10,7 +10,7 @@ class Qdmvc_Helper
     {
         require('simple_html_dom.php');
     }
-    public static  function getDataPortPath($name)
+    public static function getDataPortPath($name)
     {
         return get_site_url()."/?qd-api={$name}";// .../?qd-api != ...?qd-api [VERY IMPORTANT SINCE AJAX POST NOT WORK]
     }

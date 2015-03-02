@@ -1,5 +1,5 @@
 <?php
-class Qdmvc_LoaiSP_DP extends Qdmvc_Dataport{
+class Qdmvc_DataPort_ProductCat extends Qdmvc_Dataport {
     protected function setClass()
     {
         $this->class = 'QdProductCat';
@@ -13,4 +13,4 @@ class Qdmvc_LoaiSP_DP extends Qdmvc_Dataport{
         $this->obj->parent_id = $this->data['parent_id'];
     }
 }
-(new Qdmvc_LoaiSP_DP())->run();
+(new Qdmvc_DataPort_ProductCat())->run();

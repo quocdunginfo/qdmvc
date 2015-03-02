@@ -1,5 +1,5 @@
 <?php
-class Qdmvc_SanPham_DP extends Qdmvc_Dataport{
+class Qdmvc_Dataport_Product extends Qdmvc_Dataport{
     protected function setClass()
     {
         $this->class = 'QdProduct';
@@ -30,4 +30,4 @@ class Qdmvc_SanPham_DP extends Qdmvc_Dataport{
         $this->obj->product_cat_id = $this->data['product_cat_id'];
     }
 }
-(new Qdmvc_SanPham_DP())->run();
+(new Qdmvc_Dataport_Product())->run();

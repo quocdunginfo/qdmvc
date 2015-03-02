@@ -36,7 +36,8 @@ class Qdmvc_Router {
         {
             if ( array_key_exists( 'qd-api', $wp->query_vars ) ) {
 
-                include 'controllers/'.$wp->query_vars['qd-api'].'.php';
+                Qdmvc::loadDataPort($wp->query_vars['qd-api']);
+
                 exit();
             }
             return;
@@ -44,4 +45,4 @@ class Qdmvc_Router {
     }
 
 }
-$Qdmvc_Router = new Qdmvc_Router();
+(new Qdmvc_Router());
