@@ -4,13 +4,5 @@ class Qdmvc_DataPort_ProductCat extends Qdmvc_Dataport {
     {
         $this->class = 'QdProductCat';
     }
-    protected function assign()
-    {
-        //assign value
-        $this->obj->name = $this->data['name'];
-        $this->obj->avatar = $this->data['avatar'];
-        $this->obj->order = $this->data['order'];
-        $this->obj->parent_id = $this->data['parent_id'];
-    }
 }
 (new Qdmvc_DataPort_ProductCat())->run();

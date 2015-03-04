@@ -3,103 +3,85 @@
 class QdProduct extends QdRoot
 {
     static $table_name = 'mpd_product';
-    /*
-    protected static $fields = array(
 
-        'id' => array(
-            'name' => 'id',
-            'caption' => 'ID'
-        ),
-        'name' => array(
-            'name' => 'name',
-            'caption' => 'Name'
-        ),
-        'model' => array(
-            'name' => 'code',
-            'caption' => 'Model'
-        ),
-        'xuatxu' => array(
-            'name' => 'xuatxu',
-            'caption' => 'Xuất xứ'
-        ),
-        'congsuat' => array(
-            'name' => 'congsuat',
-            'caption' => 'Công suất'
-        ),
-        'dongco' => array(
-            'name' => 'dongco',
-            'caption' => 'Trọng lượng'
-        ),
-        'trongluong' => array(
-            'name' => 'trongluong',
-            'caption' => 'Trọng lượng'
-        ),
-        'baohanh' => array(
-            'name' => 'baohanh',
-            'caption' => 'Bảo hành'
-        ),
-        'mota1' => array(
-            'name' => 'mota1',
-            'caption' => 'Mô tả'
-        ),
-        'mota2' => array(
-            'name' => 'mota2',
-            'caption' => ''
-        ),
-        'mota3' => array(
-            'name' => 'mota3',
-            'caption' => ''
+    protected static $fields_config = array(
+        //SAMPLE FIELD CONFIG
+        '_product_cat_name' => array(
+            'Name' => 'product_cat_id',
+            'Caption' => array('en' => 'Product Cat Nam', 'vn' => 'Tên loại SP'),
+            'DataType' => 'Text',
+            'FieldClass' => 'FlowField',
+            'FieldClass_FlowField' => array(
+                'Method' => 'Lookup',
+                'Table' => 'QdProductCat',
+                'Field' => 'name',
+                'TableFilter' =>  array(
+                    0 => array(
+                        'Field' => 'id',
+                        'Type' => 'FIELD',
+                        'Value' => 'product_cat_id'
+                    )
+                )
+            )
         ),
         'product_cat_id' => array(
-            'name' => 'product_cat_id',
-            'tb_r' => 'mpd_product',
-            'tb_r_f' => 'id',
-            'caption' => 'Loại SP'
-        ),
-        'avatar' => array(
-            'name' => 'avatar',
-            'type' => 'image',
-            'caption' => 'Avatar'
-        ),
-        '_product_cat_name' => array(
-            'name' => '',
-            'type' => 'flowfield',
-            'tb_r' => 'mpd_product_cat',
-            'tb_r_f' => 'name',
-            'caption' => 'Avatar'
-        )
-    );
-    */
+            'Name' => 'product_cat_id',
+            'Caption' => array('en' => 'Product Cat ID', 'vn' => 'Mã loại SP'),
+            'DataType' => 'Code',
+            'Numeric' => true,
+            'Description' => '',
+            'Editable' => true,
+            'InitValue' => '0',
+            'FieldClass' => 'Normal',//'FlowField'
+            'TableRelation' => array(
+                'Table' => 'QdProductCat',
+                'Field' => 'id',
+                'TableFilter' => array(
+                    /*
+                    0 => array(
+                        'Condition' => array(
+                            'Field' => '',
+                            'Type' => 'CONST',//'FIELD'
+                            'Value' => ''
+                        ),
+                        'Field' => '',
+                        'Type' => 'FIELD',
+                        'Value' => ''
+                    )
+                    */
 
+                )
+            )
+        ),
+
+        'avatar' => array(
+            'Caption' => array('en' => 'Avatar', 'vn' => 'Hình đại diện'),
+            'DataType' => 'Image',
+            'Description' => 'Hình đại diện',
+        ),
+        'active' => array(
+            'Caption' => array('en' => 'Active', 'vn' => 'Kích hoạt'),
+            'DataType' => 'Boolean',
+            'InitValue' => true,
+        ),
+        'id' => array(),
+        'name' => array(),
+        'code' => array(),
+        'xuatxu' => array(),
+        'congsuat' => array(),
+        'dongco' => array(),
+        'trongluong' => array(),
+        'baohanh' => array(),
+        'mota1' => array(),
+        'mota2' => array(),
+        'mota3' => array(),
+    );
     static $alias_attribute = array(
         'model' => 'code'
     );
     static $belongs_to = array(
         array('product_cat_obj', 'class_name' => 'QdProductCat', 'foreign_key' => 'product_cat_id', 'primary_key' => 'id')
-        );
-
-    public static function toJSON($list)
-    {
-        $tmp = array();
-        $count = 0;
-        foreach ($list as $item) {
-            $tmp[$count] = array();
-            $tmp[$count]['id'] = $item->id;
-            $tmp[$count]['name'] = $item->name;
-            $tmp[$count]['avatar'] = $item->avatar;
-            $tmp[$count]['code'] = $item->model;
-            $tmp[$count]['xuatxu'] = $item->xuatxu;
-            $tmp[$count]['congsuat'] = $item->congsuat;
-            $tmp[$count]['dongco'] = $item->dongco;
-            $tmp[$count]['trongluong'] = $item->trongluong;
-            $tmp[$count]['product_cat_id'] = $item->product_cat_id;
-            $tmp[$count]['active'] = $item->active;
-            $tmp[$count]['_product_cat_name'] = $item->getProductCatObj()->name;
-            $count++;
-        }
-        return $tmp;
-    }
-
+    );
     public function getProductCatObj()
     {
         /*
@@ -127,4 +109,5 @@ class QdProduct extends QdRoot
         array_push($re, array('name' => $this->name, 'url' => $this->getPermalink()));
         return $re;
     }
+
 }

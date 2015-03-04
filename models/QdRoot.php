@@ -8,9 +8,6 @@
  */
 class QdRoot extends ActiveRecord\Model
 {
-    static $table_name = 'mpd_';
-
-    # explicit pk since our pk is not "id"
     static $primary_key = 'id';
 
     static $before_update = array('on_before_update'); # new records only
@@ -33,28 +30,10 @@ class QdRoot extends ActiveRecord\Model
         $this->date_created = new DateTime();
     }
 
-    /**
-     * @param $list
-     * @return mixed|string|void
-     */
-    public static function toJSON($list)
+    protected static function  addFieldConfig()
     {
-        $tmp = array();
-        $count = 0;
-        foreach ($list as $item) {
-            $tmp[$count] = array();
-            $tmp[$count]['id'] = $item->id;
-            $count++;
-        }
-        return json_encode($tmp);
-    }
-    protected static $fields = array(
-        'id' => array(
-            'name' => 'id',
-            'caption' => 'ID'
-        )
-    );
 
+    }
     /**
      * @return string
      */
@@ -84,7 +63,7 @@ class QdRoot extends ActiveRecord\Model
         }
     }
 
-    protected $record = array(
+    protected $record_filter = array(
         'filter_default' => array(),//array('field' => 'value_filter');
         'filter' => array(),//array('field' => 'value_filter');
         'limit' => 10,
@@ -96,7 +75,7 @@ class QdRoot extends ActiveRecord\Model
     );
     public function SETFILTERDEFAULT($filter=array())
     {
-        $this->record['filter_default'] = $filter;
+        $this->record_filter['filter_default'] = $filter;
         return $this->SETFILTER($filter);
     }
     public function REMOVEFILTERDEFAULT()
@@ -105,7 +84,7 @@ class QdRoot extends ActiveRecord\Model
     }
     public function REMOVEFILTER()
     {
-        $this->record['filter'] = $this->record['filter_default'];
+        $this->record_filter['filter'] = $this->record_filter['filter_default'];
         return $this;
     }
 
@@ -114,7 +93,7 @@ class QdRoot extends ActiveRecord\Model
      */
     public function SETLIMIT($limit)
     {
-        $this->record['limit'] = $limit;
+        $this->record_filter['limit'] = $limit;
         return $this;
     }
 
@@ -123,7 +102,7 @@ class QdRoot extends ActiveRecord\Model
      */
     public function REMOVELIMIT()
     {
-        $this->record['limit'] = -1;
+        $this->record_filter['limit'] = -1;
         return $this;
     }
 
@@ -132,7 +111,7 @@ class QdRoot extends ActiveRecord\Model
      */
     public function REMOVEOFFSET()
     {
-        $this->record['offset'] = -1;
+        $this->record_filter['offset'] = -1;
         return $this;
     }
 
@@ -141,7 +120,7 @@ class QdRoot extends ActiveRecord\Model
      */
     public function SETOFFSET($offset)
     {
-        $this->record['offset'] = $offset;
+        $this->record_filter['offset'] = $offset;
         return $this;
     }
 
@@ -151,7 +130,7 @@ class QdRoot extends ActiveRecord\Model
      */
     public function SETORDERBY($field, $asc = 'asc')
     {
-        $this->record['order'] = array('field' => $field, 'direction' => $asc);
+        $this->record_filter['order'] = array('field' => $field, 'direction' => $asc);
         return $this;
     }
 
@@ -161,7 +140,7 @@ class QdRoot extends ActiveRecord\Model
      */
     public function SETRANGE($field, $value)
     {
-        $this->record['filter'][$field] = $value;
+        $this->record_filter['filter'][$field] = $value;
         return $this;
     }
 
@@ -172,17 +151,17 @@ class QdRoot extends ActiveRecord\Model
      */
     public function SETFILTER($where_array)
     {
-        $this->record['filter'] = $where_array;
+        $this->record_filter['filter'] = $where_array;
         return $this;
     }
     public function SETFILTERRELATION($relation='AND')
     {
-        $this->record['filter_relation'] = $relation;
+        $this->record_filter['filter_relation'] = $relation;
         return $this;
     }
     public function REMOVEFILTERRELATION()
     {
-        $this->record['filter_relation'] = 'AND';
+        $this->record_filter['filter_relation'] = 'AND';
         return $this;
     }
     /**
@@ -190,16 +169,34 @@ class QdRoot extends ActiveRecord\Model
      */
     public function REMOVERANGE($field)
     {
-        unset($this->record['filter'][static::getPF($field)]);
+        unset($this->record_filter['filter'][static::getPF($field)]);
         return $this;
     }
+    protected function CALCFIELDS($flowfield_name)
+    {
+        $ff_config = static::$fields_config[$flowfield_name]['FieldClass_FlowField'];
+        if($ff_config['Method']=='Lookup')
+        {
+            $ff_config_tf = $ff_config['TableFilter'];
+            $c = new $ff_config['Table'];
+
+            foreach($ff_config_tf as $filter_item)
+            {
+                if($filter_item['Type']=='FIELD') {
+                    $c->SETRANGE($filter_item['Field'], $this->{$filter_item['Value']});
+                }
+            }
+            return $c->GETLIST()[0]->{$ff_config['Field']};
+        }
+    }
+
 
     /**
      * @return int
      */
     public function COUNTLIST()
     {
-        return static::count(array('conditions' => static::_generateConditionsArray($this->record)));
+        return static::count(array('conditions' => static::_generateConditionsArray($this->record_filter)));
     }
 
     /**
@@ -207,7 +204,7 @@ class QdRoot extends ActiveRecord\Model
      */
     public function GETLIST()
     {
-        return static::all(static::_generateQuery($this->record));
+        return static::all(static::_generateQuery($this->record_filter));
     }
 
     /**
@@ -257,5 +254,55 @@ class QdRoot extends ActiveRecord\Model
             return $re;
         }
         return $re;
+    }
+    protected static $fields_config = array(
+
+    );
+    public static function  getFieldsConfig()
+    {
+        return static::$fields_config;
+    }
+    protected static function ISFLOWFIELD($flowfield_name)
+    {
+        if(
+        isset(static::$fields_config[$flowfield_name])
+        )
+        {
+            $config = static::$fields_config[$flowfield_name];
+            if ($config['FieldClass'] == 'FlowField' && !empty($config['FieldClass_FlowField'])){
+                return true;
+            }
+        }
+        return false;
+    }
+    public function __get($name)
+    {
+        if(static::ISFLOWFIELD($name))
+        {
+            //CALC FlowField First
+            return $this->CALCFIELDS($name);
+        }
+        return parent::__get($name);
+    }
+    public static function toJSON($list)
+    {
+        $tmp = array();
+        foreach ($list as $item) {
+            $arr = array();
+            foreach(static::getFieldsConfig() as $key => $value)
+            {
+                if(isset($value['FieldClass']) && $value['FieldClass']=='FlowField')
+                {
+                    $arr[$key] = $item->$key;
+                }
+                else
+                {
+                    //Normal Field
+                    $arr[$key] = $item->$key;
+                }
+            }
+            array_push($tmp, $arr);
+        }
+        return $tmp;
     }
 }

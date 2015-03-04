@@ -100,10 +100,6 @@ class Qdmvc_Dataport {
         $this->obj->delete();
         $this->msg = 'Xóa thành công, ID='.$this->obj->id;
     }
-    protected function assign()
-    {
-
-    }
     private function loadPostValue()
     {
         $this->data = $_POST['data'];
@@ -132,5 +128,33 @@ class Qdmvc_Dataport {
             'total' => $record->COUNTLIST(),
             'msg' => 'List Card Return'
         ));
+    }
+    protected function assign()
+    {
+        //assign value
+        $c = $this->class;
+        foreach ($c::getFieldsConfig() as $key => $value) {
+            //if FieldType == 'Text' or not defined
+            if (
+                $value == null
+                || (is_array($value) && empty($value))
+                || in_array($value['DataType'], array('Code', 'Text', 'Integer', 'Decimal', 'Image'))
+            ) {
+                if (isset($_POST['data'][$key])) {
+                    $this->obj->$key = $_POST['data'][$key];
+                }
+            }
+            //Boolean
+            else if (
+            in_array($value['DataType'], array('Boolean'))
+            ) {
+                if (isset($_POST['data'][$key])) {
+                    $this->obj->$key = $_POST['data'][$key];
+                    if ($this->obj->$key == null || $this->obj->$key != 1) {
+                        $this->obj->$key = 0;
+                    }
+                }
+            }
+        }
     }
 }
