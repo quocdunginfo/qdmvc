@@ -2,8 +2,8 @@
 /**
  * Created by PhpStorm.
  * User: quocd_000
- * Date: 15/02/2015
- * Time: 8:06 AM
+ * Date: 05/03/2015
+ * Time: 11:49 PM
  */
-Qdmvc::loadPage('root');
-Qdmvc::loadDataPort('root');
+Qdmvc::loadIndex('controllers/pages/index');
+Qdmvc::loadIndex('controllers/dataports/index');

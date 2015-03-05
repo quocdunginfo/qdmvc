@@ -250,14 +250,14 @@ class Qdmvc_Layout_Card
                     </div>
                 </div>
                 <div>
-                    <form style="width: 100%" id="testForm" action="fffffffffffffffffff"
+                    <form style="width: 100%" id="testForm" action=""
                           onsubmit="return false">
                         <table class="register-table">
                             <!-- Content place Holder -->
                             <?= $this->placeHolder1() ?>
                             <!-- End content place holder -->
                             <tr>
-                                <td colspan="3">
+                                <td colspan="2">
                         <span>
                             <button type="button" id="update">Save</button>---
                         </span>
@@ -270,10 +270,6 @@ class Qdmvc_Layout_Card
                         <span>
                             <button type="button" id="clone">Clone</button>
                         </span>
-                                    <!--
-                        <span>
-                            <button type="button" id="test">Test</button>
-                        </span> -->
                                 </td>
                             </tr>
                         </table>
@@ -287,9 +283,14 @@ class Qdmvc_Layout_Card
                     </div>
                 </div>
                 <div>
-                    <!-- Content Place Holder 2 -->
-                    <?= $this->placeHolder2() ?>
-                    <!-- ENd Content Place Holder 2 -->
+                    <div style="height: 520px; width: 100%">
+                        <!-- Content Place Holder 2 -->
+                        <iframe id="list" src="<?= $this->placeHolder2() ?>"
+                                width="100%" height="99%" scrolling="no" frameborder="0">
+                            <p>Your browser does not support iframes</p>
+                        </iframe>
+                        <!-- ENd Content Place Holder 2 -->
+                    </div>
                 </div>
             </div>
         </div>

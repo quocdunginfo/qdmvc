@@ -4,7 +4,7 @@ Plugin Name: qdmvc
 */
 
 //Because Helper is declared outside to public provider for other location use (theme)
-Qdmvc::loadHelper('index');
+Qdmvc::loadHelper('main');
 Qdmvc::loadModel();
 class Qdmvc
 {
@@ -38,6 +38,10 @@ class Qdmvc
 
     private function init()
     {
+        //required Qdmvc root index tree
+        static::loadIndex('index');
+        //required Auto load
+        static::loadAutoLoad('autoload');
         //require related library
         foreach ($this->included_file as $item) {
             require_once(Qdmvc::getPluginDirPath($item));
@@ -49,38 +53,53 @@ class Qdmvc
     /*
      * External use
      */
+    public static function loadAutoLoad($pure_path)
+    {
+        require_once(Qdmvc::getPluginDirPath($pure_path).'.php');
+    }
+    public static function loadPageClass($name)
+    {
+        static::loadController('pages/' . $name . '/class');
+    }
     public static function loadPage($name)
     {
         //every pages always use jqwidgets
         Qdmvc::loadUIKit();//jqwidget
+        //load class
+        static::loadPageClass($name);
+        //load controller
         static::loadController('pages/' . $name . '/controller');
     }
 
-    public static function loadLayout($name)
+    public static function loadLayout($pure_path)
     {
-        require_once(static::getView('layouts/'.$name.'.php'));
+        require_once(static::getView('layouts/'.$pure_path.'.php'));
     }
 
-    public static function loadController($name)
+    public static function loadController($pure_path)
     {
-        require_once(static::getController($name.'.php'));
+        require_once(static::getController($pure_path.'.php'));
     }
 
-    public static function loadHelper($name)
+    public static function loadHelper($pure_path)
     {
-        require_once(static::getHelper($name.'.php'));
+        require_once(static::getHelper($pure_path.'.php'));
     }
-    public static function loadDataPort($name)
+    public static function loadDataPort($pure_path)
     {
-        require_once(static::getController('dataports/'.$name.'.php'));
+        require_once(static::getController('dataports/'.$pure_path.'.php'));
+    }
+    public static function loadIndex($pure_path)
+    {
+        require_once(static::getPluginDirPath($pure_path).'.php');
     }
 
     /*
      * Internal use
      */
-    protected static function getPluginDirPath($path = '')
+    protected static function getPluginDirPath($pure_path = '')
     {
-        return plugin_dir_path(__FILE__) . $path;
+        return plugin_dir_path(__FILE__) . $pure_path;
     }
 
     protected static function getWidget($name='')

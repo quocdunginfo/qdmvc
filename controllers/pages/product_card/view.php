@@ -127,10 +127,6 @@ class Qdmvc_View_Product_Card extends Qdmvc_Layout_Card {
     }
     protected function placeHolder2()
     {
-        ?>
-        <iframe id="list" src="<?=Qdmvc_Helper::getSPCompactListLink()?>" width="100%" scrolling="no" frameborder="0" height="420px">
-            <p>Your browser does not support iframes</p>
-        </iframe>
-        <?php
+        return Qdmvc_Helper::getSPCompactListLink();
     }
 }
