@@ -13,12 +13,12 @@ class Qdmvc_Page_ProductSetup extends Qdmvc_Page_Root {
         //load View and render
         (new Qdmvc_View_ProductSetup($this->data))->render();
     }
-    protected function getPage()
+    public static function getPage()
     {
         return 'product_setup';
     }
 
-    protected function getDataPort()
+    public static function getDataPort()
     {
         return 'product_setup_port';
     }

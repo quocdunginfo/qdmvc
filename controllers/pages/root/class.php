@@ -11,7 +11,7 @@ class Qdmvc_Page_Root {
     {
         $this->loadView();
         //build data_port value
-        $this->data['data_port'] = Qdmvc_Helper::getDataPortPath($this->getDataPort());
+        $this->data['data_port'] = Qdmvc_Helper::getDataPortPath(static::getDataPort());
     }
     public function run()
     {
@@ -19,17 +19,21 @@ class Qdmvc_Page_Root {
     }
     protected function loadView($name='view')
     {
-        Qdmvc::loadController('/pages/'.$this->getPage().'/'.$name);
+        Qdmvc::loadController('/pages/'.static::getPage().'/'.$name);
     }
-    protected function getPage()
+    public static function getPage()
     {
 
     }
-    protected function getDataPort()
+    public static function getPageList()
     {
 
     }
-    public function getCaption()
+    public static function getDataPort()
+    {
+
+    }
+    public static function getCaption()
     {
         return 'Default Page Root Caption';
     }

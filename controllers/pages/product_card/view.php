@@ -127,6 +127,6 @@ class Qdmvc_View_Product_Card extends Qdmvc_Layout_Card {
     }
     protected function placeHolder2()
     {
-        return Qdmvc_Helper::getSPCompactListLink();
+        return Qdmvc_Helper::getCompactPageListLink(Qdmvc_Page_Product_Card::getPageList());
     }
 }

@@ -7,12 +7,42 @@
  */
 class Qdmvc_Page_Index {
     private static $index = array(
-        'main' => 'Qdmvc_Page_Main',
-        'product_card' => 'Qdmvc_Page_Product_Card',
-        'product_cat_card' => 'Qdmvc_Page_ProductCat_Card',
-        'product_cat_list' => 'Qdmvc_Page_ProductCat_List',
-        'product_list' => 'Qdmvc_Page_Product_List',
-        'product_setup' => 'Qdmvc_Page_ProductSetup'
+        'main' => array(
+            'Class'=>'Qdmvc_Page_Main',
+            'Caption' => array(
+                'en' => 'Page Main'
+            )
+        ),
+        'product_card' => array(
+            'Class'=>'Qdmvc_Page_Product_Card',
+            'Caption' => array(
+                'en' => 'Product Card'
+            )
+        ),
+        'product_list' => array(
+            'Class'=>'Qdmvc_Page_Product_List',
+            'Caption' => array(
+                'en' => 'Product List'
+            )
+        ),
+        'product_cat_card' => array(
+            'Class'=>'Qdmvc_Page_ProductCat_Card',
+            'Caption' => array(
+                'en' => 'Product Cat Card'
+            )
+        ),
+        'product_cat_list' => array(
+            'Class'=>'Qdmvc_Page_ProductCat_List',
+            'Caption' => array(
+                'en' => 'Product Cat List'
+            )
+        ),
+        'product_setup' => array(
+            'Class'=>'Qdmvc_Page_ProductSetup',
+            'Caption' => array(
+                'en' => 'Product Setup'
+            )
+        )
     );
     public static function getIndex()
     {

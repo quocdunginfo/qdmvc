@@ -229,7 +229,7 @@ class Qdmvc_Layout_Card
                     //$('#docking').jqxDocking('hideAllCloseButtons');
                     // Create jqxNavigationBar.
                     $("#jqxNavigationBar").jqxNavigationBar({
-                        width: 820,
+                        width: '100%',
                         expandMode: 'multiple',
                         expandedIndexes: [0, 1]
                     });

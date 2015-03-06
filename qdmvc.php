@@ -9,14 +9,14 @@ Qdmvc::loadModel();
 class Qdmvc
 {
     private $included_file = array(
+        'register-admin-menu.php',
         'page-meta-box.php',
-        'controllers/index.php',
         'router.php',
         'db-init.php',
         'shortcode.php',
         'menu-nav-provider.php',
         'notification/index.php',
-        'register-admin-menu.php'
+
     );
     //dependency plugins
     private $dependencies = array('phpactiverecords', 'jqwidgets');

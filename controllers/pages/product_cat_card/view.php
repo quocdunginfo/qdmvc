@@ -89,6 +89,6 @@ class Qdmvc_View_ProductCat_Card extends Qdmvc_Layout_Card
 
     protected function placeHolder2()
     {
-        return Qdmvc_Helper::getLSPCompactListLink();
+        return Qdmvc_Helper::getCompactPageListLink(Qdmvc_Page_ProductCat_Card::getPageList());
     }
 }

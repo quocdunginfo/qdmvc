@@ -1,44 +1,38 @@
 <?php
-class Qdmvc_RegisterAdminMenu {
+
+class Qdmvc_RegisterAdminMenu
+{
     function __construct()
     {
-        add_action( 'admin_menu', array($this, 'qd_register_custom_menu_page'));
+
+        add_action('admin_menu', array($this, 'qd_register_custom_menu_page'));
     }
-    public function qd_register_custom_menu_page(){
+
+    public function qd_register_custom_menu_page()
+    {
         //main page
-        add_menu_page( 'QD PLUGIN', 'QD PLUGIN', 'manage_options', 'main', array($this, 'add_sub_page_main'));
+        add_menu_page('QD PLUGIN', 'QD PLUGIN', 'manage_options', 'main', array($this, 'add_page_main'));
         //sub pages
         //Auto add sub Page based on Index tree
-        foreach(Qdmvc_Page_Index::getIndex() as $p_name=>$c_name) {
-            Qdmvc::loadPageClass($p_name);
+        //return;
+        foreach (Qdmvc_Page_Index::getIndex() as $p_name => $config) {
 
-            add_submenu_page('main', $c_name::getCaption(), $c_name::getCaption(), 'manage_options', $p_name, array($this, "add_sub_page_{$p_name}") );
-
+            add_submenu_page('main', $config['Caption']['en'], $config['Caption']['en'], 'manage_options', $p_name, array($this, "{$p_name}"));
         }
     }
-    public function add_sub_page_main()
+
+    function __call($func, $params)
+    {
+        if (!in_array($func, array('add_page_main', 'qd_register_custom_menu_page'))) {
+            Qdmvc::loadPage($func);
+        }
+        //return $func;
+    }
+
+    public function add_page_main()
     {
         Qdmvc::loadPage('main');
     }
-    public function add_sub_page_product_card()
-    {
-        Qdmvc::loadPage('product_card');
-    }
-    public function add_sub_page_product_list()
-    {
-        Qdmvc::loadPage('product_list');
-    }
-    public function add_sub_page_product_cat_card()
-    {
-        Qdmvc::loadPage('product_cat_card');
-    }
-    public function add_sub_page_product_cat_list()
-    {
-        Qdmvc::loadPage('product_cat_list');
-    }
-    public function add_sub_page_product_setup()
-    {
-        Qdmvc::loadPage('product_setup');
-    }
 }
+
 (new Qdmvc_RegisterAdminMenu());

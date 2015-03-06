@@ -17,11 +17,11 @@ class Qdmvc_Page_Product_List extends Qdmvc_Page_Root
         (new Qdmvc_View_Product_List($this->data))->render();
     }
 
-    protected function getDataPort()
+    public static function getDataPort()
     {
         return 'product_port';
     }
-    protected function getPage()
+    public static function getPage()
     {
         return 'product_list';
     }

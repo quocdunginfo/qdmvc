@@ -6,7 +6,7 @@
  * Time: 11:38 PM
  */
 class Qdmvc_Page_Main extends Qdmvc_Page_Root {
-    protected function getPage()
+    public static function getPage()
     {
         return 'main';
     }

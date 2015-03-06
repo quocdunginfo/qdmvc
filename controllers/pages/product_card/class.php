@@ -73,12 +73,16 @@ class Qdmvc_Page_Product_Card extends Qdmvc_Page_Root
         (new Qdmvc_View_Product_Card($this->data))->render();
     }
 
-    protected function getPage()
+    public static function getPage()
     {
         return 'product_card';
     }
+    public static function getPageList()
+    {
+        return 'product_list';
+    }
 
-    protected function getDataPort()
+    public static function getDataPort()
     {
         return 'product_port';
     }

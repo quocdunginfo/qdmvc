@@ -11,14 +11,19 @@ class Qdmvc_Page_ProductCat_Card extends Qdmvc_Page_Root {
         //load View and render
         (new Qdmvc_View_ProductCat_Card($this->data))->render();
     }
-    protected function getPage()
+    public static function getPage()
     {
         return 'product_cat_card';
     }
 
-    protected function getDataPort()
+
+    public static function getDataPort()
     {
         return 'product_cat_port';
     }
 
+    public static function getPageList()
+    {
+        return 'product_cat_list';
+    }
 }
