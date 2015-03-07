@@ -7,5 +7,4 @@
  */
 Qdmvc::loadIndex('controllers/index');
 Qdmvc::loadIndex('helpers/index');
-Qdmvc::loadIndex('helpers/index');
 Qdmvc::loadIndex('views/index');

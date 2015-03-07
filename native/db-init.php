@@ -11,7 +11,7 @@ global $wpdb;
 function qd_create_plugin_tables()
 {
 	global $wpdb;
-	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+	require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 	/*
 	$table_name = QD_STUDENT_TABLE;
 	

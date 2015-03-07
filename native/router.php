@@ -18,6 +18,10 @@ class Qdmvc_Router {
      * @since     2.0
      */
     public function __construct() {
+
+    }
+    public function run()
+    {
         //register query var
         add_filter( 'query_vars', 'qd_addnew_query_vars', 10, 1 );
         function qd_addnew_query_vars($vars)
@@ -37,7 +41,6 @@ class Qdmvc_Router {
             if ( array_key_exists( 'qd-api', $wp->query_vars ) ) {
 
                 Qdmvc::loadDataPort($wp->query_vars['qd-api']);
-
                 exit();
             }
             return;
@@ -45,4 +48,4 @@ class Qdmvc_Router {
     }
 
 }
-(new Qdmvc_Router());
+(new Qdmvc_Router())->run();

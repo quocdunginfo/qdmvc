@@ -6,16 +6,16 @@ Plugin Name: qdmvc
 //Because Helper is declared outside to public provider for other location use (theme)
 Qdmvc::loadHelper('main');
 Qdmvc::loadModel();
+Qdmvc::loadRouter();
 class Qdmvc
 {
     private $included_file = array(
-        'register-admin-menu.php',
-        'page-meta-box.php',
-        'router.php',
-        'db-init.php',
-        'shortcode.php',
-        'menu-nav-provider.php',
-        'notification/index.php',
+        'native/register-admin-menu',
+        'native/page-meta-box',
+        'native/db-init',
+        'native/shortcode',
+        'native/menu-nav-provider',
+        'notification/index',
 
     );
     //dependency plugins
@@ -23,48 +23,30 @@ class Qdmvc
 
     function __construct()
     {
-        //check dependency
-        require_once(ABSPATH . 'wp-admin/includes/plugin.php');
-        foreach ($this->dependencies as $item) {
-            if (!is_plugin_active($item . "/$item.php")) {
-                //plugin is not activated
-                echo 'Require plugin ' . $item;
-                return;
-            }
-        }
-        //init 2nd construct
-        $this->init();
+
     }
 
     private function init()
     {
         //required Qdmvc root index tree
         static::loadIndex('index');
-        //required Auto load
-        static::loadAutoLoad('autoload');
         //require related library
         foreach ($this->included_file as $item) {
-            require_once(Qdmvc::getPluginDirPath($item));
+            static::load($item);
         }
         //loading widgets
-        require_once(Qdmvc::getWidget() . 'index.php');
+        require_once(Qdmvc::getWidget('index.php'));
     }
 
     /*
      * External use
      */
-    public static function loadAutoLoad($pure_path)
-    {
-        require_once(Qdmvc::getPluginDirPath($pure_path).'.php');
-    }
     public static function loadPageClass($name)
     {
         static::loadController('pages/' . $name . '/class');
     }
     public static function loadPage($name)
     {
-        //every pages always use jqwidgets
-        Qdmvc::loadUIKit();//jqwidget
         //load class
         static::loadPageClass($name);
         //load controller
@@ -91,46 +73,54 @@ class Qdmvc
     }
     public static function loadIndex($pure_path)
     {
-        require_once(static::getPluginDirPath($pure_path).'.php');
+        require_once(static::getPluginDir($pure_path).'.php');
     }
 
     /*
      * Internal use
      */
-    protected static function getPluginDirPath($pure_path = '')
+    protected static function getPluginDir($pure_path = '')
     {
         return plugin_dir_path(__FILE__) . $pure_path;
     }
 
-    protected static function getWidget($name='')
+    protected static function getWidget($path='')
     {
-        return Qdmvc::getPluginDirPath('widgets/'.$name);
+        return Qdmvc::getPluginDir('widgets/'.$path);
     }
-    protected static function getHelper($name='')
+    protected static function getHelper($path='')
     {
-        return Qdmvc::getPluginDirPath('helpers/'.$name);
-    }
-
-    protected static function getView($name='')
-    {
-        return (Qdmvc::getPluginDirPath('views/'.$name));
+        return Qdmvc::getPluginDir('helpers/'.$path);
     }
 
-    protected static function getModel($name='')
+    protected static function getView($path='')
     {
-        return (Qdmvc::getPluginDirPath('models/'.$name));
+        return (Qdmvc::getPluginDir('views/'.$path));
     }
 
-    protected static function getController($name='')
+    protected static function getModel($path='')
     {
-        return (Qdmvc::getPluginDirPath('controllers/'.$name));
+        return (Qdmvc::getPluginDir('models/'.$path));
     }
 
-    protected static function loadUIKit()
+    protected static function getController($path='')
     {
-        QdJqwidgets::registerResource(true);
+        return (Qdmvc::getPluginDir('controllers/'.$path));
     }
-
+    public function run()
+    {
+        //check dependency
+        require_once(ABSPATH . 'wp-admin/includes/plugin.php');
+        foreach ($this->dependencies as $item) {
+            if (!is_plugin_active($item . "/$item.php")) {
+                //plugin is not activated
+                echo 'Require plugin ' . $item;
+                return;
+            }
+        }
+        //2nd level construct
+        $this->init();
+    }
     public static function loadModel()
     {
         $connection = QdPhpactiverecords::getCon();
@@ -143,6 +133,17 @@ class Qdmvc
             $cfg->set_default_connection('production');
         });
     }
+    public static function load($pure_path)
+    {
+        require_once(Qdmvc::getPluginDir($pure_path).'.php');
+    }
+    public static function loadRouter()
+    {
+        static::load('native/router');
+    }
 }
-
-(new Qdmvc());
+if(is_admin())
+{
+    QdJqwidgets::registerResource(true);
+    (new Qdmvc())->run();
+}

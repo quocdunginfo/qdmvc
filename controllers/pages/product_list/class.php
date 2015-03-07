@@ -5,6 +5,7 @@
  * Date: 05/03/2015
  * Time: 11:35 PM
  */
+Qdmvc::loadPageClass('root');
 class Qdmvc_Page_Product_List extends Qdmvc_Page_Root
 {
     public function run()

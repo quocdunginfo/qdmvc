@@ -172,13 +172,14 @@ class QdRoot extends ActiveRecord\Model
         unset($this->record_filter['filter'][static::getPF($field)]);
         return $this;
     }
+    protected $qd_flowfields_attr = array();
     protected function CALCFIELDS($flowfield_name)
     {
         $ff_config = static::$fields_config[$flowfield_name]['FieldClass_FlowField'];
         if($ff_config['Method']=='Lookup')
         {
             $ff_config_tf = $ff_config['TableFilter'];
-            $c = new $ff_config['Table'];
+            $c = new $ff_config['Table'];//init new object
 
             foreach($ff_config_tf as $filter_item)
             {
@@ -186,7 +187,10 @@ class QdRoot extends ActiveRecord\Model
                     $c->SETRANGE($filter_item['Field'], $this->{$filter_item['Value']});
                 }
             }
-            return $c->GETLIST()[0]->{$ff_config['Field']};
+            //cache
+            $this->qd_flowfields_attr[$flowfield_name] = $c->GETLIST()[0]->{$ff_config['Field']};
+            //return
+            return $this->qd_flowfields_attr[$flowfield_name];
         }
     }
 
@@ -275,14 +279,21 @@ class QdRoot extends ActiveRecord\Model
         }
         return false;
     }
-    public function __get($name)
+    public function __get($field_name)
     {
-        if(static::ISFLOWFIELD($name))
+        if(static::ISFLOWFIELD($field_name))
         {
-            //CALC FlowField First
-            return $this->CALCFIELDS($name);
+            //check cached value
+            if(is_array($this->qd_flowfields_attr) && isset($this->qd_flowfields_attr[$field_name]))
+            {
+                return $this->qd_flowfields_attr[$field_name];
+            }
+            else {
+                //CALC FlowField First
+                return $this->CALCFIELDS($field_name);
+            }
         }
-        return parent::__get($name);
+        return parent::__get($field_name);
     }
     public static function toJSON($list)
     {

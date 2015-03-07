@@ -11,6 +11,7 @@ class QdProductCat extends QdRoot
         'id' => array(),
         'name' => array(),
         'avatar' => array(),
+        'order' => array(),
         'parent_id' => array()
     );
     public function getProducts()
