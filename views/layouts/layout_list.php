@@ -9,6 +9,12 @@
 class Qdmvc_Layout_List
 {
     protected $data = null;
+    protected $page = null;
+    function __construct($page)
+    {
+        $this->page = $page;
+        $this->data = $page->getData();
+    }
     protected function placeHolder1()
     {
 

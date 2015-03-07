@@ -8,6 +8,28 @@
  */
 class QdRoot extends ActiveRecord\Model
 {
+    /*
+    protected static $fields_config = array(
+        //SAMPLE FIELD CONFIG
+        '_product_cat_name' => array(
+            'Name' => 'product_cat_name',
+            'Caption' => array('en' => 'Product Cat Name', 'vn' => 'Tên loại SP'),
+            'DataType' => 'Text',
+            'FieldClass' => 'FlowField',
+            'FieldClass_FlowField' => array(
+                'Method' => 'Lookup',
+                'Table' => 'QdProductCat',
+                'Field' => 'name',
+                'TableFilter' =>  array(
+                    0 => array(
+                        'Field' => 'id',
+                        'Type' => 'FIELD',
+                        'Value' => 'product_cat_id'
+                    )
+                )
+            )
+        )
+    );*/
     static $primary_key = 'id';
 
     static $before_update = array('on_before_update'); # new records only
@@ -262,7 +284,23 @@ class QdRoot extends ActiveRecord\Model
     protected static $fields_config = array(
 
     );
-    public static function  getFieldsConfig()
+    public static function getFieldCaption($field_name, $lang='en')
+    {
+        try{
+            if(isset(static::$fields_config[$field_name]) && !isset(static::$fields_config[$field_name]['Caption']))
+            {
+                return $field_name;
+            }
+            else {
+                return static::$fields_config[$field_name]['Caption'][$lang];
+            }
+        }catch(Exception $ex)
+        {
+            return Qdmvc_Helper::getNoneText();
+        }
+
+    }
+    public static function getFieldsConfig()
     {
         return static::$fields_config;
     }

@@ -8,9 +8,6 @@
 //import libraries
 Qdmvc::loadLayout('layout_card');
 class Qdmvc_View_Product_Card extends Qdmvc_Layout_Card {
-    function __construct($data){
-        $this->data = $data;
-    }
     protected function placeHolder3()
     {
         ?>
@@ -24,12 +21,11 @@ class Qdmvc_View_Product_Card extends Qdmvc_Layout_Card {
                 $(document).ready(function(){
                     //lookup
                     $('#cproduct_cat_id').click(function () {
-                        requestLookupWindow("<?=Qdmvc_Helper::getLSPLookupPath('product_cat_id')?>");
+                        requestLookupWindow("<?=Qdmvc_Helper::getLookupPath($this->page->getPageList(), 'product_cat_id')?>");
                     });
                     //validate
                     requestFormValidate(
                         [
-
                             {
                                 input: '#name',
                                 message: 'Name is required!',
@@ -64,12 +60,6 @@ class Qdmvc_View_Product_Card extends Qdmvc_Layout_Card {
                 });
             })(jQuery);
         </script>
-        <tr>
-
-        </tr>
-        <tr>
-
-        </tr>
         <tr>
             <td>Name:</td>
             <td>

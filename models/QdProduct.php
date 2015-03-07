@@ -7,8 +7,8 @@ class QdProduct extends QdRoot
     protected static $fields_config = array(
         //SAMPLE FIELD CONFIG
         '_product_cat_name' => array(
-            'Name' => 'product_cat_id',
-            'Caption' => array('en' => 'Product Cat Nam', 'vn' => 'Tên loại SP'),
+            'Name' => 'product_cat_name',
+            'Caption' => array('en' => 'Product Cat Name', 'vn' => 'Tên loại SP'),
             'DataType' => 'Text',
             'FieldClass' => 'FlowField',
             'FieldClass_FlowField' => array(
@@ -99,7 +99,7 @@ class QdProduct extends QdRoot
     public function getPermalink()
     {
         $query = get_permalink(Qdmvc_Helper::getPageIdByTemplate('page-templates/product-detail.php'));
-        $query = add_query_arg(array('id' => $this->id, 'title' => $this->name), $query);
+        $query = add_query_arg(array('id' => $this->id/*, 'title' => $this->name*/), $query);
         return $query;
     }
 

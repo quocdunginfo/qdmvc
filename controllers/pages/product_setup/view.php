@@ -7,9 +7,6 @@
  */
 Qdmvc::loadLayout('layout_cardonly');
 class Qdmvc_View_ProductSetup extends Qdmvc_Layout_CardOnly {
-    function __construct($data){
-        $this->data = $data;
-    }
     protected function placeHolder3()
     {
         ?>

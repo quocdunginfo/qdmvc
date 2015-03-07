@@ -18,6 +18,10 @@ class Qdmvc_Helper
     {
 
     }
+    public static function getNoneText()
+    {
+        return '[Not set]';
+    }
     public static function getCompactPageListLink($page_name)
     {
         return admin_url("admin.php?page={$page_name}&qdrole=navigate");
@@ -32,13 +36,13 @@ class Qdmvc_Helper
         return admin_url('admin.php?page=qd_sub_page_2&qdrole=navigate');
     }
     */
-    public static function  getNoneLink()
+    public static function getNoneLink()
     {
         return 'javascript:void(0)';
     }
-    public static function getLSPLookupPath($return_id)
+    public static function getLookupPath($page_list, $return_id)
     {
-        return get_admin_url(null, 'admin.php?page=qd_sub_page_2&qdrole=lookup&qdreturnid='.$return_id);
+        return get_admin_url(null, "admin.php?page={$page_list}&qdrole=lookup&qdreturnid={$return_id}");
     }
     public static function getSlider($metaslider_id)
     {

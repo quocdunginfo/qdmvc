@@ -6,7 +6,7 @@
  * Time: 11:30 PM
  */
 Qdmvc::loadPageClass('root');
-class Qdmvc_Page_Product_Card extends Qdmvc_Page_Root
+class Qdmvc_Page_ProductOrder_Card extends Qdmvc_Page_Root
 {
     protected static $fields_show = array(
         'Group1' => array(
@@ -71,7 +71,7 @@ class Qdmvc_Page_Product_Card extends Qdmvc_Page_Root
     public function run()
     {
         //load View and render
-        (new Qdmvc_View_Product_Card($this))->render();
+        (new Qdmvc_View_ProductOrder_Card($this))->render();
     }
 
     public static function getPage()

@@ -8,10 +8,34 @@
 //Qdmvc_Helper::qd_media_choose('cavatar', 'avatar', false);
 class Qdmvc_Layout_Card
 {
+    function __construct($page)
+    {
+        $this->page = $page;
+        $this->data = $page->getData();
+    }
+    protected $page = null;
     protected $data = null;
     protected function placeHolder1()
     {
-
+        return;
+        foreach($this->page->getLayout() as $group=>$config)
+        {
+            if(isset($config['Type']) && isset($config['Type'])=='Group')
+            {
+                if(isset($config['Fields'])) {
+                    foreach ($config['Fields'] as $field => $f_config) {
+                        ?>
+                        <tr>
+                            <td><?=$this->page->getFieldCaption($f_config['SourceExpr'])?>:</td>
+                            <td>
+                                <input class="text-input" type="text" name="<?=$f_config['SourceExpr']?>" id="<?=$f_config['SourceExpr']?>">
+                            </td>
+                        </tr>
+                    <?php
+                    }
+                }
+            }
+        }
     }
     protected function placeHolder2()
     {

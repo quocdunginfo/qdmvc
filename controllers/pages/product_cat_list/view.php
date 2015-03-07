@@ -9,10 +9,6 @@
 Qdmvc::loadLayout('layout_list');
 class Qdmvc_View_ProductCat_List extends Qdmvc_Layout_List
 {
-    function __construct($data)
-    {
-        $this->data = $data;
-    }
     protected function placeHolder1()
     {
         ?>

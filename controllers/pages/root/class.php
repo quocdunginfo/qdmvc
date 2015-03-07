@@ -7,6 +7,7 @@
  */
 class Qdmvc_Page_Root {
     protected $data = array();
+    protected static $fields_show = array();
     function __construct()
     {
         $this->loadView();
@@ -25,16 +26,48 @@ class Qdmvc_Page_Root {
     {
 
     }
+    public function getFieldCaption($field_name, $lang='en')
+    {
+        $c = static::getModel();
+        return $c::getFieldCaption($field_name, $lang);
+    }
+    public function getLayout()
+    {
+        return static::$fields_show;
+    }
     public static function getPageList()
     {
-
+        if(isset(Qdmvc_Page_Index::getIndex()[static::getPage()]['PageList']))
+        {
+            return Qdmvc_Page_Index::getIndex()[static::getPage()]['PageList'];
+        }
     }
     public static function getDataPort()
     {
-
+        if(isset(Qdmvc_Page_Index::getIndex()[static::getPage()]['DataPort']))
+        {
+            return Qdmvc_Page_Index::getIndex()[static::getPage()]['DataPort'];
+        }
     }
-    public static function getCaption()
+    public static function getModel()
     {
-        return 'Default Page Root Caption';
+        if(isset(Qdmvc_Page_Index::getIndex()[static::getPage()]['Model']))
+        {
+            return Qdmvc_Page_Index::getIndex()[static::getPage()]['Model'];
+        }
+    }
+    public static function getCaption($lang='en')
+    {
+        if(isset(Qdmvc_Page_Index::getIndex()[static::getPage()]['Caption'][$lang]))
+        {
+            return Qdmvc_Page_Index::getIndex()[static::getPage()]['Caption'][$lang];
+        }
+        else {
+            return 'Default Page Root Caption';
+        }
+    }
+    public function getData()
+    {
+        return $this->data;
     }
 }

@@ -21,6 +21,25 @@ class QdProduct extends QdRoot
                 )
             )
         ),
+        //SAMPLE FIELD CONFIG
+        '_product_name' => array(
+            'Name' => '_product_name',
+            'Caption' => array('en' => 'Product Name', 'vn' => 'Tên SP'),
+            'DataType' => 'Text',
+            'FieldClass' => 'FlowField',
+            'FieldClass_FlowField' => array(
+                'Method' => 'Lookup',
+                'Table' => 'QdProduct',
+                'Field' => 'name',
+                'TableFilter' =>  array(
+                    0 => array(
+                        'Field' => 'id',
+                        'Type' => 'FIELD',
+                        'Value' => 'product_id'
+                    )
+                )
+            )
+        ),
         'customer_name' => array(),
         'customer_email' => array(),
         'customer_address' => array(),

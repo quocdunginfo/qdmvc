@@ -37,6 +37,10 @@ class Qdmvc
         //loading widgets
         require_once(Qdmvc::getWidget('index.php'));
     }
+    public static function loadNative($pure_path)
+    {
+        static::load('native/'.$pure_path);
+    }
 
     /*
      * External use

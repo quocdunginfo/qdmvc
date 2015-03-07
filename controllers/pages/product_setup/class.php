@@ -12,7 +12,7 @@ class Qdmvc_Page_ProductSetup extends Qdmvc_Page_Root {
         //prepare data
         $this->data['obj'] = QdProductSetup::find(1);
         //load View and render
-        (new Qdmvc_View_ProductSetup($this->data))->render();
+        (new Qdmvc_View_ProductSetup($this))->render();
     }
     public static function getPage()
     {
