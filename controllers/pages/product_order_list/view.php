@@ -8,6 +8,7 @@
 //Qdmvc_Helper::qd_media_choose('cavatar', 'avatar', false);
 
 Qdmvc::loadLayout('layout_list');
-class Qdmvc_View_Product_List extends Qdmvc_Layout_List
+class Qdmvc_View_ProductOrder_List extends Qdmvc_Layout_List
 {
+
 }

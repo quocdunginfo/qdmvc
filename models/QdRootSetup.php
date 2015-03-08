@@ -10,7 +10,7 @@ class QdRootSetup extends QdRoot
 {
     public function on_before_create()
     {
-        if(static::find(1)!=null)
+        if(static::GET(1)!=null)
         {
             exit(0);
         }

@@ -10,7 +10,7 @@ class Qdmvc_Page_ProductSetup extends Qdmvc_Page_Root {
     public function run()
     {
         //prepare data
-        $this->data['obj'] = QdProductSetup::find(1);
+        $this->data['obj'] = QdProductSetup::GET(1);
         //load View and render
         (new Qdmvc_View_ProductSetup($this))->render();
     }
@@ -19,9 +19,36 @@ class Qdmvc_Page_ProductSetup extends Qdmvc_Page_Root {
         return 'product_setup';
     }
 
-    public static function getDataPort()
+    protected static function initFields()
     {
-        return 'product_setup_port';
+        return array(
+            'Group1' => array(
+                'Type' => 'Group',
+                'Name' => 'General',
+                'Fields' => array(
+                    'id' => array(
+                        'SourceExpr' => 'id',
+                        'PrimaryKey' => true
+                    ),
+                    'product_per_segment' => array(
+                        'SourceExpr' => 'product_per_segment'
+                    )
+                )
+            )
+            /* SAMPLE
+            ,
+            'Group2' => array(
+                'Type' => 'Part',
+                'Name' => 'Lines',
+                'PagePartID' => '',
+                'SubPageLink' => array(
+                    'Field' => '',
+                    'Type' => 'FIELD',//'CONST',
+                    'Value' => ''
+                )
+            )
+            */
+        );
     }
 
 }

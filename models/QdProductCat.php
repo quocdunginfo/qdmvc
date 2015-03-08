@@ -10,9 +10,41 @@ class QdProductCat extends QdRoot
     protected static $fields_config = array(
         'id' => array(),
         'name' => array(),
-        'avatar' => array(),
+        'avatar' => array(
+            'Caption' => array('en' => 'Avatar', 'vn' => 'Hình đại diện'),
+            'DataType' => 'Image',
+            'Description' => 'Hình đại diện',
+        ),
         'order' => array(),
-        'parent_id' => array()
+        'parent_id' => array(
+            'Name' => 'parent_id',
+            'Caption' => array('en' => 'Parent ID', 'vn' => 'Mã LSP cha'),
+            'DataType' => 'Code',
+            'Numeric' => true,
+            'Description' => '',
+            'Editable' => true,
+            'InitValue' => '0',
+            'FieldClass' => 'Normal',//'FlowField'
+            'TableRelation' => array(
+                'Table' => 'QdProductCat',
+                'Field' => 'id',
+                'TableFilter' => array(
+                    /*
+                    0 => array(
+                        'Condition' => array(
+                            'Field' => '',
+                            'Type' => 'CONST',//'FIELD'
+                            'Value' => ''
+                        ),
+                        'Field' => '',
+                        'Type' => 'FIELD',
+                        'Value' => ''
+                    )
+                    */
+
+                )
+            )
+        ),
     );
     public function getProducts()
     {
@@ -49,9 +81,5 @@ class QdProductCat extends QdRoot
         array_push($re,array('name' => 'Sản phẩm', 'url'=>$this->getPermalink()));
         array_push($re,array('name' => $this->name, 'url'=>$this->getPermalink()));
         return $re;
-    }
-    public static function getTbName()
-    {
-        return self::$table_name;
     }
 }

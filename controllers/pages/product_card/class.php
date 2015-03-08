@@ -8,65 +8,77 @@
 Qdmvc::loadPageClass('root');
 class Qdmvc_Page_Product_Card extends Qdmvc_Page_Root
 {
-    protected static $fields_show = array(
-        'Group1' => array(
-            'Type' => 'Group',
-            'Name' => 'General',
-            'Fields' => array(
-                'id' => array(
-                    'SourceExpr' => 'id'
+    protected static $fields_show = null;
+
+    protected static function initFields()
+    {
+        return array(
+                'Group1' => array(
+                    'Type' => 'Group',
+                    'Name' => 'General',
+                    'Fields' => array(
+                        'id' => array(
+                            'SourceExpr' => 'id',
+                            'PrimaryKey' => true
+                        ),
+                        'name' => array(
+                            'SourceExpr' => 'name'
+                        ),
+                        'avatar' => array(
+                            'SourceExpr' => 'avatar',
+                            'DataType' => static::getDataType('avatar')
+                        ),
+                        'product_cat_id' => array(
+                            'SourceExpr' => 'product_cat_id',
+                            'LookupURL' => static::getLookupURL('product_cat_id')
+                        ),
+                        'code' => array(
+                            'SourceExpr' => 'code'
+                        ),
+                        'congsuat' => array(
+                            'SourceExpr' => 'congsuat'
+                        ),
+                        'trongluong' => array(
+                            'SourceExpr' => 'trongluong'
+                        ),
+                        'xuatxu' => array(
+                            'SourceExpr' => 'xuatxu'
+                        ),
+                        'dongco' => array(
+                            'SourceExpr' => 'dongco'
+                        ),
+                        'active' => array(
+                            'SourceExpr' => 'active',
+                            'DataType' => static::getDataType('active')
+                        )
+                    )
                 ),
-                'avatar' => array(
-                    'SourceExpr' => 'avatar'
-                ),
-                'product_cat_id' => array(
-                    'SourceExpr' => 'product_cat_id'
-                ),
-                'code' => array(
-                    'SourceExpr' => 'code'
-                ),
-                'congsuat' => array(
-                    'SourceExpr' => 'congsuat'
-                ),
-                'trongluong' => array(
-                    'SourceExpr' => 'trongluong'
-                ),
-                'xuatxu' => array(
-                    'SourceExpr' => 'xuatxu'
-                ),
-                'dongco' => array(
-                    'SourceExpr' => 'dongco'
-                ),
-                'active' => array(
-                    'SourceExpr' => 'active'
+                'Group2' => array(
+                    'Type' => 'Part',
+                    'Name' => 'Lines',
+                    'PagePartID' => 'product_list',
+                    /*
+                    'SubPageLink' => array(
+                        'Field' => '',
+                        'Type' => 'FIELD',//'CONST',
+                        'Value' => ''
+                    )*/
                 )
-            )
-        ),
-        'Group2' => array(
-            'Type' => 'Part',
-            'Name' => 'Lines',
-            'PagePartID' => 'product_list',
-            /*
-            'SubPageLink' => array(
-                'Field' => '',
-                'Type' => 'FIELD',//'CONST',
-                'Value' => ''
-            )*/
-        )
-        /* SAMPLE
-        ,
-        'Group2' => array(
-            'Type' => 'Part',
-            'Name' => 'Lines',
-            'PagePartID' => '',
-            'SubPageLink' => array(
-                'Field' => '',
-                'Type' => 'FIELD',//'CONST',
-                'Value' => ''
-            )
-        )
-        */
-    );
+                /* SAMPLE
+                ,
+                'Group2' => array(
+                    'Type' => 'Part',
+                    'Name' => 'Lines',
+                    'PagePartID' => '',
+                    'SubPageLink' => array(
+                        'Field' => '',
+                        'Type' => 'FIELD',//'CONST',
+                        'Value' => ''
+                    )
+                )
+                */
+            );
+    }
 
     public function run()
     {

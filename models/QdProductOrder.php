@@ -1,6 +1,6 @@
 <?php
 
-class QdProduct extends QdRoot
+class QdProductOrder extends QdRoot
 {
     static $table_name = 'mpd_product_order';
 
@@ -40,13 +40,20 @@ class QdProduct extends QdRoot
                 )
             )
         ),
-        'customer_name' => array(),
+        'customer_name' => array(
+            'Caption' => array('en' => 'Customer Name', 'vn' => 'Tên KH')
+        ),
         'customer_email' => array(),
         'customer_address' => array(),
         'customer_phone' => array(),
-        'count' => array(),
-        'done' => array(),
-        'mota' => array()
+        'count' => array(
+            'Caption' => array('en' => 'Quantity', 'vn' => 'SL đặt')
+        ),
+        'done' => array(
+            'DataType' => 'Boolean'
+        ),
+        'mota' => array(),
+        'id' => array()
     );
     static $belongs_to = array(
         array('product_obj', 'class_name' => 'QdProduct', 'foreign_key' => 'product_id', 'primary_key' => 'id')

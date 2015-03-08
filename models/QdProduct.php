@@ -53,7 +53,6 @@ class QdProduct extends QdRoot
                 )
             )
         ),
-
         'avatar' => array(
             'Caption' => array('en' => 'Avatar', 'vn' => 'Hình đại diện'),
             'DataType' => 'Image',
@@ -84,15 +83,6 @@ class QdProduct extends QdRoot
     );
     public function getProductCatObj()
     {
-        /*
-        if ($this->product_cat_id > 0) {
-            try {
-                return QdProductCat::find($this->product_cat_id);
-            } catch (Exception $e) {
-                return new QdProductCat();
-            }
-        }
-        */
         return $this->product_cat_obj;
     }
 

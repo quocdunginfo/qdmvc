@@ -40,9 +40,9 @@ class Qdmvc_Helper
     {
         return 'javascript:void(0)';
     }
-    public static function getLookupPath($page_list, $return_id)
+    public static function getLookupPath($page_list, $return_id, $getfield='id', $multi=0)
     {
-        return get_admin_url(null, "admin.php?page={$page_list}&qdrole=lookup&qdreturnid={$return_id}");
+        return get_admin_url(null, "admin.php?page={$page_list}&qdrole=lookup&qdreturnid={$return_id}&qdgetfield={$getfield}&qdmulti=0");
     }
     public static function getSlider($metaslider_id)
     {

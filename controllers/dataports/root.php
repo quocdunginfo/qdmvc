@@ -64,13 +64,15 @@ class Qdmvc_Dataport {
         //return
         echo json_encode($arr);
     }
+
     protected function beforeInsertAssign()
     {
-
+        $this->obj->owner_id = get_current_user_id();
     }
+
     protected function beforeUpdateAssign()
     {
-
+        $this->obj->lasteditor_id = get_current_user_id();
     }
     private function insert()
     {
@@ -134,27 +136,27 @@ class Qdmvc_Dataport {
         //assign value
         $c = $this->class;
         foreach ($c::getFieldsConfig() as $key => $value) {
-            //if FieldType == 'Text' or not defined
-            if (
-                $value == null
-                || (is_array($value) && empty($value))
-                || in_array($value['DataType'], array('Code', 'Text', 'Integer', 'Decimal', 'Image'))
-            ) {
-                if (isset($_POST['data'][$key])) {
-                    $this->obj->$key = $_POST['data'][$key];
-                }
+            if($c::ISFLOWFIELD($key))
+            {
+                continue;
             }
             //Boolean
-            else if (
-            in_array($value['DataType'], array('Boolean'))
+            if (
+                in_array($c::getDataType($key), array('Boolean'))
             ) {
                 if (isset($_POST['data'][$key])) {
+                    $this->obj->$key = 1;
+                }
+                else
+                {
+                    $this->obj->$key = 0;
+                }
+            }else {
+                if (isset($_POST['data'][$key])) {
                     $this->obj->$key = $_POST['data'][$key];
-                    if ($this->obj->$key == null || $this->obj->$key != 1) {
-                        $this->obj->$key = 0;
-                    }
                 }
             }
+
         }
     }
 }

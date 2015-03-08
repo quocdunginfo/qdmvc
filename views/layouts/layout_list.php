@@ -10,24 +10,88 @@ class Qdmvc_Layout_List
 {
     protected $data = null;
     protected $page = null;
+
     function __construct($page)
     {
         $this->page = $page;
         $this->data = $page->getData();
     }
-    protected function placeHolder1()
-    {
 
-    }
-    public function render()
+    protected function preConfig()
     {
         ?>
-        <?=$this->placeHolder1()?>
-        <script type="text/javascript">
+        <script>
+            // prepare the data
+            var data_port = '<?=$this->data['data_port']?>';
+        </script>
+    <?php
+    }
+
+    protected function generateFields()
+    {
+        ?>
+
+        <script>
+            var dataSourceDefine = [
+                <?php
+                $c = $this->page->getModel();
+                foreach($c::getFieldsConfig() as $key=>$config) {
+                    ?>
+                {name: '<?=$key?>'},
+                <?php
+            }
+            ?>
+            ];
+            //dataGrid define
+            var dataGridDefine = [
+                <?php
+                    foreach($this->page->getLayout() as $key=>$config)
+                    {
+                        $f_name = $config['SourceExpr'];
+                        $caption = $this->page->getFieldCaption($f_name);
+                        $width = $this->page->getWidth($f_name);
+
+                        ?>
+                {
+                    text: '<?=$caption?>',
+                    datafield: '<?=$f_name?>',
+                    columntype: 'textbox',
+                    filtertype: 'input', <?=$width!=''?'width: '.$width:''?>
+                },
+                <?php
+            }
+        ?>
+            ];
+        </script>
+    <?php
+    }
+
+    protected function externalGateway()
+    {
+        ?>
+        <script>
             function updateGrid() {
                 //update databound
                 jQuery('#jqxgrid').jqxGrid('updatebounddata');
-            };
+            }
+        </script>
+    <?php
+    }
+
+    protected function internalGateway()
+    {
+
+    }
+
+    public function render()
+    {
+        ?>
+        <?= $this->externalGateway() ?>
+        <?= $this->internalGateway() ?>
+        <?= $this->preConfig() ?>
+        <?= $this->generateFields() ?>
+
+        <script type="text/javascript">
             (function ($) {
                 $(document).ready(function () {
                     var theme = 'classic';
@@ -92,27 +156,31 @@ class Qdmvc_Layout_List
                             echo 'parent.setLookupResult(args.row.id, "'.$this->data['returnid'].'");';
                         }
                         ?>
+                        console.log(args.row);
 
                     });
-                    $('#jqxgrid').on('rowdoubleclick', function (event)
-                    {
+                    $('#jqxgrid').on('rowdoubleclick', function (event) {
                         parent.doubleClickObj(event.args.row);
                     });
-
-                    //register notification
-                    $("#jqxMsg").jqxNotification({
-                        width: 400, position: "bottom-right", opacity: 0.6,
-                        autoOpen: false, animationOpenDelay: 300, autoClose: true, autoCloseDelay: 4000, template: "info"
+                    $("#jqxgrid").on("pagechanged", function (event) {
+                        //alert("page changed");
+                    });
+                    $("#jqxgrid").on("bindingcomplete", function (event) {
+                        try {
+                            //auto select first row
+                            var index = $('#jqxgrid').jqxGrid('getrowboundindex', 0);
+                            $('#jqxgrid').jqxGrid('selectrow', index);
+                        } catch (error) {
+                            console.log(error);
+                        }
                     });
                 });
             })(jQuery);
         </script>
-        <div id="jqxMsg">
-            <span id="jqxMsgContent"></span>
-        </div>
+
         <div id='jqxWidget'>
             <div id="jqxgrid"></div>
         </div>
-        <?php
+    <?php
     }
 }

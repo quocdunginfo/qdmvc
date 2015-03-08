@@ -13,22 +13,110 @@ class Qdmvc_Layout_Card
         $this->page = $page;
         $this->data = $page->getData();
     }
+
     protected $page = null;
     protected $data = null;
-    protected function placeHolder1()
+
+    protected function getPageListURL()
     {
-        return;
-        foreach($this->page->getLayout() as $group=>$config)
-        {
-            if(isset($config['Type']) && isset($config['Type'])=='Group')
-            {
-                if(isset($config['Fields'])) {
-                    foreach ($config['Fields'] as $field => $f_config) {
+        $c = $this->page;
+        if ($c::getPageList() != '') {
+            return Qdmvc_Helper::getCompactPageListLink($c::getPageList());
+        }
+    }
+
+    protected function generateFieldReadOnly($f_name, $value = '')
+    {
+        ?>
+        <td>
+            <input class="text-input" type="text" name="<?= $f_name ?>" id="<?= $f_name ?>" value="<?= $value ?>"
+                   readonly>
+        </td>
+    <?php
+    }
+
+    protected function generateFieldHidden($f_name, $value = '')
+    {
+        ?>
+        <input value="<?= $value ?>" type="hidden" name="<?= $f_name ?>" id="<?= $f_name ?>">
+    <?php
+    }
+
+    protected function generateFieldImage($f_name, $value)
+    {
+        ?>
+        <td>
+            <input class="text-input" type="text" name="<?= $f_name ?>" id="<?= $f_name ?>" value="<?= $value ?>">
+
+            <button id="c<?= $f_name ?>" value="">...</button>
+            <?php
+            Qdmvc_Helper::qd_media_choose("c{$f_name}", $f_name, false);
+            ?>
+        </td>
+    <?php
+    }
+
+    protected function generateFieldBoolean($f_name, $value = 0)
+    {
+        ?>
+        <td>
+            <input <?= $value == 1 ? 'checked="checked"' : '' ?> type="checkbox" name="<?= $f_name ?>"
+                                                                 id="<?= $f_name ?>" value="1">
+        </td>
+    <?php
+    }
+
+    protected function generateFields()
+    {
+        ?>
+        <?php
+        foreach ($this->page->getLayout() as $group => $config) {
+            if (isset($config['Type']) && isset($config['Type']) == 'Group') {
+                if (isset($config['Fields'])) {
+                    foreach ($config['Fields'] as $key => $f_config) {
+                        $type = $f_config['DataType'];
+                        $f_name = $f_config['SourceExpr'];
+                        $f_val = $this->data['obj']->$f_name;
+                        $f_lku = $f_config['LookupURL'];
+
+                        if ($f_config['PrimaryKey']) {
+                            $this->generateFieldHidden($f_name, $f_val);
+                            continue;
+                        }
+
                         ?>
                         <tr>
-                            <td><?=$this->page->getFieldCaption($f_config['SourceExpr'])?>:</td>
+
+                            <!-- Caption -->
+                            <td><?= $this->page->getFieldCaption($f_name) ?>:</td>
+                            <!-- END Caption -->
+
+                            <?php
+                            if ($type == 'Boolean') {
+                                $this->generateFieldBoolean($f_name, $f_val);
+                                continue;
+                            }
+                            if ($f_config['ReadOnly']) {
+                                $this->generateFieldReadOnly($f_name, $f_val);
+                                continue;
+                            }
+                            if ($type == 'Image') {
+                                $this->generateFieldImage($f_name, $f_val);
+                                continue;
+                            }
+                            ?>
                             <td>
-                                <input class="text-input" type="text" name="<?=$f_config['SourceExpr']?>" id="<?=$f_config['SourceExpr']?>">
+                                <input class="text-input" type="text" name="<?= $f_name ?>" id="<?= $f_name ?>"
+                                       value="<?= $f_val ?>">
+                                <?php
+                                if (isset($f_lku)) {
+                                    ?>
+                                    <button onclick='requestLookupWindow("<?= $f_lku ?>")' class="qd-lookup-btn"
+                                            data-lookupurl="<?= $f_lku ?>" id="c<?= $f_name ?>" value="">...
+                                    </button>
+                                <?php
+                                }
+                                ?>
                             </td>
                         </tr>
                     <?php
@@ -37,35 +125,11 @@ class Qdmvc_Layout_Card
             }
         }
     }
-    protected function placeHolder2()
-    {
 
-    }
-    protected function placeHolder3()
-    {
-
-    }
-    public function render()
+    protected function internalGateway()
     {
         ?>
-        <!-- Content Place Holder 3 -->
-        <?= $this->placeHolder3() ?>
-        <!-- ENd Content Place Holder 3 -->
         <script>
-            //gate way to comunicate with parent windows
-            function setObj(obj) {//do not change func name
-                (function ($) {
-                    $("#testForm").autofill(obj);
-                    $("#testForm input").change();
-                    //$('#jqxNavigationBar').jqxNavigationBar('collapseAt', 0);
-                })(jQuery);
-            };
-            //gate way to comunicate with parent windows
-            function doubleClickObj(obj) {//do not change func name
-                (function ($) {
-                    $('#jqxNavigationBar').jqxNavigationBar('expandAt', 0);
-                })(jQuery);
-            };
             function requestLookupWindow(src) {
                 //set window iframe source
                 //alert(src);
@@ -73,9 +137,7 @@ class Qdmvc_Layout_Card
                     $('#windowFrame').attr('src', src);
                     $('#window').jqxWindow('open');
                 })(jQuery);
-
             }
-            ;
             function requestFormValidate(rules_) {
                 (function ($) {
                     //register validate
@@ -84,7 +146,57 @@ class Qdmvc_Layout_Card
                     });
                 })(jQuery);
             }
+            //update grid
+            function updateGrid() {
+                try {
+                    document.getElementById('list').contentWindow.updateGrid();
+                } catch (error) {
+                    console.log(error);
+                }
+            }
         </script>
+    <?php
+    }
+
+    protected function externalGateway()
+    {
+        ?>
+        <script>
+            //gate way to comunicate with parent windows
+            function setObj(obj) {//do not change func name
+                (function ($) {
+                    $("#testForm").autofill(obj);
+                    $("#testForm input").change();
+                    //$('#jqxNavigationBar').jqxNavigationBar('collapseAt', 0);
+                })(jQuery);
+            }
+            //gate way to comunicate with parent windows
+            function doubleClickObj(obj) {//do not change func name
+                (function ($) {
+                    $('#jqxNavigationBar').jqxNavigationBar('expandAt', 0);
+                })(jQuery);
+            }
+            function setLookupResult(value, txtId) {
+                (function ($) {
+                    $("#" + txtId).val(value).change();
+                })(jQuery);
+            }
+        </script>
+    <?php
+    }
+
+    protected function msgPanelLayout()
+    {
+        ?>
+        <div id="jqxMsg">
+            <span id="jqxMsgContent"></span>
+        </div>
+    <?php
+    }
+
+    protected function lookupWindowLayout()
+    {
+        ?>
         <div id="window">
             <div id="windowHeader">
                     <span>
@@ -98,34 +210,25 @@ class Qdmvc_Layout_Card
                 </iframe>
             </div>
         </div>
+    <?php
+    }
+
+    protected function onReadyHook()
+    {
+        ?>
         <script type="text/javascript">
-            function setLookupResult(value, txtId) {
-                (function ($) {
-                    //alert(txtId);
-                    $("#" + txtId).val(value).change();
-                })(jQuery);
-            }
-            ;
-            //update grid
-            function updateGrid() {
-                try {
-                    document.getElementById('list').contentWindow.updateGrid();
-                }catch(error)
-                {
-                    console.log(error);
-                }
-            }
+
             (function ($) {
                 $(document).ready(function () {
                     //init window for lookup
                     $('#window').jqxWindow({
                         showCollapseButton: false,
-                        maxHeight: 400,
-                        maxWidth: 800,
+                        //maxHeight: 600,
+                        //maxWidth: 1020,
                         minHeight: 200,
                         minWidth: 200,
-                        height: 350,
-                        width: 600,
+                        height: '80%',
+                        width: '100%',
                         autoOpen: false,
                         isModal: true,
                         initContent: function () {
@@ -171,11 +274,10 @@ class Qdmvc_Layout_Card
                         //To disable
                         try {
                             $('#new').attr('disabled', 'disabled');
-                            $('#testForm')[0].reset();
+                            document.getElementById("testForm").reset();
                             $('#id').val("0").change();
                             $('#new').removeAttr('disabled');
-                        }catch(error)
-                        {
+                        } catch (error) {
                             console.log(error);
                         }
                     });
@@ -240,18 +342,7 @@ class Qdmvc_Layout_Card
                         //$("#update").click();
                         return false;
                     });
-                });
-            })(jQuery);
-        </script>
-        <script>
-            (function ($) {
-                $(document).ready(function () {
-
-                    //dokcing
-                    //$('#docking').jqxDocking({orientation: 'vertical', width: 900, height: 100, mode: 'docked'});
-                    //$('#docking').jqxDocking('disableWindowResize', 'widget1');
-                    //$('#docking').jqxDocking('hideAllCloseButtons');
-                    // Create jqxNavigationBar.
+                    //navigation bar
                     $("#jqxNavigationBar").jqxNavigationBar({
                         width: '100%',
                         expandMode: 'multiple',
@@ -260,11 +351,33 @@ class Qdmvc_Layout_Card
                 });
             })(jQuery);
         </script>
-        <div id="jqxMsg">
-            <span id="jqxMsgContent"></span>
-        </div>
-        <div id='jqxWidget'>
+    <?php
+    }
 
+    protected function preConfig()
+    {
+        ?>
+        <script>
+            // prepare the data
+            var data_port = '<?=$this->data['data_port']?>';
+        </script>
+    <?php
+    }
+
+    protected function bindingField()
+    {
+
+    }
+
+    protected function formValidation()
+    {
+
+    }
+
+    protected function navigationBar()
+    {
+        ?>
+        <div id='jqxWidget'>
             <div id="jqxNavigationBar">
                 <div>
                     <div style='margin-top: 2px;'>
@@ -274,30 +387,39 @@ class Qdmvc_Layout_Card
                     </div>
                 </div>
                 <div>
-                    <form style="width: 100%" id="testForm" action=""
-                          onsubmit="return false">
-                        <table class="register-table">
-                            <!-- Content place Holder -->
-                            <?= $this->placeHolder1() ?>
-                            <!-- End content place holder -->
-                            <tr>
-                                <td colspan="2">
+                    <div>
+                        <form style="width: 100%" id="testForm" action=""
+                              onsubmit="return false">
+                            <table class="register-table">
+                                <!-- Content place Holder -->
+                                <?= $this->generateFields() ?>
+                                <!-- End content place holder -->
+                                <tr>
+                                    <td colspan="2">
+
+                                        <style>
+                                            .qd-action-btn {
+                                                margin-right: 20px;
+                                            }
+                                        </style>
+                                        <br>
                         <span>
-                            <button type="button" id="update">Save</button>---
+                            <button class="qd-action-btn" type="button" id="update">Save</button>
                         </span>
                         <span>
-                            <button type="button" id="new">New</button>---
+                            <button class="qd-action-btn" type="button" id="new">New</button>
                         </span>
                         <span>
-                            <button type="button" id="delete">Delete</button>---
+                            <button class="qd-action-btn" type="button" id="delete">Delete</button>
                         </span>
                         <span>
-                            <button type="button" id="clone">Clone</button>
+                            <button class="qd-action-btn" type="button" id="clone">Clone</button>
                         </span>
-                                </td>
-                            </tr>
-                        </table>
-                    </form>
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
                 </div>
                 <div>
                     <div style='margin-top: 2px;'>
@@ -309,7 +431,7 @@ class Qdmvc_Layout_Card
                 <div>
                     <div style="height: 520px; width: 100%">
                         <!-- Content Place Holder 2 -->
-                        <iframe id="list" src="<?= $this->placeHolder2() ?>"
+                        <iframe id="list" src="<?= $this->getPageListURL() ?>"
                                 width="100%" height="99%" scrolling="no" frameborder="0">
                             <p>Your browser does not support iframes</p>
                         </iframe>
@@ -318,7 +440,26 @@ class Qdmvc_Layout_Card
                 </div>
             </div>
         </div>
+    <?php
+    }
 
+    public function render()
+    {
+        ?>
+        <?= $this->preConfig() ?>
+
+        <?= $this->internalGateway() ?>
+        <?= $this->externalGateway() ?>
+
+        <?= $this->lookupWindowLayout() ?>
+        <?= $this->bindingField() ?>
+
+        <?= $this->navigationBar() ?>
+        <?= $this->formValidation() ?>
+
+        <?= $this->msgPanelLayout() ?>
+
+        <?= $this->onReadyHook() ?>
     <?php
     }
 }

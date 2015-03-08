@@ -70,18 +70,34 @@ class QdRoot extends ActiveRecord\Model
      */
     public static function getPF($field_name)//get Physical Field
     {
-        return static::$fields[$field_name]['name'];
+        return static::$fields_config[$field_name]['name'];
+    }
+    public static function GET($id)
+    {
+        return static::find($id);
     }
 
     /**
      * @param $field_name
      * @return mixed
      */
-    public static function getType($field_name)
+    public static function getDataType($field_name)
     {
-        if (array_key_exists('type', static::$fields[$field_name]))
+        try {
+            return static::$fields_config[$field_name]['DataType'];
+        }catch (Exception $ex)
         {
-            return static::$fields[$field_name]['type'];
+            return 'Text';
+        }
+
+    }
+    public static function getTableRelation($field_name)
+    {
+        try {
+            return static::$fields_config[$field_name]['TableRelation']['Table'];
+        }catch (Exception $ex)
+        {
+            return '';
         }
     }
 
@@ -242,7 +258,7 @@ class QdRoot extends ActiveRecord\Model
         if(is_array($record['filter']) && count($record['filter'])>0) {
             $where = '';
             foreach ($record['filter'] as $key => $value) {
-                $where .= "`{$key}` LIKE '%{$value}%' ".$record['filter_relation']." ";
+                $where .= "`{$key}` LIKE '%{$value}%' ".$record['filter_relation']." ";//quocdunginfo
             }
             if(strtoupper($record['filter_relation'])=='AND')
             {
@@ -284,6 +300,34 @@ class QdRoot extends ActiveRecord\Model
     protected static $fields_config = array(
 
     );
+    protected static $lookup_fields = null;
+    protected static function ISLOOKUPFIELD($field_name)
+    {
+        try{
+            return static::$fields_config[$field_name]['TableRelation']['Table']!='';
+        }catch(Exception $e)
+        {
+            return false;
+        }
+    }
+    public static function getLookupFields()
+    {
+        if(static::$lookup_fields!=null)
+        {
+            return static::$lookup_fields;
+        }
+        else {
+            static::$lookup_fields = array();
+            foreach(static::$fields_config as $field=>$config)
+            {
+                if(static::ISLOOKUPFIELD($field))
+                {
+                    array_push(static::$lookup_fields, $field);
+                }
+            }
+            return static::$lookup_fields;
+        }
+    }
     public static function getFieldCaption($field_name, $lang='en')
     {
         try{
@@ -304,18 +348,23 @@ class QdRoot extends ActiveRecord\Model
     {
         return static::$fields_config;
     }
-    protected static function ISFLOWFIELD($flowfield_name)
+    public static function ISREADONLY($f_name)
     {
-        if(
-        isset(static::$fields_config[$flowfield_name])
-        )
+        try{
+            return (static::$fields_config[$f_name]['ReadOnly'] || static::ISFLOWFIELD($f_name));
+        }catch (Exception $ex)
         {
-            $config = static::$fields_config[$flowfield_name];
-            if ($config['FieldClass'] == 'FlowField' && !empty($config['FieldClass_FlowField'])){
-                return true;
-            }
+            return false;
         }
-        return false;
+    }
+    public static function ISFLOWFIELD($flowfield_name)
+    {
+        try{
+            return static::$fields_config[$flowfield_name]['FieldClass'] == 'FlowField';
+        }catch (Exception $ex)
+        {
+            return false;
+        }
     }
     public function __get($field_name)
     {
@@ -340,15 +389,7 @@ class QdRoot extends ActiveRecord\Model
             $arr = array();
             foreach(static::getFieldsConfig() as $key => $value)
             {
-                if(isset($value['FieldClass']) && $value['FieldClass']=='FlowField')
-                {
-                    $arr[$key] = $item->$key;
-                }
-                else
-                {
-                    //Normal Field
-                    $arr[$key] = $item->$key;
-                }
+                $arr[$key] = $item->$key;
             }
             array_push($tmp, $arr);
         }
