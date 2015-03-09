@@ -32,7 +32,7 @@ class Qdmvc_Page_ProductCat_Card extends Qdmvc_Page_Root {
                     ),
                     'avatar' => array(
                         'SourceExpr' => 'avatar',
-                        'LookupType' => static::getDataType('avatar')
+                        'DataType' => static::getDataType('avatar')
                     ),
                     'parent_id' => array(
                         'SourceExpr' => 'parent_id',

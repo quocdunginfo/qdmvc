@@ -6,8 +6,8 @@
  * Date: 08/02/2015
  * Time: 11:32 PM
  */
-Qdmvc::loadLayout('layout_card');
-class Qdmvc_View_ProductCat_Card extends Qdmvc_Layout_Card
+Qdmvc::loadLayout('layout_cardnavigate');
+class Qdmvc_View_ProductCat_Card extends Qdmvc_Layout_CardNavigate
 {
     protected function formValidation()
     {

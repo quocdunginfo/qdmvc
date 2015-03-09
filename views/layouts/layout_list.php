@@ -30,8 +30,8 @@ class Qdmvc_Layout_List
     protected function generateFields()
     {
         ?>
-
         <script>
+            var defaultline = {};
             var dataSourceDefine = [
                 <?php
                 $c = $this->page->getModel();
@@ -42,6 +42,11 @@ class Qdmvc_Layout_List
             }
             ?>
             ];
+            var cellbeginedit = function(row, datafield, columntype, value){
+                //check field can edit when linked to Header page
+
+                return true;
+            }
             //dataGrid define
             var dataGridDefine = [
                 <?php
@@ -56,7 +61,9 @@ class Qdmvc_Layout_List
                     text: '<?=$caption?>',
                     datafield: '<?=$f_name?>',
                     columntype: 'textbox',
-                    filtertype: 'input', <?=$width!=''?'width: '.$width:''?>
+                    filtertype: 'input',
+                    cellbeginedit: cellbeginedit,
+                    <?=$width!=''?'width: '.$width:''?>
                 },
                 <?php
             }
@@ -123,8 +130,9 @@ class Qdmvc_Layout_List
                             groupable: true,
                             virtualmode: true,
                             pagesize: 10,
-                            //editable: true,
-                            //editmode: "dblclick",
+                            /*Enable Inline Editing*/
+                            editable: true,
+                            editmode: "dblclick",
                             columnsresize: true,
                             //scrollmode: 'deferred',
                             rendergridrows: function () {
@@ -178,7 +186,26 @@ class Qdmvc_Layout_List
             })(jQuery);
         </script>
 
+        <script type="text/javascript">
+            (function ($) {
+                $(document).ready(function () {
+                    $('#addline').click(function(){
+                        $('#jqxgrid').jqxGrid('addrow', null, {});
+
+                        updateGrid();//quocdunginfo
+                    });
+                    $('#deleteline').click(function(){
+                        //$('#jqxgrid').jqxGrid('addrow', null, {});
+                        updateGrid();//quocdunginfo
+                    });
+                });
+            })(jQuery);
+        </script>
         <div id='jqxWidget'>
+            <div>
+                <button id="addline" type="button">Add Line</button>
+                <button id="deleteline" type="button">Delete Line</button>
+            </div>
             <div id="jqxgrid"></div>
         </div>
     <?php

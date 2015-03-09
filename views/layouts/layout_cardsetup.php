@@ -2,32 +2,25 @@
 /**
  * Created by PhpStorm.
  * User: quocd_000
- * Date: 02/03/2015
- * Time: 12:59 PM
+ * Date: 09/03/2015
+ * Time: 7:08 PM
  */
 Qdmvc::loadLayout('layout_card');
-class Qdmvc_Layout_CardOnly extends Qdmvc_Layout_Card {
-    protected function getPageListURL()
-    {
-        //navigation list blank
-        return '';
-    }
-
+class Qdmvc_Layout_CardSetup extends Qdmvc_Layout_Card
+{
     protected function onReadyHook()
     {
         ?>
         <script>
             (function($){
                 $(document).ready(function(){
-                    $("#new").hide();
-                    $("#clone").hide();
-                    $("#delete").hide();
+                    $("#qdnew").hide();
+                    $("#qdclone").hide();
+                    $("#qddelete").hide();
                 });
             })(jQuery);
         </script>
         <?php
-
         parent::onReadyHook();
     }
-
 }

@@ -17,6 +17,27 @@ class Qdmvc_Page_ProductCat_List extends Qdmvc_Page_Root
 
         (new Qdmvc_View_ProductCat_List($this))->render();
     }
+    protected static function initFields()
+    {
+        return array(
+            'id' => array(
+                'SourceExpr' => 'id',
+                'PrimaryKey' => true,
+                'Width' => 50
+            ),
+            'parent_id' => array(
+                'SourceExpr' => 'parent_id',
+                'Width' => 100
+            ),
+            'order' => array(
+                'SourceExpr' => 'order',
+                'Width' => 100
+            ),
+            'name' => array(
+                'SourceExpr' => 'name'
+            ),
+        );
+    }
 
     public static function getPage()
     {

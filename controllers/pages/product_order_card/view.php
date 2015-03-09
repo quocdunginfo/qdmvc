@@ -6,24 +6,7 @@
  * Time: 11:32 PM
  */
 //import libraries
-Qdmvc::loadLayout('layout_card');
-class Qdmvc_View_ProductOrder_Card extends Qdmvc_Layout_Card {
-    protected function formValidation()
-    {
-        ?>
-        <script>
-            //trigger open windows
-            (function($){
-                $(document).ready(function(){
-                    //validate
-                    requestFormValidate(
-                        [
+Qdmvc::loadLayout('layout_cardnavigate');
+class Qdmvc_View_ProductOrder_Card extends Qdmvc_Layout_CardNavigate {
 
-                        ]
-                    );
-                });
-            })(jQuery);
-        </script>
-        <?php
-    }
 }

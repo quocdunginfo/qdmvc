@@ -6,8 +6,8 @@
  * Time: 11:32 PM
  */
 //import libraries
-Qdmvc::loadLayout('layout_card');
-class Qdmvc_View_Product_Card extends Qdmvc_Layout_Card {
+Qdmvc::loadLayout('layout_cardnavigate');
+class Qdmvc_View_Product_Card extends Qdmvc_Layout_CardNavigate {
     protected function formValidation()
     {
         ?>
