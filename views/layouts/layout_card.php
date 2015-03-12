@@ -68,7 +68,7 @@ class Qdmvc_Layout_Card
         ?>
         <style>
             .ajax_loader {
-                background: url("http://www.aplusdesign.com.au/demos/ajax-loader/ajax-loader_blue.gif") no-repeat center center transparent;
+                background: url(<?=Qdmvc_Helper::getImgURL("ajax-loader_blue.gif")?>) no-repeat center center transparent;
                 width: 100%;
                 height: 100%;
             }
@@ -135,14 +135,14 @@ class Qdmvc_Layout_Card
             //trigger open windows
             (function ($) {
                 $(document).ready(function () {
-                    var ajax_loader;
+                    //var ajax_loader;
                     $.ajaxSetup({
                         beforeSend: function () {
-                            ajax_loader = new ajaxLoader("#cardForm");
+
                         },
                         complete: function () {
                             //$('#loader').hide();
-                            ajax_loader.remove();
+                            //ajax_loader.remove();
                         }
                         /*
                          ,success: function() {
@@ -162,6 +162,8 @@ class Qdmvc_Layout_Card
         <script>
             // prepare the data
             var data_port = '<?=$this->data['data_port']?>';
+            //ajax_loader
+            var ajax_loader;
         </script>
     <?php
     }
@@ -374,7 +376,33 @@ class Qdmvc_Layout_Card
     {
 
     }
-
+    private function getPagePartURL()
+    {
+        $c = $this->page;
+        return $c::getPagePartURL();
+    }
+    private function linesBar()
+    {
+        ?>
+        <div>
+            <div style='margin-top: 2px;'>
+                <div style='margin-left: 4px; float: left;'>
+                    Lines
+                </div>
+            </div>
+        </div>
+        <div>
+            <div style="height: 520px; width: 100%">
+                <!-- Content Place Holder 2 -->
+                <iframe id="pagepart" src="<?= $this->getPagePartURL() ?>"
+                        width="100%" height="99%" scrolling="no" frameborder="0">
+                    <p>Your browser does not support iframes</p>
+                </iframe>
+                <!-- ENd Content Place Holder 2 -->
+            </div>
+        </div>
+        <?php
+    }
     private function cardBar()
     {
         ?>
@@ -392,7 +420,9 @@ class Qdmvc_Layout_Card
                         $(document).ready(function () {
                             //validate trigger
                             $("#cardForm").on("validationSuccess", function (event) {
-
+                                //AJAX progress Bar
+                                ajax_loader = new ajaxLoader("#cardForm");
+                                //build data
                                 var json = form2js("cardForm", ".", false, null, true);//skip empty some time cause lack field
                                 //begin lock
                                 //$("#update").attr("disabled", "disabled");
@@ -416,6 +446,7 @@ class Qdmvc_Layout_Card
                                     .always(function () {
                                         //release lock
                                         $("#qdupdate").removeAttr("disabled");
+                                        ajax_loader.remove();
                                     });
                             });
 
@@ -451,10 +482,11 @@ class Qdmvc_Layout_Card
                             });
 
                             $("#qddelete").bind("click", function (event) {
-
                                 if (!confirm("Xác nhận ?")) {
                                     return false;
                                 }
+                                //AJAX loader
+                                ajax_loader = new ajaxLoader("#cardForm");
                                 //begin lock
                                 var id_ = $("#id").val();
                                 console.log(id_);
@@ -476,6 +508,7 @@ class Qdmvc_Layout_Card
                                     .always(function () {
                                         //release lock
                                         $("#qddelete").removeAttr("disabled");
+                                        ajax_loader.remove();
                                     });
                             });
 
@@ -491,7 +524,6 @@ class Qdmvc_Layout_Card
                             //catch submit
                             $(document).on("submit", "#testForm", function () {
                                 // code
-                                //$("#update").click();
                                 return false;
                             });
                         });

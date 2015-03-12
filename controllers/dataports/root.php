@@ -74,7 +74,7 @@ class Qdmvc_Dataport {
     {
         $this->obj->lasteditor_id = get_current_user_id();
     }
-    private function insert()
+    protected function insert()
     {
         //insert
         $c = $this->class;
@@ -85,7 +85,7 @@ class Qdmvc_Dataport {
         $this->obj->save();
         $this->msg = 'Thêm mới thành công, ID='.$this->obj->id;
     }
-    private function update()
+    protected function update()
     {
         //update
         $c = $this->class;
@@ -95,7 +95,7 @@ class Qdmvc_Dataport {
         $this->obj->save();
         $this->msg = 'Cập nhật thành công, ID='.$this->obj->id;
     }
-    private function delete()
+    protected function delete()
     {
         $c = $this->class;
         $this->obj = $c::find($this->data['id']);
@@ -107,11 +107,15 @@ class Qdmvc_Dataport {
         $this->data = $_POST['data'];
         $this->action = $_POST['action'];
     }
-    private function list_return()
+    protected function list_return()
     {
         $recordstartindex = isset($_REQUEST['recordstartindex'])?$_REQUEST['recordstartindex']:0;
         $pagesize = isset($_REQUEST['pagesize'])?$_REQUEST['pagesize']:10;
         $count = 0;
+        if(isset($_REQUEST['filterdatafield99']))//quocdunginfo
+        {
+            $this->filter[$_REQUEST['filterdatafield99']] = $_REQUEST['filtervalue99'];
+        }
         while(isset($_REQUEST['filterdatafield'.$count]))
         {
             $this->filter[$_REQUEST['filterdatafield'.$count]] = $_REQUEST['filtervalue'.$count];

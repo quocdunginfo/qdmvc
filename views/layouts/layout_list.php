@@ -22,7 +22,7 @@ class Qdmvc_Layout_List
         ?>
         <script>
             // prepare the data
-            var data_port = '<?=$this->data['data_port']?>';
+            var data_port = '<?=$this->data['data_port']?>';//quocdunginfo
         </script>
     <?php
     }
@@ -42,15 +42,15 @@ class Qdmvc_Layout_List
             }
             ?>
             ];
-            var cellbeginedit = function(row, datafield, columntype, value){
+            var cellbeginedit = function (row, datafield, columntype, value) {
                 //check field can edit when linked to Header page
 
                 return true;
             }
-            //dataGrid define
+
             var dataGridDefine = [
                 <?php
-                    foreach($this->page->getLayout() as $key=>$config)
+                    foreach($this->page->getLayout() as $key=>$config)//quocdunginfo
                     {
                         $f_name = $config['SourceExpr'];
                         $caption = $this->page->getFieldCaption($f_name);
@@ -63,6 +63,10 @@ class Qdmvc_Layout_List
                     columntype: 'textbox',
                     filtertype: 'input',
                     cellbeginedit: cellbeginedit,
+                    // update the editor's value before saving it.
+                    cellvaluechanging: function (row, column, columntype, oldvalue, newvalue) {
+                        console.log('jqxgrid cell value changed');
+                    },
                     <?=$width!=''?'width: '.$width:''?>
                 },
                 <?php
@@ -139,6 +143,10 @@ class Qdmvc_Layout_List
                                 return dataadapter.records;
                             },
                             columns: dataGridDefine
+                            /*
+                             columns: [
+                             { text: 'Ship Name', datafield: 'parent_id', columntype: 'combobox' }
+                             ]*/
                         });
 
                     //event
@@ -154,17 +162,22 @@ class Qdmvc_Layout_List
                         //formObj = args.row;
 
                         //call pass obj to CARD
-                        <?php
-                        if($this->data['role']=='navigate')
+                        try {
+                            <?php
+                            if($this->data['role']=='navigate')
+                            {
+                                echo 'parent.setObj(args.row);';
+                            }
+                            else
+                            {
+                                echo 'parent.setLookupResult(args.row.id, "'.$this->data['returnid'].'");';
+                            }
+                            ?>
+                            console.log(args.row);
+                        }catch(error)
                         {
-                            echo 'parent.setObj(args.row);';
+                            console.log(error);
                         }
-                        else
-                        {
-                            echo 'parent.setLookupResult(args.row.id, "'.$this->data['returnid'].'");';
-                        }
-                        ?>
-                        console.log(args.row);
 
                     });
                     $('#jqxgrid').on('rowdoubleclick', function (event) {
@@ -189,12 +202,12 @@ class Qdmvc_Layout_List
         <script type="text/javascript">
             (function ($) {
                 $(document).ready(function () {
-                    $('#addline').click(function(){
+                    $('#addline').click(function () {
                         $('#jqxgrid').jqxGrid('addrow', null, {});
 
                         updateGrid();//quocdunginfo
                     });
-                    $('#deleteline').click(function(){
+                    $('#deleteline').click(function () {
                         //$('#jqxgrid').jqxGrid('addrow', null, {});
                         updateGrid();//quocdunginfo
                     });

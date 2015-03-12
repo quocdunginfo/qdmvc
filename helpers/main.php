@@ -26,6 +26,10 @@ class Qdmvc_Helper
     {
         return admin_url("admin.php?page={$page_name}&qdrole=navigate");
     }
+    public static function getCompactPagePartLink($page_name, $filterfield, $filtervalue)
+    {
+        return admin_url("admin.php?page={$page_name}&filterfield={$filterfield}&filtervalue={$filtervalue}");//quocdunginfo
+    }
     /*
     public static function getSPCompactListLink()
     {
@@ -140,6 +144,10 @@ class Qdmvc_Helper
             });
         </script>
     <?php
+    }
+    public static function getImgURL($path)
+    {
+        return plugins_url( '../views/imgs/'.$path , __FILE__);
     }
     public static function requestCompact()
     {

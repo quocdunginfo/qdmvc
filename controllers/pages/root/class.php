@@ -14,7 +14,19 @@ class Qdmvc_Page_Root {
         //build data_port value
         $this->data['data_port'] = Qdmvc_Helper::getDataPortPath(static::getDataPort());
 
+        //pre-filter
+        if(isset($_GET['filterfield'])) {
+            $this->data['filter'] = array(
+                0 => array('filterfield' => $_GET['filterfield'], 'filtervalue' => $_GET['filtervalue'])
+            );
+        }
+
+
         static::initFields();
+    }
+    public function getFilter()
+    {
+        return $this->data['filter'];
     }
     protected static function initFields()
     {
@@ -95,6 +107,10 @@ class Qdmvc_Page_Root {
         {
             return Qdmvc_Page_Index::getIndex()[static::getPage()]['PageList'];
         }
+    }
+    public function getPagePartURL()
+    {
+        return '';
     }
     public static function getDataPort()
     {
