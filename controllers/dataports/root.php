@@ -9,12 +9,24 @@ class Qdmvc_Dataport {
     protected $class = '';
     protected $obj = null;
     protected $data = null;
-    protected $msg = '';
+    protected $msg = array();
     protected $action = 'update';
     private $for_card = true;
     private $filter = array();
     function __construct()
     {
+
+    }
+    protected function pushMsg($msg)
+    {
+        if(is_array($msg))
+        {
+            $this->msg = array_merge($this->msg, $msg);
+        }
+        else
+        {
+            array_push($this->msg, $msg);
+        }
 
     }
     public function run()
@@ -51,18 +63,33 @@ class Qdmvc_Dataport {
     {
 
     }
-    private function finish()
+    protected function finish($msg_array=null, $result_array=null, $total=0, $id='')
     {
+        $re = array();
+        $c = $this->class;
+        if($msg_array!=null)
+        {
+            $re['msg'] = $msg_array;
+        }
+        if($result_array!=null)
+        {
+            $re['rows'] = $c::toJSON($result_array);
+        }
+        if($id!=null)
+        {
+            $re['id'] = $id;
+        }
+        if($total!=null)
+        {
+            $re['total'] = $total;
+        }
+
+        echo json_encode($re);
         exit(0);
     }
     private function card_return()
     {
-        $arr = array(
-            'msg' => $this->msg,
-            'id' => $this->obj->id
-        );
-        //return
-        echo json_encode($arr);
+        $this->finish($this->msg, array($this->obj),1,$this->obj->id);
     }
 
     protected function beforeInsertAssign()
@@ -81,9 +108,16 @@ class Qdmvc_Dataport {
         $this->obj = new $c();
         $this->beforeInsertAssign();
         $this->assign();
-        //action
-        $this->obj->save();
-        $this->msg = 'Thêm mới thành công, ID='.$this->obj->id;
+
+        if($this->obj->VALIDATE())
+        {
+            $this->obj->save();
+            $this->pushMsg('Thêm mới thành công, ID='.$this->obj->id);
+        }
+        else
+        {
+            $this->pushMsg($this->obj->GETVALIDATION());
+        }
     }
     protected function update()
     {
@@ -92,8 +126,15 @@ class Qdmvc_Dataport {
         $this->obj = $c::find($this->data["id"]);
         $this->beforeInsertAssign();
         $this->assign();
-        $this->obj->save();
-        $this->msg = 'Cập nhật thành công, ID='.$this->obj->id;
+        if($this->obj->VALIDATE())
+        {
+            $this->obj->save();
+            $this->pushMsg('Cập nhật thành công, ID='.$this->obj->id);
+        }
+        else
+        {
+            $this->pushMsg($this->obj->GETVALIDATION());
+        }
     }
     protected function delete()
     {
@@ -129,11 +170,7 @@ class Qdmvc_Dataport {
         $record->SETOFFSET($recordstartindex);
         $record->SETORDERBY('id', 'desc');
 
-        echo json_encode(array(
-            'rows' => $c::toJSON($record->GETLIST()),
-            'total' => $record->COUNTLIST(),
-            'msg' => 'List Card Return'
-        ));
+        $this->finish(array('List Card Return'), $record->GETLIST(), $record->COUNTLIST());
     }
     protected function assign()
     {

@@ -99,5 +99,50 @@ class QdProduct extends QdRoot
         array_push($re, array('name' => $this->name, 'url' => $this->getPermalink()));
         return $re;
     }
-
+    /*
+     * Validation
+     *
+     */
+    protected function nameOnValidate()
+    {
+        if($this->name=='')
+        {
+            $this->pushValidateError('Name bắt buộc');
+        }
+        if($this->active==1)
+        {
+            if($this->name!=$this->xRec()->name)
+            {
+                $this->pushValidateError('Không thể sửa Name khi Active=1');
+            }
+        }
+    }
+    protected function activeOnValidate()
+    {
+        if($this->active ==0 && $this->active != $this->xRec()->active)
+        {
+            if($this->code != 1)
+            {
+                $this->pushValidateError('Code phải bằng 1 mới tắt được Active');
+            }
+        }
+    }
+    protected function codeOnValidate()
+    {
+        if($this->code == '')
+        {
+            if($this->name!=null)
+            {
+                $this->code = strtoupper($this->name);
+            }
+        }
+    }
+    protected function product_cat_idOnValidate()
+    {
+        //check exit
+        if($this->getProductCatObj()==null)
+        {
+            $this->pushValidateError('Product Cat không tồn tại!');
+        }
+    }
 }

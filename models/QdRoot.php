@@ -56,6 +56,45 @@ class QdRoot extends ActiveRecord\Model
     {
 
     }
+    protected $fields_validation = array(
+        'error' => array()
+    );
+    protected function pushValidateError($msg)
+    {
+        array_push($this->fields_validation['error'], $msg);
+    }
+    private $_xRec = null;
+    protected function xRec()
+    {
+        if($this->_xRec==null)
+        {
+            $this->_xRec = static::GET($this->id);
+        }
+        return $this->_xRec;
+    }
+    public function GETVALIDATION()
+    {
+        return $this->fields_validation['error'];
+    }
+    public function VALIDATE()
+    {
+        //call validate trigger on all fields and then return array of error
+        foreach(static::$fields_config as $key=>$config)
+        {
+            if(method_exists($this, $key.'OnValidate'))
+            {
+                $this->{$key . 'OnValidate'}();
+            }
+            /*
+            try {
+                $this->{$key . 'OnValidate'}();
+            }catch (Exception $ex)
+            {
+
+            }*/
+        }
+        return count($this->fields_validation['error'])==0;
+    }
     /**
      * @return string
      */

@@ -23,12 +23,6 @@ class Qdmvc_View_Product_Card extends Qdmvc_Layout_CardNavigate {
                                 message: 'Name is required!',
                                 action: 'keyup, blur',
                                 rule: 'required'
-                            },
-                            {
-                                input: '#code',
-                                message: 'Code is required!',
-                                action: 'keyup, blur',
-                                rule: 'required'
                             }
                         ]
                     );

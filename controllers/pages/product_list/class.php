@@ -41,7 +41,7 @@ class Qdmvc_Page_Product_List extends Qdmvc_Page_Root
             ),
 			'name' => array(
                 'SourceExpr' => 'name',
-                'Width' => 100
+                'Width' => 200
             ),
         );
     }
