@@ -84,11 +84,11 @@ class Qdmvc_Page_Product_Card extends Qdmvc_Page_Root
             );
     }
 
-    public function run()
+    protected static function getViewClass()
     {
-        //load View and render
-        (new Qdmvc_View_Product_Card($this))->render();
+        return 'Qdmvc_View_Product_Card';
     }
+
 
     public static function getPage()
     {

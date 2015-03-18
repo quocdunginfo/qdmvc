@@ -142,7 +142,7 @@ class QdRoot extends ActiveRecord\Model
 
     protected $record_filter = array(
         'filter_default' => array(),//array('field' => 'value_filter');
-        'filter' => array(),//array('field' => 'value_filter');
+        'filter' => array(),//array('field' => array('value' => 'value_filter', 'exact' => true));
         'limit' => 10,
         'offset' => 0,
         'order' => array('field' => 'id', 'direction' => 'asc'),//true: asc, false: desc
@@ -215,9 +215,10 @@ class QdRoot extends ActiveRecord\Model
      * @param $field
      * @param $value
      */
-    public function SETRANGE($field, $value)
+    public function SETRANGE($field, $value, $exact=true)
     {
-        $this->record_filter['filter'][$field] = $value;
+        $this->record_filter['filter'][$field]['value'] = $value;
+        $this->record_filter['filter'][$field]['exact'] = $exact;
         return $this;
     }
 
@@ -297,7 +298,14 @@ class QdRoot extends ActiveRecord\Model
         if(is_array($record['filter']) && count($record['filter'])>0) {
             $where = '';
             foreach ($record['filter'] as $key => $value) {
-                $where .= "`{$key}` LIKE '%{$value}%' ".$record['filter_relation']." ";//quocdunginfo
+                if($value['exact']==true)
+                {
+                    $where .= "`{$key}` = '{$value['value']}' ".$record['filter_relation']." ";//quocdunginfo
+                }
+                else
+                {
+                    $where .= "`{$key}` LIKE '%{$value['value']}%' ".$record['filter_relation']." ";//quocdunginfo
+                }
             }
             if(strtoupper($record['filter_relation'])=='AND')
             {

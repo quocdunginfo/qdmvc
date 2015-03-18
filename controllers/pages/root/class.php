@@ -12,7 +12,7 @@ class Qdmvc_Page_Root {
     {
         $this->loadView();
         //build data_port value
-        $this->data['data_port'] = Qdmvc_Helper::getDataPortPath(static::getDataPort());
+        $this->data['data_port'] = Qdmvc_Helper::getDataPortPath(static::getDataPort(), static::getPageView());
 
         //pre-filter
         if(isset($_GET['filterfield'])) {
@@ -23,6 +23,10 @@ class Qdmvc_Page_Root {
 
 
         static::initFields();
+    }
+    protected static function getPageView()
+    {
+
     }
     public function getFilter()
     {
@@ -35,7 +39,16 @@ class Qdmvc_Page_Root {
     }
     public function run()
     {
-
+        //load View and render
+        $c = static::getViewClass();
+        if($c!='')
+        {
+            (new $c($this))->render();
+        }
+    }
+    protected static function getViewClass()
+    {
+        return '';
     }
     protected static function getDefaultLookupPage($model)
     {

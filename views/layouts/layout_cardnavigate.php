@@ -47,14 +47,6 @@ class Qdmvc_Layout_CardNavigate extends Qdmvc_Layout_Card
         ?>
         <script>
             //gate way to comunicate with parent windows
-            function setObj(obj) {//do not change func name
-                (function ($) {
-                    $("#cardForm").autofill(obj);
-                    $("#cardForm input").change();
-                    //$('#jqxNavigationBar').jqxNavigationBar('collapseAt', 0);
-                })(jQuery);
-            }
-            //gate way to comunicate with parent windows
             function doubleClickObj(obj) {//do not change func name
                 (function ($) {
                     $('#jqxNavigationBar').jqxNavigationBar('expandAt', 0);

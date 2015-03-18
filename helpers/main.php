@@ -10,9 +10,19 @@ class Qdmvc_Helper
     {
         require('simple_html_dom.php');
     }
-    public static function getDataPortPath($name)
+    public static function getDataPortPath($name, $pre_filter_arr=null)
     {
-        return get_site_url()."/?qd-api={$name}";// .../?qd-api != ...?qd-api [VERY IMPORTANT SINCE AJAX POST NOT WORK]
+        // .../?qd-api != ...?qd-api [VERY IMPORTANT SINCE AJAX POST NOT WORK]
+        $tmp = '';
+        if($pre_filter_arr!=null) {
+            $count = 99;
+            foreach ($pre_filter_arr as $key => $value) {
+                $value = $value === true ? 1 : ($value===false?0:$value);
+                $tmp .= "&filterdatafield{$count}={$key}&filtervalue{$count}={$value}";
+                $count++;
+            }
+        }
+        return get_site_url()."/?qd-api={$name}".$tmp;
     }
     function __construct()
     {

@@ -7,11 +7,11 @@
  */
 Qdmvc::loadPageClass('root');
 class Qdmvc_Page_ProductCat_Card extends Qdmvc_Page_Root {
-    public function run()
+    protected static function getViewClass()
     {
-        //load View and render
-        (new Qdmvc_View_ProductCat_Card($this))->render();
+        return 'Qdmvc_View_ProductCat_Card';
     }
+
     public static function getPage()
     {
         return 'product_cat_card';

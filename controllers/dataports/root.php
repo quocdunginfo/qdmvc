@@ -12,7 +12,7 @@ class Qdmvc_Dataport {
     protected $msg = array();
     protected $action = 'update';
     private $for_card = true;
-    private $filter = array();
+    //private $filter = array();
     function __construct()
     {
 
@@ -63,7 +63,7 @@ class Qdmvc_Dataport {
     {
 
     }
-    protected function finish($msg_array=null, $result_array=null, $total=0, $id='')
+    protected function finish($msg_array=null, $result_array=null, $total=0, $id=0)
     {
         $re = array();
         $c = $this->class;
@@ -75,10 +75,8 @@ class Qdmvc_Dataport {
         {
             $re['rows'] = $c::toJSON($result_array);
         }
-        if($id!=null)
-        {
-            $re['id'] = $id;
-        }
+        $re['id'] = $id;
+
         if($total!=null)
         {
             $re['total'] = $total;
@@ -152,20 +150,27 @@ class Qdmvc_Dataport {
     {
         $recordstartindex = isset($_REQUEST['recordstartindex'])?$_REQUEST['recordstartindex']:0;
         $pagesize = isset($_REQUEST['pagesize'])?$_REQUEST['pagesize']:10;
-        $count = 0;
-        if(isset($_REQUEST['filterdatafield99']))//quocdunginfo
-        {
-            $this->filter[$_REQUEST['filterdatafield99']] = $_REQUEST['filtervalue99'];
-        }
-        while(isset($_REQUEST['filterdatafield'.$count]))
-        {
-            $this->filter[$_REQUEST['filterdatafield'.$count]] = $_REQUEST['filtervalue'.$count];
-            $count++;
-        }
+
         $c = $this->class;
         $record = new $c();
 
-        $record->SETFILTER($this->filter);
+        //pre filter
+        $count = 99;
+        if(isset($_REQUEST['filterdatafield'.$count]))//quocdunginfo
+        {
+            //$this->filter[$_REQUEST['filterdatafield'.$count]] = $_REQUEST['filtervalue'.$count];
+            $record->SETRANGE($_REQUEST['filterdatafield'.$count], $_REQUEST['filtervalue'.$count], true);
+            $count++;
+        }
+        $count = 0;
+        while(isset($_REQUEST['filterdatafield'.$count]))
+        {
+            //$this->filter[$_REQUEST['filterdatafield'.$count]] = $_REQUEST['filtervalue'.$count];
+            $record->SETRANGE($_REQUEST['filterdatafield'.$count], $_REQUEST['filtervalue'.$count], false);
+            $count++;
+        }
+
+        //$record->SETFILTER($this->filter);
         $record->SETLIMIT($pagesize);
         $record->SETOFFSET($recordstartindex);
         $record->SETORDERBY('id', 'desc');

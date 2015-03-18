@@ -8,10 +8,9 @@
 Qdmvc::loadPageClass('root');
 class Qdmvc_Page_ProductOrder_Card extends Qdmvc_Page_Root
 {
-    public function run()
+    protected static function getViewClass()
     {
-        //load View and render
-        (new Qdmvc_View_ProductOrder_Card($this))->render();
+        return 'Qdmvc_View_ProductOrder_Card';
     }
 
     protected static function initFields()

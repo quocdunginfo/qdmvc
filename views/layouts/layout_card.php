@@ -213,7 +213,18 @@ class Qdmvc_Layout_Card
 
     protected function externalGateway()
     {
-
+        ?>
+        <script>
+            //gate way to comunicate with parent windows
+            function setObj(obj) {//do not change func name
+                (function ($) {
+                    $("#cardForm").autofill(obj);
+                    $("#cardForm input").change();
+                    //$('#jqxNavigationBar').jqxNavigationBar('collapseAt', 0);
+                })(jQuery);
+            }
+        </script>
+        <?php
     }
 
     private function msgPanelLayout()
@@ -437,6 +448,10 @@ class Qdmvc_Layout_Card
                                         $("#jqxMsgContent").html(data.msg);
                                         $("#jqxMsg").jqxNotification("open");
                                         $("#id").val(data.id).change();
+
+                                        console.log(data.rows[0]);
+                                        setObj(data.rows[0]);
+
 
                                         <?=$this->onSaveOK()?>
                                     })

@@ -189,9 +189,10 @@ class Qdmvc_Layout_List
                     $("#jqxgrid").on("bindingcomplete", function (event) {
                         try {
                             //auto select first row
-
+                            /*
                             var index = $('#jqxgrid').jqxGrid('getrowboundindex', 0);
                             $('#jqxgrid').jqxGrid('selectrow', index);
+                            */
 
                         } catch (error) {
                             console.log(error);

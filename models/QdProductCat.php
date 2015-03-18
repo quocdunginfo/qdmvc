@@ -82,4 +82,18 @@ class QdProductCat extends QdRoot
         array_push($re,array('name' => $this->name, 'url'=>$this->getPermalink()));
         return $re;
     }
+    protected function orderOnValidate()
+    {
+        if($this->order <= 0)
+        {
+            $this->pushValidateError('Order phải lớn hơn 0');
+        }
+    }
+    protected function avatarOnValidate()
+    {
+        if($this->avatar == '')
+        {
+            $this->pushValidateError('Avatar phải khác rỗng');
+        }
+    }
 }

@@ -78,6 +78,25 @@ class Qdmvc_Page_Index {
             ),
             'Model' => 'QdProductOrder',
             'DataPort' => 'product_order_port'
+        ),
+        'product_order_done_card' => array(
+            'PageType' => 'Card',
+            'Class'=>'Qdmvc_Page_ProductOrderDone_Card',
+            'Caption' => array(
+                'en' => 'Product Order Done'
+            ),
+            'Model' => 'QdProductOrder',
+            'DataPort' => 'product_order_port',
+            'PageList' => 'product_order_done_list'
+        ),
+        'product_order_done_list' => array(
+            'PageType' => 'List',
+            'Class'=>'Qdmvc_Page_ProductOrderDone_List',
+            'Caption' => array(
+                'en' => 'Product Order Done List'
+            ),
+            'Model' => 'QdProductOrder',
+            'DataPort' => 'product_order_port'
         )
     );
     public static function getIndex()

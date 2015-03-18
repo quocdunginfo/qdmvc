@@ -15,8 +15,14 @@ class Qdmvc_Page_ProductCat_List extends Qdmvc_Page_Root
         $this->data['view_style'] = 'compact';
         Qdmvc_Helper::requestCompact();
 
-        (new Qdmvc_View_ProductCat_List($this))->render();
+        parent::run();
     }
+
+    protected static function getViewClass()
+    {
+        return 'Qdmvc_View_ProductCat_List';
+    }
+
     protected static function initFields()
     {
         return array(
