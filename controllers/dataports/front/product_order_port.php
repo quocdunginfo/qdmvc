@@ -21,14 +21,14 @@ class Qdmvc_Dataport_FrontProductOrder extends Qdmvc_Dataport
 
     protected function delete()
     {
-        $this->msg = 'Không được phép xóa, ID='.$this->obj->id;
-        return false;
+        $this->pushMsg('Không được phép xóa, ID='.$this->obj->id);
+        $this->finish();
     }
 
     protected function update()
     {
-        $this->msg = 'Không được phép sửa, ID='.$this->obj->id;
-        return false;
+        $this->pushMsg('Không được phép sửa, ID='.$this->obj->id);
+        $this->finish();
     }
 }
 (new Qdmvc_Dataport_FrontProductOrder())->run();

@@ -71,16 +71,22 @@ class Qdmvc_Dataport {
         {
             $re['msg'] = $msg_array;
         }
+        else
+        {
+            $re['msg'] = $this->msg;
+        }
+
         if($result_array!=null)
         {
             $re['rows'] = $c::toJSON($result_array);
         }
+        else
+        {
+            $re['rows'] = array();
+        }
         $re['id'] = $id;
 
-        if($total!=null)
-        {
-            $re['total'] = $total;
-        }
+        $re['total'] = $total;
 
         echo json_encode($re);
         exit(0);

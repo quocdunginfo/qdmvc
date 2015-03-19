@@ -56,33 +56,36 @@ class QdRoot extends ActiveRecord\Model
     {
 
     }
+
     protected $fields_validation = array(
         'error' => array()
     );
+
     protected function pushValidateError($msg)
     {
         array_push($this->fields_validation['error'], $msg);
     }
+
     private $_xRec = null;
+
     protected function xRec()
     {
-        if($this->_xRec==null)
-        {
+        if ($this->_xRec == null) {
             $this->_xRec = static::GET($this->id);
         }
         return $this->_xRec;
     }
+
     public function GETVALIDATION()
     {
         return $this->fields_validation['error'];
     }
+
     public function VALIDATE()
     {
         //call validate trigger on all fields and then return array of error
-        foreach(static::$fields_config as $key=>$config)
-        {
-            if(method_exists($this, $key.'OnValidate'))
-            {
+        foreach (static::$fields_config as $key => $config) {
+            if (method_exists($this, $key . 'OnValidate')) {
                 $this->{$key . 'OnValidate'}();
             }
             /*
@@ -93,8 +96,9 @@ class QdRoot extends ActiveRecord\Model
 
             }*/
         }
-        return count($this->fields_validation['error'])==0;
+        return count($this->fields_validation['error']) == 0;
     }
+
     /**
      * @return string
      */
@@ -111,6 +115,7 @@ class QdRoot extends ActiveRecord\Model
     {
         return static::$fields_config[$field_name]['name'];
     }
+
     public static function GET($id)
     {
         return static::find($id);
@@ -124,18 +129,17 @@ class QdRoot extends ActiveRecord\Model
     {
         try {
             return static::$fields_config[$field_name]['DataType'];
-        }catch (Exception $ex)
-        {
+        } catch (Exception $ex) {
             return 'Text';
         }
 
     }
+
     public static function getTableRelation($field_name)
     {
         try {
             return static::$fields_config[$field_name]['TableRelation']['Table'];
-        }catch (Exception $ex)
-        {
+        } catch (Exception $ex) {
             return '';
         }
     }
@@ -150,15 +154,18 @@ class QdRoot extends ActiveRecord\Model
         'filter_raw' => '1=1 OR 2=2',//raw SQL Condition
         'filter_relation' => 'AND'
     );
-    public function SETFILTERDEFAULT($filter=array())
+
+    public function SETFILTERDEFAULT($filter = array())
     {
         $this->record_filter['filter_default'] = $filter;
         return $this->SETFILTER($filter);
     }
+
     public function REMOVEFILTERDEFAULT()
     {
         return $this->SETFILTERDEFAULT(array());
     }
+
     public function REMOVEFILTER()
     {
         $this->record_filter['filter'] = $this->record_filter['filter_default'];
@@ -215,7 +222,7 @@ class QdRoot extends ActiveRecord\Model
      * @param $field
      * @param $value
      */
-    public function SETRANGE($field, $value, $exact=true)
+    public function SETRANGE($field, $value, $exact = true)
     {
         $this->record_filter['filter'][$field]['value'] = $value;
         $this->record_filter['filter'][$field]['exact'] = $exact;
@@ -232,16 +239,19 @@ class QdRoot extends ActiveRecord\Model
         $this->record_filter['filter'] = $where_array;
         return $this;
     }
-    public function SETFILTERRELATION($relation='AND')
+
+    public function SETFILTERRELATION($relation = 'AND')
     {
         $this->record_filter['filter_relation'] = $relation;
         return $this;
     }
+
     public function REMOVEFILTERRELATION()
     {
         $this->record_filter['filter_relation'] = 'AND';
         return $this;
     }
+
     /**
      * @param $field
      */
@@ -250,18 +260,18 @@ class QdRoot extends ActiveRecord\Model
         unset($this->record_filter['filter'][static::getPF($field)]);
         return $this;
     }
+
     protected $qd_flowfields_attr = array();
+
     protected function CALCFIELDS($flowfield_name)
     {
         $ff_config = static::$fields_config[$flowfield_name]['FieldClass_FlowField'];
-        if($ff_config['Method']=='Lookup')
-        {
+        if ($ff_config['Method'] == 'Lookup') {
             $ff_config_tf = $ff_config['TableFilter'];
             $c = new $ff_config['Table'];//init new object
 
-            foreach($ff_config_tf as $filter_item)
-            {
-                if($filter_item['Type']=='FIELD') {
+            foreach ($ff_config_tf as $filter_item) {
+                if ($filter_item['Type'] == 'FIELD') {
                     $c->SETRANGE($filter_item['Field'], $this->{$filter_item['Value']});
                 }
             }
@@ -295,24 +305,18 @@ class QdRoot extends ActiveRecord\Model
      */
     protected static function _generateConditionsArray($record)
     {
-        if(is_array($record['filter']) && count($record['filter'])>0) {
+        if (is_array($record['filter']) && count($record['filter']) > 0) {
             $where = '';
             foreach ($record['filter'] as $key => $value) {
-                if($value['exact']==true)
-                {
-                    $where .= "`{$key}` = '{$value['value']}' ".$record['filter_relation']." ";//quocdunginfo
-                }
-                else
-                {
-                    $where .= "`{$key}` LIKE '%{$value['value']}%' ".$record['filter_relation']." ";//quocdunginfo
+                if ($value['exact'] == true) {
+                    $where .= "`{$key}` = '{$value['value']}' " . $record['filter_relation'] . " ";//quocdunginfo
+                } else {
+                    $where .= "`{$key}` LIKE '%{$value['value']}%' " . $record['filter_relation'] . " ";//quocdunginfo
                 }
             }
-            if(strtoupper($record['filter_relation'])=='AND')
-            {
+            if (strtoupper($record['filter_relation']) == 'AND') {
                 $where .= '1=1';
-            }
-            else
-            {
+            } else {
                 $where .= '1=2';
             }
             return array($where);
@@ -327,8 +331,8 @@ class QdRoot extends ActiveRecord\Model
     protected static function _generateQuery($record)
     {
         $re = array();
-        if(is_array($record)) {
-            if(is_array($record['filter']) && count($record['filter'])>0) {
+        if (is_array($record)) {
+            if (is_array($record['filter']) && count($record['filter']) > 0) {
                 $re['conditions'] = static::_generateConditionsArray($record);
             }
             if ($record['limit'] > 0) {
@@ -344,98 +348,91 @@ class QdRoot extends ActiveRecord\Model
         }
         return $re;
     }
-    protected static $fields_config = array(
 
-    );
+    protected static $fields_config = array();
     protected static $lookup_fields = null;
+
     protected static function ISLOOKUPFIELD($field_name)
     {
-        try{
-            return static::$fields_config[$field_name]['TableRelation']['Table']!='';
-        }catch(Exception $e)
-        {
+        try {
+            return static::$fields_config[$field_name]['TableRelation']['Table'] != '';
+        } catch (Exception $e) {
             return false;
         }
     }
+
     public static function getLookupFields()
     {
-        if(static::$lookup_fields!=null)
-        {
+        if (static::$lookup_fields != null) {
             return static::$lookup_fields;
-        }
-        else {
+        } else {
             static::$lookup_fields = array();
-            foreach(static::$fields_config as $field=>$config)
-            {
-                if(static::ISLOOKUPFIELD($field))
-                {
+            foreach (static::$fields_config as $field => $config) {
+                if (static::ISLOOKUPFIELD($field)) {
                     array_push(static::$lookup_fields, $field);
                 }
             }
             return static::$lookup_fields;
         }
     }
-    public static function getFieldCaption($field_name, $lang='en')
+
+    public static function getFieldCaption($field_name, $lang = 'en')
     {
-        try{
-            if(isset(static::$fields_config[$field_name]) && !isset(static::$fields_config[$field_name]['Caption']))
-            {
+        try {
+            if (isset(static::$fields_config[$field_name]) && !isset(static::$fields_config[$field_name]['Caption'])) {
                 return $field_name;
-            }
-            else {
+            } else {
                 return static::$fields_config[$field_name]['Caption'][$lang];
             }
-        }catch(Exception $ex)
-        {
+        } catch (Exception $ex) {
             return Qdmvc_Helper::getNoneText();
         }
 
     }
+
     public static function getFieldsConfig()
     {
         return static::$fields_config;
     }
+
     public static function ISREADONLY($f_name)
     {
-        try{
+        try {
             return (static::$fields_config[$f_name]['ReadOnly'] || static::ISFLOWFIELD($f_name));
-        }catch (Exception $ex)
-        {
+        } catch (Exception $ex) {
             return false;
         }
     }
+
     public static function ISFLOWFIELD($flowfield_name)
     {
-        try{
+        try {
             return static::$fields_config[$flowfield_name]['FieldClass'] == 'FlowField';
-        }catch (Exception $ex)
-        {
+        } catch (Exception $ex) {
             return false;
         }
     }
+
     public function __get($field_name)
     {
-        if(static::ISFLOWFIELD($field_name))
-        {
+        if (static::ISFLOWFIELD($field_name)) {
             //check cached value
-            if(is_array($this->qd_flowfields_attr) && isset($this->qd_flowfields_attr[$field_name]))
-            {
+            if (is_array($this->qd_flowfields_attr) && isset($this->qd_flowfields_attr[$field_name])) {
                 return $this->qd_flowfields_attr[$field_name];
-            }
-            else {
+            } else {
                 //CALC FlowField First
                 return $this->CALCFIELDS($field_name);
             }
         }
         return parent::__get($field_name);
     }
+
     public static function toJSON($list)
     {
         $tmp = array();
         foreach ($list as $item) {
             $arr = array();
-            foreach(static::getFieldsConfig() as $key => $value)
-            {
+            foreach (static::getFieldsConfig() as $key => $value) {
                 $arr[$key] = $item->$key;
             }
             array_push($tmp, $arr);

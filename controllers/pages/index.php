@@ -97,7 +97,45 @@ class Qdmvc_Page_Index {
             ),
             'Model' => 'QdProductOrder',
             'DataPort' => 'product_order_port'
-        )
+        ),
+        'feedback_card' => array(
+            'PageType' => 'Card',
+            'Class'=>'Qdmvc_Page_Feedback_Card',
+            'Caption' => array(
+                'en' => 'Feedback'
+            ),
+            'Model' => 'QdFeedback',
+            'DataPort' => 'feedback_port',
+            'PageList' => 'feedback_list'
+        ),
+        'feedback_list' => array(
+            'PageType' => 'List',
+            'Class'=>'Qdmvc_Page_Feedback_List',
+            'Caption' => array(
+                'en' => 'Feedback List'
+            ),
+            'Model' => 'QdFeedback',
+            'DataPort' => 'feedback_port'
+        ),
+        'feedback_done_card' => array(
+            'PageType' => 'Card',
+            'Class'=>'Qdmvc_Page_FeedbackDone_Card',
+            'Caption' => array(
+                'en' => 'Feedback Done'
+            ),
+            'Model' => 'QdFeedback',
+            'DataPort' => 'feedback_port',
+            'PageList' => 'feedback_done_list'
+        ),
+        'feedback_done_list' => array(
+            'PageType' => 'List',
+            'Class'=>'Qdmvc_Page_FeedbackDone_List',
+            'Caption' => array(
+                'en' => 'Feedback Done List'
+            ),
+            'Model' => 'QdFeedback',
+            'DataPort' => 'feedback_port'
+        ),
     );
     public static function getIndex()
     {
