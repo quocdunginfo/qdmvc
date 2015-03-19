@@ -16,23 +16,13 @@ class Qdmvc_DataPort_Search {
         $re = array();
         $record = new QdProduct();
         $products = $record
-            ->SETRANGE('name', $this->key_word)
-            ->SETRANGE('model', $this->key_word)
-            ->SETRANGE('xuatxu', $this->key_word)
+            ->SETRANGE('name', $this->key_word, false)
+            ->SETRANGE('model', $this->key_word, false)
+            ->SETRANGE('xuatxu', $this->key_word, false)
             ->SETFILTERRELATION('OR')
             ->SETLIMIT($this->limit)
             ->GETLIST();
-        /*
-        $record->SETRANGE('name', $this->key_word);
-        $record->SETRANGE('model', $this->key_word);
-        $record->SETRANGE('xuatxu', $this->key_word);
-        $record->SETFILTERRELATION('OR');
-        $record->SETLIMIT($this->limit);
 
-        $products = $record->GETLIST();
-        */
-        //echo $record::connection()->last_query;
-        //var_dump($products);
         foreach($products as $item)
         {
             array_push($re, array('name' => $item->name, 'url' => $item->getPermalink()));
