@@ -31,6 +31,10 @@ class Qdmvc_Page_ProductCat_Card extends Qdmvc_Page_Root {
                         'SourceExpr' => 'id',
                         'PrimaryKey' => true
                     ),
+                    'date_modified' => array(
+                        'SourceExpr' => 'date_modified',
+                        'DataType' => static::getDataType('date_modified')
+                    ),
                     'name' => array(
                         'SourceExpr' => 'name'
                     ),

@@ -265,8 +265,23 @@ class Qdmvc_Layout_Card
 
     <?php
     }
-
-    private function generateFieldHidden($f_name, $value = '')
+    private function generateFieldDate($f_name, $value)
+    {
+        ?>
+        <td>
+        <script type="text/javascript">
+            (function($) {
+                $(document).ready(function () {
+                    // Create a jqxDateTimeInput
+                    $("#jqxDT").jqxDateTimeInput({width: '100%', height: '25px'});
+                });
+            })(jQuery);
+        </script>
+        <div id='jqxDT'></div>
+        </td>
+        <?php
+    }
+    private function generateFieldHidden($f_name, $value)
     {
         ?>
         <input value="<?= $value ?>" type="hidden" name="<?= $f_name ?>" id="<?= $f_name ?>">
@@ -283,6 +298,21 @@ class Qdmvc_Layout_Card
             <?php
             Qdmvc_Helper::qd_media_choose("c{$f_name}", $f_name, false);
             ?>
+            <script>
+                (function($){
+                    $(document).ready(function(){
+                        $("#<?=$f_name?>").hover(function() {
+                            var imgURL = $(this).val();
+                            if(imgURL!="") {
+                                var content = '<img style="width: 300px;" src="' + imgURL + '" />';
+                                var selector = $("#<?=$f_name?>");
+                                selector.jqxTooltip({content: content, position: 'right', opacity: 0.8});
+                                selector.jqxTooltip('open');
+                            }
+                        });
+                    });
+                })(jQuery);
+            </script>
         </td>
     <?php
     }
@@ -326,13 +356,17 @@ class Qdmvc_Layout_Card
                             if ($type == 'Boolean') {
                                 $this->generateFieldBoolean($f_name, $f_val);
                                 continue;
-                            }
+                            } else
                             if ($f_config['ReadOnly']) {
                                 $this->generateFieldReadOnly($f_name, $f_val);
                                 continue;
-                            }
+                            } else
                             if ($type == 'Image') {
                                 $this->generateFieldImage($f_name, $f_val);
+                                continue;
+                            } else
+                            if ($type == 'Date') {
+                                $this->generateFieldDate($f_name, $f_val);
                                 continue;
                             }
                             ?>

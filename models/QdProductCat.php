@@ -13,7 +13,12 @@ class QdProductCat extends QdRoot
         'avatar' => array(
             'Caption' => array('en' => 'Avatar', 'vn' => 'Hình đại diện'),
             'DataType' => 'Image',
-            'Description' => 'Hình đại diện',
+            'Description' => 'Hình đại diện'
+        ),
+        'date_modified' => array(
+            'Caption' => array('en' => 'Date modified', 'vn' => 'Ngày sửa cuối'),
+            'DataType' => 'Date',
+            'Description' => 'Ngày sửa cuối'
         ),
         'order' => array(),
         'parent_id' => array(

@@ -14,7 +14,7 @@ class QdRoot extends ActiveRecord\Model
         '_product_cat_name' => array(
             'Name' => 'product_cat_name',
             'Caption' => array('en' => 'Product Cat Name', 'vn' => 'Tên loại SP'),
-            'DataType' => 'Text',
+            'DataType' => 'Text',//'Image', 'Date'
             'FieldClass' => 'FlowField',
             'FieldClass_FlowField' => array(
                 'Method' => 'Lookup',
