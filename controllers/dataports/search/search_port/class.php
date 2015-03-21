@@ -41,4 +41,3 @@ class Qdmvc_DataPort_Search {
         $this->finish();
     }
 }
-(new Qdmvc_DataPort_Search())->run();

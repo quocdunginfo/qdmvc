@@ -5,7 +5,7 @@
  * Date: 05/03/2015
  * Time: 11:30 PM
  */
-Qdmvc::loadPageClass('root');
+Qdmvc::loadPage('root');
 class Qdmvc_Page_Product_Card extends Qdmvc_Page_Root
 {
     protected static $fields_show = null;

@@ -5,8 +5,8 @@
  * Date: 05/03/2015
  * Time: 11:30 PM
  */
-Qdmvc::loadPageClass('root');
-Qdmvc::loadPageClass('feedback_card');
+Qdmvc::loadPage('root');
+Qdmvc::loadPage('feedback_card');
 class Qdmvc_Page_FeedbackDone_Card extends Qdmvc_Page_Feedback_Card
 {
     public static function getPage()

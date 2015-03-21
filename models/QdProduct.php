@@ -109,6 +109,7 @@ class QdProduct extends QdRoot
         {
             $this->pushValidateError('Name bắt buộc');
         }
+        /*
         if($this->active==1)
         {
             if($this->name!=$this->xRec()->name)
@@ -116,9 +117,11 @@ class QdProduct extends QdRoot
                 $this->pushValidateError('Không thể sửa Name khi Active=1');
             }
         }
+        */
     }
     protected function activeOnValidate()
     {
+        /*
         if($this->active ==0 && $this->active != $this->xRec()->active)
         {
             if($this->code != 1)
@@ -126,6 +129,7 @@ class QdProduct extends QdRoot
                 $this->pushValidateError('Code phải bằng 1 mới tắt được Active');
             }
         }
+        */
     }
     protected function codeOnValidate()
     {
@@ -142,6 +146,7 @@ class QdProduct extends QdRoot
         //check exit
         if($this->getProductCatObj()==null)
         {
+            $this->product_cat_id = $this->xRec()->product_cat_id;
             $this->pushValidateError('Product Cat không tồn tại!');
         }
     }

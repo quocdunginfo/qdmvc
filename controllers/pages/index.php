@@ -36,7 +36,7 @@ class Qdmvc_Page_Index {
             'PageType' => 'Card',
             'Class'=>'Qdmvc_Page_ProductCat_Card',
             'Caption' => array(
-                'en' => 'Product Cat Card'
+                'en' => 'Product Cat'
             ),
             'Model' => 'QdProductCat',
             'DataPort' => 'product_cat_port',

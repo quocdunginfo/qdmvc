@@ -24,14 +24,14 @@ class Qdmvc_RegisterAdminMenu
     function __call($func, $params)
     {
         if (!in_array($func, array('add_page_main', 'qd_register_custom_menu_page'))) {
-            Qdmvc::loadPage($func);
+            Qdmvc::runPage($func);
         }
         //return $func;
     }
 
     public function add_page_main()
     {
-        Qdmvc::loadPage('main');
+        Qdmvc::runPage('main');
     }
 }
 

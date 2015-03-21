@@ -1,12 +1,9 @@
 <?php
 Qdmvc::loadDataPort('root');
-class Qdmvc_Dataport_FrontProductOrder extends Qdmvc_Dataport
+Qdmvc::loadDataPort('product_order');
+class Qdmvc_Dataport_FrontProductOrder extends Qdmvc_Dataport_ProductOrder
 {
     private static $submit_fields = array('product_id', 'customer_name','customer_phone', 'customer_email', 'customer_address', 'mota', 'count');
-    protected function setClass()
-    {
-        $this->class = 'QdProductOrder';
-    }
 
     protected function assign()
     {
@@ -31,4 +28,3 @@ class Qdmvc_Dataport_FrontProductOrder extends Qdmvc_Dataport
         $this->finish();
     }
 }
-(new Qdmvc_Dataport_FrontProductOrder())->run();

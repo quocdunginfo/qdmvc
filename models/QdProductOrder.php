@@ -62,4 +62,24 @@ class QdProductOrder extends QdRoot
     {
         return $this->product_obj;
     }
+
+    public function save($validate = true)
+    {
+        if(!$this->is_new_record() && $this->done)
+        {
+            $this->pushValidateError('Không thể sửa khi Done = true');
+            return false;
+        }
+        return parent::save($validate);
+    }
+    public function delete()
+    {
+        if($this->done)
+        {
+            $this->pushValidateError('Không thể xóa khi Done = true');
+            return false;
+        }
+        return parent::delete();
+    }
+
 }

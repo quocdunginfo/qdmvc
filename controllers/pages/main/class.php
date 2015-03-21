@@ -5,7 +5,7 @@
  * Date: 05/03/2015
  * Time: 11:38 PM
  */
-Qdmvc::loadPageClass('root');
+Qdmvc::loadPage('root');
 class Qdmvc_Page_Main extends Qdmvc_Page_Root {
     public static function getPage()
     {

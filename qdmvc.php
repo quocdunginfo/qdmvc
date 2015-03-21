@@ -45,14 +45,14 @@ class Qdmvc
     /*
      * External use
      */
-    public static function loadPageClass($name)
+    public static function loadPage($name)
     {
         static::loadController('pages/' . $name . '/class');
     }
-    public static function loadPage($name)
+    public static function runPage($name)
     {
         //load class
-        static::loadPageClass($name);
+        static::loadPage($name);
         //load controller
         static::loadController('pages/' . $name . '/controller');
     }
@@ -71,9 +71,14 @@ class Qdmvc
     {
         require_once(static::getHelper($pure_path.'.php'));
     }
+    public static function runDataPort($pure_path)
+    {
+        static::loadDataPort($pure_path);
+        static::loadController('dataports/'.$pure_path.'/controller');
+    }
     public static function loadDataPort($pure_path)
     {
-        require_once(static::getController('dataports/'.$pure_path.'.php'));
+        require_once(static::getController('dataports/'.$pure_path.'/class.php'));
     }
     public static function loadIndex($pure_path)
     {

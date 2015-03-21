@@ -5,12 +5,22 @@
  * Date: 05/03/2015
  * Time: 11:36 PM
  */
-Qdmvc::loadPageClass('root');
+Qdmvc::loadPage('root');
 class Qdmvc_Page_ProductSetup extends Qdmvc_Page_Root {
     public function run()
     {
         //prepare data
-        $this->data['obj'] = QdProductSetup::GET(1);
+        if(QdProductSetup::GET()==null)
+        {
+            $obj = new QdProductSetup();
+            $obj->save();
+            $this->data['obj'] = $obj;
+        }
+        else
+        {
+            $this->data['obj'] = QdProductSetup::GET();
+        }
+
         //load View and render
         parent::run();
     }

@@ -20,6 +20,7 @@ class QdFeedback extends QdRoot
         ),
         'id' => array()
     );
+    /*
     protected function contentOnValidate()
     {
         if($this->content!=$this->xRec()->content)
@@ -51,4 +52,28 @@ class QdFeedback extends QdRoot
             }
         }
     }
+    */
+
+    public function save($validate = true)
+    {
+        if(!$this->is_new_record())
+        {
+            if($this->xRec()->done) {
+                $this->pushValidateError('Không thể sửa khi Done = true');
+                return false;
+            }
+        }
+        return parent::save($validate);
+    }
+
+    public function delete()
+    {
+        if($this->done)
+        {
+            $this->pushValidateError('Không thể xóa khi Done = true');
+            return false;
+        }
+        return parent::delete();
+    }
+
 }

@@ -116,9 +116,13 @@ class QdRoot extends ActiveRecord\Model
         return static::$fields_config[$field_name]['name'];
     }
 
-    public static function GET($id)
+    public static function GET($id=1)
     {
-        return static::find($id);
+        if(static::exists($id))
+        {
+            return static::find($id);
+        }
+        return null;
     }
 
     /**
@@ -438,5 +442,16 @@ class QdRoot extends ActiveRecord\Model
             array_push($tmp, $arr);
         }
         return $tmp;
+    }
+    public function save($validate = true)
+    {
+        if($this->VALIDATE())
+        {
+            return parent::save($validate);
+        }
+        else
+        {
+            return false;
+        }
     }
 }
