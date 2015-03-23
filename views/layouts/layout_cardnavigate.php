@@ -8,15 +8,6 @@
 Qdmvc::loadLayout('layout_card');
 class Qdmvc_Layout_CardNavigate extends Qdmvc_Layout_Card
 {
-    function __construct($page)
-    {
-        $this->page = $page;
-        $this->data = $page->getData();
-    }
-
-    protected $page = null;
-    protected $data = null;
-
     protected function getPageListURL()
     {
         $c = $this->page;

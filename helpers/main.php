@@ -58,14 +58,20 @@ class Qdmvc_Helper
     {
         return get_admin_url(null, "admin.php?page={$page_list}&qdrole=lookup&qdreturnid={$return_id}&qdgetfield={$getfield}&qdmulti=0");
     }
-    public static function getSlider($metaslider_id)
+    public static function getSlider($metaslider_shortcode)
     {
         self::loadPHPDOMLibrary();
-
-        $slider_html = do_shortcode("[metaslider id=$metaslider_id]");
-        $html = str_get_html($slider_html);
-        $ret = $html->find('img');
-        return $ret;
+        if($metaslider_shortcode!='')
+        {
+            $slider_html = do_shortcode($metaslider_shortcode);
+            $html = str_get_html($slider_html);
+            $ret = $html->find('img');
+            return $ret;
+        }
+        else
+        {
+            return array();
+        }
     }
     public static function getPageIdByTemplate($template_path_from_theme)
     {

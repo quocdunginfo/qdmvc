@@ -65,10 +65,14 @@ class QdProductOrder extends QdRoot
 
     public function save($validate = true)
     {
-        if(!$this->is_new_record() && $this->done)
+        if(!$this->is_new_record())
         {
-            $this->pushValidateError('Không thể sửa khi Done = true');
-            return false;
+            if($this->done) {
+                if ($this->xRec()->done) {
+                    $this->pushValidateError('Không thể sửa khi Done = true');
+                    return false;
+                }
+            }
         }
         return parent::save($validate);
     }

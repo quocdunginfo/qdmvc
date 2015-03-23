@@ -58,9 +58,11 @@ class QdFeedback extends QdRoot
     {
         if(!$this->is_new_record())
         {
-            if($this->xRec()->done) {
-                $this->pushValidateError('Không thể sửa khi Done = true');
-                return false;
+            if($this->done) {
+                if ($this->xRec()->done) {
+                    $this->pushValidateError('Không thể sửa khi Done = true');
+                    return false;
+                }
             }
         }
         return parent::save($validate);

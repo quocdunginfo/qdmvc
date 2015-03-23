@@ -530,6 +530,16 @@ class Qdmvc_Layout_Card
                                 <?=$this->onCloneOK()?>
                             });
 
+                            //card button event
+                            $("#qdnote").bind("click", function (event) {
+                                //To disable
+                                $("#qdnote").attr("disabled", "disabled");
+                                requestLookupWindow('http://localhost/mpd_2015/wp-admin/admin.php?page=note&&qdrole=navigate');
+
+                                $("#qdnote").removeAttr("disabled");
+                            });
+
+
                             $("#qddelete").bind("click", function (event) {
                                 if (!confirm("Xác nhận ?")) {
                                     return false;
@@ -604,6 +614,9 @@ class Qdmvc_Layout_Card
                         </span>
                         <span>
                             <button class="qd-action-btn" type="button" id="qdclone">Clone</button>
+                        </span>
+                            <span>
+                            <button class="qd-action-btn" type="button" id="qdnote">Notes</button>
                         </span>
                         </td>
                     </tr>

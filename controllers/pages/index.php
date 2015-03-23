@@ -136,6 +136,25 @@ class Qdmvc_Page_Index {
             'Model' => 'QdFeedback',
             'DataPort' => 'feedback_port'
         ),
+        'note' => array(
+            'PageType' => 'Card',
+            'Class'=>'Qdmvc_Page_Note',
+            'Caption' => array(
+                'en' => 'Note'
+            ),
+            'Model' => 'QdNote',
+            'DataPort' => 'note_port',
+            'PageList' => 'note_list'
+        ),
+        'note_list' => array(
+            'PageType' => 'List',
+            'Class'=>'Qdmvc_Page_Note_list',
+            'Caption' => array(
+                'en' => 'Note List'
+            ),
+            'Model' => 'QdNote',
+            'DataPort' => 'note_port'
+        ),
     );
     public static function getIndex()
     {
