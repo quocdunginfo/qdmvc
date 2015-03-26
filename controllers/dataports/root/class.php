@@ -111,7 +111,7 @@ class Qdmvc_Dataport {
         }
         else
         {
-            $this->pushMsg('Cập nhật thành công, ID='.$this->obj->id);
+            $this->pushMsg('Thêm thành công, ID='.$this->obj->id);
         }
     }
     protected function update()

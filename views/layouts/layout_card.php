@@ -80,31 +80,31 @@ class Qdmvc_Layout_Card
              * Descrip: Creates and inserts an ajax loader for ajax calls / timed events
              * Date: 03/08/2011
              */
-            function ajaxLoader (el, options) {
+            function ajaxLoader(el, options) {
                 // Becomes this.options
                 var defaults = {
-                    bgColor 		: '#fff',
-                    duration		: 800,
-                    opacity			: 0.7,
-                    classOveride 	: false
+                    bgColor: '#fff',
+                    duration: 800,
+                    opacity: 0.7,
+                    classOveride: false
                 }
-                this.options 	= jQuery.extend(defaults, options);
-                this.container 	= jQuery(el);
+                this.options = jQuery.extend(defaults, options);
+                this.container = jQuery(el);
 
-                this.init = function() {
+                this.init = function () {
                     var container = this.container;
                     // Delete any other loaders
                     this.remove();
                     // Create the overlay
                     var overlay = jQuery('<div></div>').css({
                         'background-color': this.options.bgColor,
-                        'opacity':this.options.opacity,
-                        'width':container.width(),
-                        'height':container.height(),
-                        'position':'absolute',
-                        'top':'0px',
-                        'left':'0px',
-                        'z-index':99999
+                        'opacity': this.options.opacity,
+                        'width': container.width(),
+                        'height': container.height(),
+                        'position': 'absolute',
+                        'top': '0px',
+                        'left': '0px',
+                        'z-index': 99999
                     }).addClass('ajax_overlay');
                     // add an overiding class name to set new loader style
                     if (this.options.classOveride) {
@@ -118,10 +118,10 @@ class Qdmvc_Layout_Card
                     );
                 };
 
-                this.remove = function(){
+                this.remove = function () {
                     var overlay = this.container.children(".ajax_overlay");
                     if (overlay.length) {
-                        overlay.fadeOut(this.options.classOveride, function() {
+                        overlay.fadeOut(this.options.classOveride, function () {
                             overlay.remove();
                         });
                     }
@@ -224,7 +224,7 @@ class Qdmvc_Layout_Card
                 })(jQuery);
             }
         </script>
-        <?php
+    <?php
     }
 
     private function msgPanelLayout()
@@ -258,29 +258,31 @@ class Qdmvc_Layout_Card
     {
         ?>
 
-        <td>
-            <input class="text-input" type="text" name="<?= $f_name ?>" id="<?= $f_name ?>" value="<?= $value ?>"
-                   readonly>
-        </td>
+
+        <input class="text-input" type="text" name="<?= $f_name ?>" id="<?= $f_name ?>" value="<?= $value ?>"
+               readonly>
+
 
     <?php
     }
+
     private function generateFieldDate($f_name, $value)
     {
         ?>
-        <td>
+
         <script type="text/javascript">
-            (function($) {
+            (function ($) {
                 $(document).ready(function () {
                     // Create a jqxDateTimeInput
-                    $("#jqxDT").jqxDateTimeInput({width: '100%', height: '25px'});
+                    $("#jqxDT").jqxDateTimeInput({width: '120px', height: '24px'});
                 });
             })(jQuery);
         </script>
         <div id='jqxDT'></div>
-        </td>
-        <?php
+
+    <?php
     }
+
     private function generateFieldHidden($f_name, $value)
     {
         ?>
@@ -291,104 +293,117 @@ class Qdmvc_Layout_Card
     private function generateFieldImage($f_name, $value)
     {
         ?>
-        <td>
-            <input class="text-input" type="text" name="<?= $f_name ?>" id="<?= $f_name ?>" value="<?= $value ?>">
 
-            <button id="c<?= $f_name ?>" value="">...</button>
-            <?php
-            Qdmvc_Helper::qd_media_choose("c{$f_name}", $f_name, false);
-            ?>
-            <script>
-                (function($){
-                    $(document).ready(function(){
-                        $("#<?=$f_name?>").hover(function() {
-                            var imgURL = $(this).val();
-                            if(imgURL!="") {
-                                var content = '<img style="width: 300px;" src="' + imgURL + '" />';
-                                var selector = $("#<?=$f_name?>");
-                                selector.jqxTooltip({content: content, position: 'right', opacity: 0.8});
-                                selector.jqxTooltip('open');
-                            }
-                        });
+        <input class="text-input" type="text" name="<?= $f_name ?>" id="<?= $f_name ?>" value="<?= $value ?>">
+
+        <button id="c<?= $f_name ?>" value="">...</button>
+        <?php
+        Qdmvc_Helper::qd_media_choose("c{$f_name}", $f_name, false);
+        ?>
+        <script>
+            (function ($) {
+                $(document).ready(function () {
+                    $("#<?=$f_name?>").hover(function () {
+                        var imgURL = $(this).val();
+                        if (imgURL != "") {
+                            var content = '<img style="width: 300px;" src="' + imgURL + '" />';
+                            var selector = $("#<?=$f_name?>");
+                            selector.jqxTooltip({content: content, position: 'right', opacity: 0.8});
+                            selector.jqxTooltip('open');
+                        }
                     });
-                })(jQuery);
-            </script>
-        </td>
+                });
+            })(jQuery);
+        </script>
+
     <?php
     }
 
     private function generateFieldBoolean($f_name, $value = 0)
     {
         ?>
-        <td>
-            <input <?= $value == 1 ? 'checked="checked"' : '' ?> type="checkbox" name="<?= $f_name ?>"
-                                                                 id="<?= $f_name ?>" value="1">
-        </td>
+        <input <?= $value == 1 ? 'checked="checked"' : '' ?> type="checkbox" name="<?= $f_name ?>"
+                                                             id="<?= $f_name ?>" value="1">
+
     <?php
     }
 
     private function generateFields()
     {
         ?>
-        <?php
-        foreach ($this->page->getLayout() as $group => $config) {
-            if (isset($config['Type']) && isset($config['Type']) == 'Group') {
-                if (isset($config['Fields'])) {
-                    foreach ($config['Fields'] as $key => $f_config) {
-                        $type = $f_config['DataType'];
-                        $f_name = $f_config['SourceExpr'];
-                        $f_val = $this->obj != null ? $this->obj->$f_name : '';
-                        $f_lku = $f_config['LookupURL'];
-
-                        if ($f_config['PrimaryKey']) {
-                            $this->generateFieldHidden($f_name, $f_val);
-                            continue;
-                        }
-
-                        ?>
-                        <tr>
-
-                            <!-- Caption -->
-                            <td><?= $this->page->getFieldCaption($f_name) ?>:</td>
-                            <!-- END Caption -->
-
-                            <?php
-                            if ($type == 'Boolean') {
-                                $this->generateFieldBoolean($f_name, $f_val);
-                                continue;
-                            } else
-                            if ($f_config['ReadOnly']) {
-                                $this->generateFieldReadOnly($f_name, $f_val);
-                                continue;
-                            } else
-                            if ($type == 'Image') {
-                                $this->generateFieldImage($f_name, $f_val);
-                                continue;
-                            } else
-                            if ($type == 'Date') {
-                                $this->generateFieldDate($f_name, $f_val);
-                                continue;
-                            }
-                            ?>
-                            <td>
-                                <input class="text-input" type="text" name="<?= $f_name ?>" id="<?= $f_name ?>"
-                                       value="<?= $f_val ?>">
-                                <?php
-                                if (isset($f_lku)) {
-                                    ?>
-                                    <button onclick='requestLookupWindow("<?= $f_lku ?>")' class="qd-lookup-btn"
-                                            data-lookupurl="<?= $f_lku ?>" id="c<?= $f_name ?>" value="">...
-                                    </button>
-                                <?php
-                                }
-                                ?>
-                            </td>
-                        </tr>
-                    <?php
-                    }
-                }
+        <style>
+            .qd-card-grid .col-md-4 {
+                height: 30px;
             }
-        }
+        </style>
+        <div class="container qd-card-grid">
+            <div class="row">
+                <?php
+                foreach ($this->page->getLayout() as $group => $config) :
+                    if (isset($config['Type']) && isset($config['Type']) == 'Group') :
+                        if (isset($config['Fields'])) :
+
+                            foreach ($config['Fields'] as $key => $f_config) :
+                                $type = $f_config['DataType'];
+                                $f_name = $f_config['SourceExpr'];
+                                $f_val = $this->obj != null ? $this->obj->$f_name : '';
+                                $f_lku = $f_config['LookupURL'];
+
+                                if ($f_config['PrimaryKey']) {
+                                    $this->generateFieldHidden($f_name, $f_val);
+                                    continue;
+                                }
+
+                                ?>
+                                <div class="col-md-4">
+
+                                    <!-- Caption -->
+                                    <div class="pull-left"><?= $this->page->getFieldCaption($f_name) ?>:</div>
+                                    <!-- END Caption -->
+                                    <div class="pull-right">
+                                        <?php
+                                        if ($type == 'Boolean') {
+                                            $this->generateFieldBoolean($f_name, $f_val);
+                                        } else
+                                            if ($f_config['ReadOnly']) {
+                                                $this->generateFieldReadOnly($f_name, $f_val);
+                                            } else
+                                                if ($type == 'Image') {
+                                                    $this->generateFieldImage($f_name, $f_val);
+                                                } else
+                                                    if ($type == 'Date') {
+                                                        $this->generateFieldDate($f_name, $f_val);
+                                                    } else {
+                                                        ?>
+
+                                                        <input class="text-input" type="text" name="<?= $f_name ?>"
+                                                               id="<?= $f_name ?>"
+                                                               value="<?= $f_val ?>">
+                                                        <?php if (isset($f_lku)) : ?>
+                                                            <button onclick='requestLookupWindow("<?= $f_lku ?>")'
+                                                                    class="qd-lookup-btn"
+                                                                    data-lookupurl="<?= $f_lku ?>" id="c<?= $f_name ?>"
+                                                                    value="">...
+                                                            </button>
+                                                        <?php endif; ?>
+
+                                                    <?php
+                                                    }
+                                        ?>
+                                    </div>
+
+                                    <div style="clear: both"></div>
+
+                                </div>
+                            <?php
+                            endforeach;
+                        endif;
+                    endif;
+                endforeach;
+                ?>
+            </div>
+        </div>
+    <?php
     }
 
     protected function onReadyHook()
@@ -421,11 +436,13 @@ class Qdmvc_Layout_Card
     {
 
     }
+
     private function getPagePartURL()
     {
         $c = $this->page;
         return $c::getPagePartURL();
     }
+
     private function linesBar()
     {
         ?>
@@ -446,8 +463,9 @@ class Qdmvc_Layout_Card
                 <!-- ENd Content Place Holder 2 -->
             </div>
         </div>
-        <?php
+    <?php
     }
+
     private function cardBar()
     {
         ?>
@@ -589,39 +607,36 @@ class Qdmvc_Layout_Card
                     })(jQuery);
                 </script>
                 <form style="width: 100%" id="cardForm" action=""
-                  onsubmit="return false">
-                <table class="register-table">
-                    <!-- Content place Holder -->
-                    <?= $this->generateFields() ?>
-                    <!-- End content place holder -->
-                    <tr>
-                        <td colspan="2">
+                      onsubmit="return false">
+                    <div>
+                        <!-- Content place Holder -->
+                        <?= $this->generateFields() ?>
+                        <!-- End content place holder -->
+                        <div>
 
                             <style>
                                 .qd-action-btn {
                                     margin-right: 20px;
                                 }
                             </style>
-                            <br>
-                        <span>
-                            <button class="qd-action-btn" type="button" id="qdupdate">Save</button>
-                        </span>
-                        <span>
-                            <button class="qd-action-btn" type="button" id="qdnew">New</button>
-                        </span>
-                        <span>
-                            <button class="qd-action-btn" type="button" id="qddelete">Delete</button>
-                        </span>
-                        <span>
-                            <button class="qd-action-btn" type="button" id="qdclone">Clone</button>
-                        </span>
                             <span>
-                            <button class="qd-action-btn" type="button" id="qdnote">Notes</button>
-                        </span>
-                        </td>
-                    </tr>
-                </table>
-            </form>
+                                <button class="qd-action-btn" type="button" id="qdupdate">Save</button>
+                            </span>
+                            <span>
+                                <button class="qd-action-btn" type="button" id="qdnew">New</button>
+                            </span>
+                            <span>
+                                <button class="qd-action-btn" type="button" id="qddelete">Delete</button>
+                            </span>
+                            <span>
+                                <button class="qd-action-btn" type="button" id="qdclone">Clone</button>
+                            </span>
+                            <span>
+                                <button class="qd-action-btn" type="button" id="qdnote">Notes</button>
+                            </span>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     <?php
