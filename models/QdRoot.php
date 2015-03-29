@@ -71,7 +71,14 @@ class QdRoot extends ActiveRecord\Model
     protected function xRec()
     {
         if ($this->_xRec == null) {
-            $this->_xRec = static::GET($this->id);
+            if($this->id>0)
+            {
+                $this->_xRec = static::GET($this->id);
+            }
+            else
+            {
+                $this->_xRec = null;
+            }
         }
         return $this->_xRec;
     }

@@ -43,11 +43,6 @@ class Qdmvc_Layout_CardNavigate extends Qdmvc_Layout_Card
                     $('#jqxNavigationBar').jqxNavigationBar('expandAt', 0);
                 })(jQuery);
             }
-            function setLookupResult(value, txtId) {
-                (function ($) {
-                    $("#" + txtId).val(value).change();
-                })(jQuery);
-            }
         </script>
     <?php
         parent::externalGateway();
@@ -79,7 +74,11 @@ class Qdmvc_Layout_CardNavigate extends Qdmvc_Layout_Card
     protected function onSaveOK()
     {
         ?>
-        updateGrid();
+        if($("#id").val()>0)
+        {
+            updateGrid();
+        }
+
         <?php
         parent::onSaveOK();
     }

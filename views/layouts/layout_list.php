@@ -83,7 +83,10 @@ class Qdmvc_Layout_List
         <script>
             function updateGrid() {
                 //update databound
-                jQuery('#jqxgrid').jqxGrid('updatebounddata');
+                (function ($) {
+                    jQuery('#jqxgrid').jqxGrid('updatebounddata');
+                })(jQuery);
+
             }
         </script>
     <?php
@@ -91,15 +94,76 @@ class Qdmvc_Layout_List
 
     protected function internalGateway()
     {
-
+        ?>
+        <script>
+            function gridGetSelectedRow(){//not work
+                (function ($) {
+                    var getselectedrowindexes = $('#jqxgrid').jqxGrid('getselectedrowindexes');
+                    if (getselectedrowindexes.length > 0) {
+                        // returns the selected row's data.
+                        var row = $('#jqxgrid').jqxGrid('getrowdata', getselectedrowindexes[0]);
+                        return row;
+                    }
+                    return null;
+                })(jQuery);
+            }
+        </script>
+        <?php
     }
+    protected function lookupToolbar()
+    {
+        ?>
+        <!-- Lookup toolbar -->
+        <div>
+            <button id="qdchoose" type="button">Choose</button>
 
+            <script type="text/javascript">
+                (function ($) {
+                    $(document).ready(function () {
+                        /*
+                         $('#qdaddline').click(function () {
+                         $('#jqxgrid').jqxGrid('addrow', null, {});
+
+                         //updateGrid();//quocdunginfo
+                         });
+                         $('#deleteline').click(function () {
+                         //$('#jqxgrid').jqxGrid('addrow', null, {});
+                         //updateGrid();//quocdunginfo
+                         });
+                         */
+
+                        $('#qdchoose').click(function () {
+
+                            //$('#jqxgrid').jqxGrid('addrow', null, {});
+
+                            var getselectedrowindexes = $('#jqxgrid').jqxGrid('getselectedrowindexes');
+                            if (getselectedrowindexes.length > 0)
+                            {
+                                // returns the selected row's data.
+
+                                var row = $('#jqxgrid').jqxGrid('getrowdata', getselectedrowindexes[0]);
+                                try {
+                                    parent.setLookupResult(row.id, "<?=$this->data['returnid']?>");
+
+                                }catch(error)
+                                {
+                                    console.log(error);
+                                }
+                            }
+                        });
+                    });
+                })(jQuery);
+            </script>
+        </div>
+
+        <?php
+    }
     public function render()
     {
         ?>
+        <?= $this->preConfig() ?>
         <?= $this->externalGateway() ?>
         <?= $this->internalGateway() ?>
-        <?= $this->preConfig() ?>
         <?= $this->generateFields() ?>
 
         <script type="text/javascript">
@@ -135,8 +199,8 @@ class Qdmvc_Layout_List
                             virtualmode: true,
                             pagesize: 10,
                             /*Enable Inline Editing*/
-                            editable: true,
-                            editmode: "dblclick",
+                            /*editable: true,
+                            editmode: "dblclick",*/
                             columnsresize: true,
                             //scrollmode: 'deferred',
                             rendergridrows: function () {
@@ -156,6 +220,7 @@ class Qdmvc_Layout_List
                     $('#jqxgrid').on('rowselect', function (event) {
                         // event arguments.
                         var args = event.args;
+                        var row = args.row;
                         // row's bound index.
                         //var rowBoundIndex = args.rowindex;
                         // row's data. The row's data object or null(when all rows are being selected or unselected with a single action). If you have a datafield called "firstName", to access the row's firstName, use var firstName = rowData.firstName;
@@ -168,31 +233,43 @@ class Qdmvc_Layout_List
                             {
                                 echo 'parent.setObj(args.row);';
                             }
-                            else
-                            {
-                                echo 'parent.setLookupResult(args.row.id, "'.$this->data['returnid'].'");';
-                            }
                             ?>
                             console.log(args.row);
                         }catch(error)
                         {
                             console.log(error);
                         }
-
                     });
                     $('#jqxgrid').on('rowdoubleclick', function (event) {
                         parent.doubleClickObj(event.args.row);
                     });
                     $("#jqxgrid").on("pagechanged", function (event) {
-                        //alert("page changed");
+                        console.log('jqxgrid page changed');
                     });
                     $("#jqxgrid").on("bindingcomplete", function (event) {
+                        console.log('jqxgrid binding complete');
                         try {
                             //auto select first row
                             /*
                             var index = $('#jqxgrid').jqxGrid('getrowboundindex', 0);
                             $('#jqxgrid').jqxGrid('selectrow', index);
                             */
+                            /*
+                            var getselectedrowindexes = $('#jqxgrid').jqxGrid('getselectedrowindexes');
+                            if (getselectedrowindexes.length > 0)
+                            {
+                                // returns the selected row's data.
+
+                                var selectedRowData = $('#jqxgrid').jqxGrid('getrowdata', getselectedrowindexes[0]);
+                                console.log(selectedRowData);
+
+
+
+                            }
+                            */
+                            //select 1st row on screen
+                            var visiblerows = $("#jqxgrid").jqxGrid('getloadedrows');
+                            $("#jqxgrid").jqxGrid('selectrow', visiblerows[0].boundindex);
 
                         } catch (error) {
                             console.log(error);
@@ -202,26 +279,14 @@ class Qdmvc_Layout_List
             })(jQuery);
         </script>
 
-        <script type="text/javascript">
-            (function ($) {
-                $(document).ready(function () {
-                    $('#addline').click(function () {
-                        $('#jqxgrid').jqxGrid('addrow', null, {});
-
-                        updateGrid();//quocdunginfo
-                    });
-                    $('#deleteline').click(function () {
-                        //$('#jqxgrid').jqxGrid('addrow', null, {});
-                        updateGrid();//quocdunginfo
-                    });
-                });
-            })(jQuery);
-        </script>
         <div id='jqxWidget'>
-            <div>
-                <button id="addline" type="button">Add Line</button>
-                <button id="deleteline" type="button">Delete Line</button>
-            </div>
+            <?php
+            if($this->data['role']=='lookup')
+            {
+                $this->lookupToolbar();
+            }
+            ?>
+
             <div id="jqxgrid"></div>
         </div>
     <?php

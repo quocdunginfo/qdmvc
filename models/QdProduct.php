@@ -146,8 +146,11 @@ class QdProduct extends QdRoot
         //check exit
         if($this->getProductCatObj()==null)
         {
-            $this->product_cat_id = $this->xRec()->product_cat_id;
             $this->pushValidateError('Product Cat không tồn tại!');
+            if(!$this->is_new_record())
+            {
+                $this->product_cat_id = $this->xRec()->product_cat_id;
+            }
         }
     }
 }

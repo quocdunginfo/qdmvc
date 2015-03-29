@@ -30,7 +30,7 @@ class Qdmvc_Layout_Card
                 //alert(src);
                 (function ($) {
                     $('#windowFrame').attr('src', src);
-                    $('#qdwindow').jqxWindow('open');
+                    $('#jqxlookupwin').jqxWindow('open');
                 })(jQuery);
             }
             function requestFormValidate(rules_) {
@@ -175,7 +175,7 @@ class Qdmvc_Layout_Card
             (function ($) {
                 $(document).ready(function () {
                     //init window for lookup
-                    $('#qdwindow').jqxWindow({
+                    $('#jqxlookupwin').jqxWindow({
                         showCollapseButton: false,
                         //maxHeight: 600,
                         //maxWidth: 1020,
@@ -195,7 +195,7 @@ class Qdmvc_Layout_Card
             })(jQuery);
         </script>
 
-        <div id="qdwindow">
+        <div id="jqxlookupwin">
             <div id="windowHeader">
                     <span>
                         Lookup Window
@@ -223,6 +223,13 @@ class Qdmvc_Layout_Card
                     //$('#jqxNavigationBar').jqxNavigationBar('collapseAt', 0);
                 })(jQuery);
             }
+            function setLookupResult(value, txtId) {
+                (function ($) {
+                    $("#" + txtId).val(value).change();
+                    //auto close window
+                    $('#jqxlookupwin').jqxWindow('close');
+                })(jQuery);
+            }
         </script>
     <?php
     }
@@ -237,12 +244,13 @@ class Qdmvc_Layout_Card
                     $("#jqxMsg").jqxNotification({
                         width: 400,
                         position: "bottom-right",
-                        opacity: 0.6,
+                        opacity: 0.8,
                         autoOpen: false,
                         animationOpenDelay: 300,
                         autoClose: true,
                         autoCloseDelay: 4000,
-                        template: "info"
+                        template: "info",
+                        appendContainer: "#jqxMsgContainer"
                     });
                 });
             })(jQuery);
@@ -251,6 +259,7 @@ class Qdmvc_Layout_Card
         <div id="jqxMsg">
             <span id="jqxMsgContent"></span>
         </div>
+        <div id="jqxMsgContainer" style="position: fixed; bottom: 0px; right: 0px"></div>
     <?php
     }
 
@@ -490,20 +499,25 @@ class Qdmvc_Layout_Card
                                 //begin lock
                                 //$("#update").attr("disabled", "disabled");
                                 console.log(json);
-                                var action = $("#id").val() > 0 ? "update" : "insert";
-                                $.post(data_port, {submit: "submit", action: action, data: json})
+                                var action = $("#id").val() != 0 ? "update" : "insert";
+                                var postdata = {submit: "submit", action: action, data: json};
+                                console.log(postdata);
+                                $.post(data_port, postdata)
                                     .done(function (data) {
                                         //data JSON
                                         console.log(data);
                                         //var obj = data;//"ok";//jQuery.parseJSON( data );//may throw error if data aldreay JSON format
                                         //...
-                                        $("#jqxMsgContent").html(data.msg);
-                                        $("#jqxMsg").jqxNotification("open");
+                                        console.log(data.msg);
+                                        for (i = 0; i < data.msg.length; i++) {
+                                            $("#jqxMsgContent").html(data.msg[i]);
+                                            $("#jqxMsg").jqxNotification("open");
+                                        }
+
                                         $("#id").val(data.id).change();
 
                                         console.log(data.rows[0]);
                                         setObj(data.rows[0]);
-
 
                                         <?=$this->onSaveOK()?>
                                     })

@@ -153,6 +153,8 @@ class Qdmvc
 }
 if(is_admin())
 {
-    QdJqwidgets::registerResource(true);
+    //load UI Kit
+    QdJqwidgets::registerResource(true);//quocdunginfo, need to find other solution because every WP page got this hook
+
     (new Qdmvc())->run();
 }
