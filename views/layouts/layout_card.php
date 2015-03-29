@@ -25,6 +25,33 @@ class Qdmvc_Layout_Card
     {
         ?>
         <script>
+            var formValidation = [];
+            function formValidationError()
+            {
+                for(i=0;i<formValidation.length;i++)
+                {
+                    if(formValidation[i].type=='error')
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            function showMsg(msg)
+            {
+                (function($){
+                    $('#jqxMsg').jqxNotification('closeAll');
+
+                    for (i = 0; i < msg.length; i++) {
+                        var template = msg[i].type==''?'success':msg[i].type;
+                        $('#jqxMsg').jqxNotification({ template: template });
+                        $("#jqxMsgContent").html(msg[i].msg);
+                        $("#jqxMsg").jqxNotification("open");
+                    }
+                })(jQuery);
+            }
+        </script>
+        <script>
             function requestLookupWindow(src) {
                 //set window iframe source
                 //alert(src);
@@ -247,8 +274,8 @@ class Qdmvc_Layout_Card
                         opacity: 0.8,
                         autoOpen: false,
                         animationOpenDelay: 300,
-                        autoClose: true,
-                        autoCloseDelay: 4000,
+                        autoClose: false,
+                        autoCloseDelay: 6000,
                         template: "info",
                         appendContainer: "#jqxMsgContainer"
                     });
@@ -259,7 +286,24 @@ class Qdmvc_Layout_Card
         <div id="jqxMsg">
             <span id="jqxMsgContent"></span>
         </div>
-        <div id="jqxMsgContainer" style="position: fixed; bottom: 0px; right: 0px"></div>
+        <div style="position: fixed; bottom: 0px; right: 0px">
+            <div id="jqxMsgContainer">
+
+            </div>
+            <script>
+                (function ($) {
+                    $(document).ready(function () {
+                        //register notification
+                        //card button event
+                        $("#qdmsgclear").bind("click", function (event) {
+                            $('#jqxMsg').jqxNotification('closeAll');
+                        });
+                    });
+                })(jQuery);
+            </script>
+            <button style="opacity: 0.8" id="qdmsgclear" class="btn btn-info pull-right">Clear all</button>
+            <div style="clear: both"></div>
+        </div>
     <?php
     }
 
@@ -272,6 +316,21 @@ class Qdmvc_Layout_Card
                readonly>
 
 
+    <?php
+    }
+
+    private function generateFieldLookup($f_name, $f_val, $f_lku)
+    {
+        ?>
+        <div class="qd-lookup-input">
+            <input class="text-input" type="text" name="<?= $f_name ?>"
+                   id="<?= $f_name ?>"
+                   value="<?= $f_val ?>">
+            <button onclick='requestLookupWindow("<?= $f_lku ?>")'
+                    data-lookupurl="<?= $f_lku ?>" id="c<?= $f_name ?>"
+                    value="">...
+            </button>
+        </div>
     <?php
     }
 
@@ -303,27 +362,29 @@ class Qdmvc_Layout_Card
     {
         ?>
 
-        <input class="text-input" type="text" name="<?= $f_name ?>" id="<?= $f_name ?>" value="<?= $value ?>">
+        <div class="qd-lookup-input">
+            <input class="text-input" type="text" name="<?= $f_name ?>" id="<?= $f_name ?>" value="<?= $value ?>">
 
-        <button id="c<?= $f_name ?>" value="">...</button>
-        <?php
-        Qdmvc_Helper::qd_media_choose("c{$f_name}", $f_name, false);
-        ?>
-        <script>
-            (function ($) {
-                $(document).ready(function () {
-                    $("#<?=$f_name?>").hover(function () {
-                        var imgURL = $(this).val();
-                        if (imgURL != "") {
-                            var content = '<img style="width: 300px;" src="' + imgURL + '" />';
-                            var selector = $("#<?=$f_name?>");
-                            selector.jqxTooltip({content: content, position: 'right', opacity: 0.8});
-                            selector.jqxTooltip('open');
-                        }
+            <button id="c<?= $f_name ?>" value="">...</button>
+            <?php
+            Qdmvc_Helper::qd_media_choose("c{$f_name}", $f_name, false);
+            ?>
+            <script>
+                (function ($) {
+                    $(document).ready(function () {
+                        $("#<?=$f_name?>").hover(function () {
+                            var imgURL = $(this).val();
+                            if (imgURL != "") {
+                                var content = '<img style="width: 300px;" src="' + imgURL + '" />';
+                                var selector = $("#<?=$f_name?>");
+                                selector.jqxTooltip({content: content, position: 'bottom', opacity: 0.8});
+                                selector.jqxTooltip('open');
+                            }
+                        });
                     });
-                });
-            })(jQuery);
-        </script>
+                })(jQuery);
+            </script>
+        </div>
 
     <?php
     }
@@ -341,12 +402,35 @@ class Qdmvc_Layout_Card
     {
         ?>
         <style>
-            .qd-card-grid .col-md-4 {
+            .qd-card-grid .col-md-6 {
                 height: 30px;
             }
+            .qd-card-grid .qd-field-caption {
+                height: 100%;
+            }
+            .qd-card-grid input[type=text] {
+                display: block;
+                width: 250px;
+                -moz-box-sizing: border-box;
+                -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+            }
+            .qd-lookup-input {
+                position: relative;
+            }
+
+            .qd-lookup-input input {
+                padding-right: 35px;
+            }
+
+            .qd-lookup-input button {
+                position: absolute;
+                top: 0;
+                right: 0;
+            }
         </style>
-        <div class="container qd-card-grid">
-            <div class="row">
+        <div class="container qd-card-grid" style="width: 100%">
+            <div class="row clearfix">
                 <?php
                 foreach ($this->page->getLayout() as $group => $config) :
                     if (isset($config['Type']) && isset($config['Type']) == 'Group') :
@@ -364,10 +448,10 @@ class Qdmvc_Layout_Card
                                 }
 
                                 ?>
-                                <div class="col-md-4">
+                                <div class="col-md-6">
 
                                     <!-- Caption -->
-                                    <div class="pull-left"><?= $this->page->getFieldCaption($f_name) ?>:</div>
+                                    <div class="qd-field-caption pull-left"><?= $this->page->getFieldCaption($f_name) ?>:</div>
                                     <!-- END Caption -->
                                     <div class="pull-right">
                                         <?php
@@ -382,22 +466,18 @@ class Qdmvc_Layout_Card
                                                 } else
                                                     if ($type == 'Date') {
                                                         $this->generateFieldDate($f_name, $f_val);
-                                                    } else {
-                                                        ?>
+                                                    } else
+                                                        if (isset($f_lku)) {
+                                                            $this->generateFieldLookup($f_name, $f_val, $f_lku);
+                                                        } else {
+                                                            ?>
 
-                                                        <input class="text-input" type="text" name="<?= $f_name ?>"
-                                                               id="<?= $f_name ?>"
-                                                               value="<?= $f_val ?>">
-                                                        <?php if (isset($f_lku)) : ?>
-                                                            <button onclick='requestLookupWindow("<?= $f_lku ?>")'
-                                                                    class="qd-lookup-btn"
-                                                                    data-lookupurl="<?= $f_lku ?>" id="c<?= $f_name ?>"
-                                                                    value="">...
-                                                            </button>
-                                                        <?php endif; ?>
-
-                                                    <?php
-                                                    }
+                                                            <input class="text-input" type="text"
+                                                                   name="<?= $f_name ?>"
+                                                                   id="<?= $f_name ?>"
+                                                                   value="<?= $f_val ?>">
+                                                        <?php
+                                                        }
                                         ?>
                                     </div>
 
@@ -424,7 +504,7 @@ class Qdmvc_Layout_Card
                 $(document).ready(function () {
                     //add cardBar
                     //$('#jqxNavigationBar').jqxNavigationBar('insert', 0, 'Card', 'Content');
-                    //
+
                 });
             })(jQuery);
         </script>
@@ -508,11 +588,9 @@ class Qdmvc_Layout_Card
                                         console.log(data);
                                         //var obj = data;//"ok";//jQuery.parseJSON( data );//may throw error if data aldreay JSON format
                                         //...
-                                        console.log(data.msg);
-                                        for (i = 0; i < data.msg.length; i++) {
-                                            $("#jqxMsgContent").html(data.msg[i]);
-                                            $("#jqxMsg").jqxNotification("open");
-                                        }
+                                        formValidation = data.msg;
+
+                                        showMsg(data.msg);
 
                                         $("#id").val(data.id).change();
 
@@ -585,11 +663,10 @@ class Qdmvc_Layout_Card
                                 $.post(data_port, {submit: "submit", action: "delete", data: {id: id_}})
                                     .done(function (data) {
                                         //data JSON
-                                        var obj = data;//"ok";//jQuery.parseJSON( data );//may throw error if data aldreay JSON format
+                                        //var obj = data;//"ok";//jQuery.parseJSON( data );//may throw error if data aldreay JSON format
 
                                         //....
-                                        $("#jqxMsgContent").html(obj.msg);
-                                        $("#jqxMsg").jqxNotification("open");
+                                        showMsg(data.msg);
 
                                         <?=$this->OnDeleteOK()?>
                                     })

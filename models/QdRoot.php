@@ -58,12 +58,12 @@ class QdRoot extends ActiveRecord\Model
     }
 
     protected $fields_validation = array(
-        'error' => array()
+        'error' => array()//'error' => array('msg' => 'MSG', 'type' => 'success')
     );
 
-    protected function pushValidateError($msg)
+    protected function pushValidateError($msg, $type='error')
     {
-        array_push($this->fields_validation['error'], $msg);
+        array_push($this->fields_validation['error'], array('msg' => $msg, 'type' => $type));
     }
 
     private $_xRec = null;
@@ -103,7 +103,14 @@ class QdRoot extends ActiveRecord\Model
 
             }*/
         }
-        return count($this->fields_validation['error']) == 0;
+        foreach($this->fields_validation['error'] as $item)
+        {
+            if($item['type']=='error')
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -391,7 +398,7 @@ class QdRoot extends ActiveRecord\Model
     {
         try {
             if (isset(static::$fields_config[$field_name]) && !isset(static::$fields_config[$field_name]['Caption'])) {
-                return $field_name;
+                return '@'.$field_name;
             } else {
                 return static::$fields_config[$field_name]['Caption'][$lang];
             }

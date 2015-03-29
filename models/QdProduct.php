@@ -137,6 +137,7 @@ class QdProduct extends QdRoot
         {
             if($this->name!=null)
             {
+                $this->pushValidateError('Code tự động in hoa và bằng Name', 'info');
                 $this->code = strtoupper($this->name);
             }
         }
@@ -151,6 +152,15 @@ class QdProduct extends QdRoot
             {
                 $this->product_cat_id = $this->xRec()->product_cat_id;
             }
+        }
+    }
+    protected function avatarOnValidate()
+    {
+        if($this->avatar=='')
+        {
+            $pro_setup = QdProductSetup::GET();
+            $this->avatar = $pro_setup->df_pro_avatar;
+            $this->pushValidateError('Tự động gán Avatar mặc định cho Product', 'info');
         }
     }
 }

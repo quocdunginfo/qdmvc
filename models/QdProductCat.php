@@ -94,11 +94,28 @@ class QdProductCat extends QdRoot
             $this->pushValidateError('Order phải lớn hơn 0');
         }
     }
+    protected function parent_idOnValidate()
+    {
+        //check exit
+        if($this->parent_id>0)
+        {
+            if(QdProductCat::GET($this->parent_id)==null)
+            {
+                $this->pushValidateError('Product Cat không tồn tại!');
+                if(!$this->is_new_record())
+                {
+                    $this->parent_id = $this->xRec()->parent_id;
+                }
+            }
+        }
+    }
     protected function avatarOnValidate()
     {
-        if($this->avatar == '')
+        if($this->avatar=='')
         {
-            $this->pushValidateError('Avatar phải khác rỗng');
+            $pro_setup = QdProductSetup::GET();
+            $this->avatar = $pro_setup->df_pro_cat_avatar;
+            $this->pushValidateError('Tự động gán Avatar mặc định cho Product Cat', 'info');
         }
     }
 }

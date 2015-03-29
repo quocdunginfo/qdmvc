@@ -9,7 +9,7 @@ Qdmvc::loadModel();
 Qdmvc::loadRouter();
 class Qdmvc
 {
-    private $included_file = array(
+    private static $included_file = array(
         'native/register-admin-menu',
         'native/page-meta-box',
         'native/db-init',
@@ -19,19 +19,19 @@ class Qdmvc
 
     );
     //dependency plugins
-    private $dependencies = array('phpactiverecords', 'jqwidgets');
+    private static $dependencies = array('phpactiverecords', 'jqwidgets');
 
     function __construct()
     {
 
     }
 
-    private function init()
+    private static function init()
     {
         //required Qdmvc root index tree
         static::loadIndex('index');
         //require related library
-        foreach ($this->included_file as $item) {
+        foreach (static::$included_file as $item) {
             static::load($item);
         }
         //loading widgets
@@ -116,19 +116,19 @@ class Qdmvc
     {
         return (Qdmvc::getPluginDir('controllers/'.$path));
     }
-    public function run()
+    public static function run()
     {
         //check dependency
         require_once(ABSPATH . 'wp-admin/includes/plugin.php');
-        foreach ($this->dependencies as $item) {
+        foreach (static::$dependencies as $item) {
             if (!is_plugin_active($item . "/$item.php")) {
                 //plugin is not activated
-                echo 'Require plugin ' . $item;
+                echo 'Qdmvc: require plugin ' . $item;
                 return;
             }
         }
         //2nd level construct
-        $this->init();
+        static::init();
     }
     public static function loadModel()
     {
@@ -150,11 +150,18 @@ class Qdmvc
     {
         static::load('native/router');
     }
+    public static function IS_QDMVC_PAGE()
+    {
+        return (isset($_GET['page']) && array_key_exists($_GET['page'], Qdmvc_Page_Index::getIndex()));
+    }
 }
 if(is_admin())
 {
-    //load UI Kit
-    QdJqwidgets::registerResource(true);//quocdunginfo, need to find other solution because every WP page got this hook
+    Qdmvc::run();
 
-    (new Qdmvc())->run();
+    //load UI Kit
+    if(Qdmvc::IS_QDMVC_PAGE())
+    {
+        QdJqwidgets::registerResource(true);//quocdunginfo, need to find other solution because every WP page got this hook
+    }
 }

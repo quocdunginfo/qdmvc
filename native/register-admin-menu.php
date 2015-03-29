@@ -26,7 +26,6 @@ class Qdmvc_RegisterAdminMenu
         if (!in_array($func, array('add_page_main', 'qd_register_custom_menu_page'))) {
             Qdmvc::runPage($func);
         }
-        //return $func;
     }
 
     public function add_page_main()

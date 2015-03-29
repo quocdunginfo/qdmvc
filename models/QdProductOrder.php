@@ -76,6 +76,14 @@ class QdProductOrder extends QdRoot
         }
         return parent::save($validate);
     }
+    protected function motaOnValidate()
+    {
+        if($this->mota=='')
+        {
+            $this->mota = $this->customer_name;
+            $this->pushValidateError('Mota tự động bằng Customer Name', 'info');
+        }
+    }
     public function delete()
     {
         if($this->done)

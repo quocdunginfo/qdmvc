@@ -74,7 +74,7 @@ class Qdmvc_Layout_CardNavigate extends Qdmvc_Layout_Card
     protected function onSaveOK()
     {
         ?>
-        if($("#id").val()>0)
+        if(!formValidationError())
         {
             updateGrid();
         }

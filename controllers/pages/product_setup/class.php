@@ -48,7 +48,15 @@ class Qdmvc_Page_ProductSetup extends Qdmvc_Page_Root {
                     ),
                     'product_per_segment' => array(
                         'SourceExpr' => 'product_per_segment'
-                    )
+                    ),
+                    'df_pro_cat_avatar' => array(
+                        'SourceExpr' => 'df_pro_cat_avatar',
+                        'DataType' => static::getDataType('df_pro_cat_avatar')
+                    ),
+                    'df_pro_avatar' => array(
+                        'SourceExpr' => 'df_pro_avatar',
+                        'DataType' => static::getDataType('df_pro_avatar')
+                    ),
                 )
             )
             /* SAMPLE
