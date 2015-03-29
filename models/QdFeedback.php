@@ -21,34 +21,34 @@ class QdFeedback extends QdRoot
         'id' => array()
     );
     /*
-    protected function contentOnValidate()
+    protected function contentOnValidate($field_name)
     {
         if($this->content!=$this->xRec()->content)
         {
             if($this->done)
             {
-                $this->pushValidateError('Không thể sửa Content khi Done = true');
+                $this->pushValidateError($field_name, 'Không thể sửa Content khi Done = true');
             }
         }
     }
-    protected function customer_emailOnValidate()
+    protected function customer_emailOnValidate($field_name)
     {
         if($this->customer_email!=$this->xRec()->customer_email)
         {
             if($this->done)
             {
-                $this->pushValidateError('Không thể sửa Customer Email khi Done = true');
+                $this->pushValidateError($field_name, 'Không thể sửa Customer Email khi Done = true');
             }
         }
 
     }
-    protected function customer_nameOnValidate()
+    protected function customer_nameOnValidate($field_name)
     {
         if($this->customer_name!=$this->xRec()->customer_name)
         {
             if($this->done)
             {
-                $this->pushValidateError('Không thể sửa Customer Name khi Done = true');
+                $this->pushValidateError($field_name, 'Không thể sửa Customer Name khi Done = true');
             }
         }
     }
@@ -60,7 +60,7 @@ class QdFeedback extends QdRoot
         {
             if($this->done) {
                 if ($this->xRec()->done) {
-                    $this->pushValidateError('Không thể sửa khi Done = true');
+                    $this->pushValidateError('', 'Không thể sửa khi Done = true');
                     return false;
                 }
             }
@@ -72,7 +72,7 @@ class QdFeedback extends QdRoot
     {
         if($this->done)
         {
-            $this->pushValidateError('Không thể xóa khi Done = true');
+            $this->pushValidateError('', 'Không thể xóa khi Done = true');
             return false;
         }
         return parent::delete();

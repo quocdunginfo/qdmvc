@@ -61,9 +61,9 @@ class QdRoot extends ActiveRecord\Model
         'error' => array()//'error' => array('msg' => 'MSG', 'type' => 'success')
     );
 
-    protected function pushValidateError($msg, $type='error')
+    protected function pushValidateError($field_name, $msg, $type='error')
     {
-        array_push($this->fields_validation['error'], array('msg' => $msg, 'type' => $type));
+        array_push($this->fields_validation['error'], array('field' => $field_name, 'msg' => $msg, 'type' => $type));
     }
 
     private $_xRec = null;
@@ -87,13 +87,17 @@ class QdRoot extends ActiveRecord\Model
     {
         return $this->fields_validation['error'];
     }
+    protected function OnValidate($field_name){
 
+    }
     public function VALIDATE()
     {
+        //clear previous validation
+        $this->fields_validation['error'] = array();
         //call validate trigger on all fields and then return array of error
         foreach (static::$fields_config as $key => $config) {
             if (method_exists($this, $key . 'OnValidate')) {
-                $this->{$key . 'OnValidate'}();
+                $this->{$key . 'OnValidate'}($key);
             }
             /*
             try {

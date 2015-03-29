@@ -87,35 +87,35 @@ class QdProductCat extends QdRoot
         array_push($re,array('name' => $this->name, 'url'=>$this->getPermalink()));
         return $re;
     }
-    protected function orderOnValidate()
+    protected function orderOnValidate($field_name)
     {
-        if($this->order <= 0)
+        if($this->$field_name <= 0)
         {
-            $this->pushValidateError('Order phải lớn hơn 0');
+            $this->pushValidateError($field_name, 'Order phải lớn hơn 0');
         }
     }
-    protected function parent_idOnValidate()
+    protected function parent_idOnValidate($field_name)
     {
         //check exit
-        if($this->parent_id>0)
+        if($this->$field_name>0)
         {
-            if(QdProductCat::GET($this->parent_id)==null)
+            if(QdProductCat::GET($this->$field_name)==null)
             {
-                $this->pushValidateError('Product Cat không tồn tại!');
+                $this->pushValidateError($field_name, 'Product Cat không tồn tại!');
                 if(!$this->is_new_record())
                 {
-                    $this->parent_id = $this->xRec()->parent_id;
+                    $this->$field_name = $this->xRec()->$field_name;
                 }
             }
         }
     }
-    protected function avatarOnValidate()
+    protected function avatarOnValidate($field_name)
     {
-        if($this->avatar=='')
+        if($this->$field_name=='')
         {
             $pro_setup = QdProductSetup::GET();
-            $this->avatar = $pro_setup->df_pro_cat_avatar;
-            $this->pushValidateError('Tự động gán Avatar mặc định cho Product Cat', 'info');
+            $this->$field_name = $pro_setup->df_pro_cat_avatar;
+            $this->pushValidateError($field_name, 'Tự động gán Avatar mặc định cho Product Cat', 'info');
         }
     }
 }

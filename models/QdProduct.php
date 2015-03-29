@@ -103,64 +103,64 @@ class QdProduct extends QdRoot
      * Validation
      *
      */
-    protected function nameOnValidate()
+    protected function nameOnValidate($field_name)
     {
-        if($this->name=='')
+        if($this->$field_name=='')
         {
-            $this->pushValidateError('Name bắt buộc');
+            $this->pushValidateError($field_name, 'Name bắt buộc');
         }
         /*
         if($this->active==1)
         {
             if($this->name!=$this->xRec()->name)
             {
-                $this->pushValidateError('Không thể sửa Name khi Active=1');
+                $this->pushValidateError($field_name, 'Không thể sửa Name khi Active=1');
             }
         }
         */
     }
-    protected function activeOnValidate()
+    protected function activeOnValidate($field_name)
     {
         /*
         if($this->active ==0 && $this->active != $this->xRec()->active)
         {
             if($this->code != 1)
             {
-                $this->pushValidateError('Code phải bằng 1 mới tắt được Active');
+                $this->pushValidateError($field_name, 'Code phải bằng 1 mới tắt được Active');
             }
         }
         */
     }
-    protected function codeOnValidate()
+    protected function codeOnValidate($field_name)
     {
-        if($this->code == '')
+        if($this->$field_name == '')
         {
             if($this->name!=null)
             {
-                $this->pushValidateError('Code tự động in hoa và bằng Name', 'info');
-                $this->code = strtoupper($this->name);
+                $this->pushValidateError($field_name, 'Code tự động in hoa và bằng Name', 'info');
+                $this->$field_name = strtoupper($this->name);
             }
         }
     }
-    protected function product_cat_idOnValidate()
+    protected function product_cat_idOnValidate($field_name)
     {
         //check exit
         if($this->getProductCatObj()==null)
         {
-            $this->pushValidateError('Product Cat không tồn tại!');
+            $this->pushValidateError($field_name, 'Product Cat không tồn tại!');
             if(!$this->is_new_record())
             {
-                $this->product_cat_id = $this->xRec()->product_cat_id;
+                $this->$field_name = $this->xRec()->$field_name;
             }
         }
     }
-    protected function avatarOnValidate()
+    protected function avatarOnValidate($field_name)
     {
-        if($this->avatar=='')
+        if($this->$field_name=='')
         {
             $pro_setup = QdProductSetup::GET();
-            $this->avatar = $pro_setup->df_pro_avatar;
-            $this->pushValidateError('Tự động gán Avatar mặc định cho Product', 'info');
+            $this->$field_name = $pro_setup->df_pro_avatar;
+            $this->pushValidateError($field_name, 'Tự động gán Avatar mặc định cho Product', 'info');
         }
     }
 }

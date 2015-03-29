@@ -10,7 +10,7 @@ class QdRootSetup extends QdRoot
 {
     public function delete()
     {
-        $this->pushValidateError('Không thể xóa Setup Record');
+        $this->pushValidateError('', 'Không thể xóa Setup Record');
         return false;
     }
 
@@ -20,7 +20,7 @@ class QdRootSetup extends QdRoot
         {
             if($this->GET()!=null)
             {
-                $this->pushValidateError('Setup Page không cho phép thêm mới');
+                $this->pushValidateError('', 'Setup Page không cho phép thêm mới');
                 return false;
             }
         }

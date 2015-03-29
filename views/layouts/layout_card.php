@@ -40,10 +40,45 @@ class Qdmvc_Layout_Card
             function showMsg(msg)
             {
                 (function($){
+                    //clear notification
                     $('#jqxMsg').jqxNotification('closeAll');
 
+                    //clear form validation mark and tooltip
+                    var $inputs = $("#cardForm :input[type=text]");
+                    $inputs.each(function() {
+                        $(this).css('border-color', '#ddd');//set to boootstrap default
+                        try {
+                            $(this).jqxTooltip('destroy');//{ content: '', position: 'bottom', name: ''});
+                        }catch (error)
+                        {
+                            console.log(error);
+                        }
+                    });
+
+                    //dis[lay new validation mark and msg bus
                     for (i = 0; i < msg.length; i++) {
-                        var template = msg[i].type==''?'success':msg[i].type;
+                        var type = msg[i].type;
+                        var template = type==''?'success':type;
+
+                        if(msg[i].field != null && msg[i].field != '')
+                        {
+                            var field = $("#cardForm input[name='" + msg[i].field + "']");
+                            field.jqxTooltip({ content: msg[i].msg, position: 'bottom', name: msg[i].field});
+
+                            if(type=='error')
+                            {
+                                field.css('border-color','red');
+                            }
+                            else if(type=='warning')
+                            {
+                                field.css('border-color','orange');
+                            }
+                            else if(type=='info')
+                            {
+                                field.css('border-color','blue');
+                            }
+                        }
+
                         $('#jqxMsg').jqxNotification({ template: template });
                         $("#jqxMsgContent").html(msg[i].msg);
                         $("#jqxMsg").jqxNotification("open");
@@ -245,6 +280,9 @@ class Qdmvc_Layout_Card
             //gate way to comunicate with parent windows
             function setObj(obj) {//do not change func name
                 (function ($) {
+                    //clear previous obj validation
+                    showMsg([]);
+                    //fill data
                     $("#cardForm").autofill(obj);
                     $("#cardForm input").change();
                     //$('#jqxNavigationBar').jqxNavigationBar('collapseAt', 0);
@@ -271,11 +309,11 @@ class Qdmvc_Layout_Card
                     $("#jqxMsg").jqxNotification({
                         width: 400,
                         position: "bottom-right",
-                        opacity: 0.8,
+                        opacity: 0.9,
                         autoOpen: false,
                         animationOpenDelay: 300,
-                        autoClose: false,
-                        autoCloseDelay: 6000,
+                        autoClose: true,
+                        autoCloseDelay: 3000,
                         template: "info",
                         appendContainer: "#jqxMsgContainer"
                     });
@@ -587,15 +625,14 @@ class Qdmvc_Layout_Card
                                         //data JSON
                                         console.log(data);
                                         //var obj = data;//"ok";//jQuery.parseJSON( data );//may throw error if data aldreay JSON format
-                                        //...
-                                        formValidation = data.msg;
-
-                                        showMsg(data.msg);
 
                                         $("#id").val(data.id).change();
 
                                         console.log(data.rows[0]);
                                         setObj(data.rows[0]);
+
+                                        formValidation = data.msg;
+                                        showMsg(data.msg);//must be called after setObj(...)
 
                                         <?=$this->onSaveOK()?>
                                     })
@@ -770,6 +807,11 @@ class Qdmvc_Layout_Card
 
     public function render()
     {
+        //var_dump($this->data);
+        if($this->data['view_style']=='compact')
+        {
+            Qdmvc_Helper::requestCompact();
+        }
         ?>
         <?= $this->formValidation() ?>
         <?= $this->progressSpinner() ?>

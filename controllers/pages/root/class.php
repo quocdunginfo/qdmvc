@@ -13,6 +13,14 @@ class Qdmvc_Page_Root {
         $this->loadView();
         //build data_port value
         $this->data['data_port'] = Qdmvc_Helper::getDataPortPath(static::getDataPort(), static::getPageView());
+        //pre value for page List
+        $this->data['role'] = isset($_GET['qdrole']) ? $_GET['qdrole'] : '';//lookup, navigate
+        $this->data['returnid'] = isset($_GET['qdreturnid']) ? $_GET['qdreturnid'] : '';//id
+        $this->data['view_style'] = 'normal';
+        if($this->data['role']=='lookup' || $this->data['role']=='navigate')
+        {
+            $this->data['view_style'] = 'compact';//compact, full
+        }
 
         //pre-filter
         if(isset($_GET['filterfield'])) {

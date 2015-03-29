@@ -11,12 +11,7 @@ class Qdmvc_Page_Note_List extends Qdmvc_Page_Root
 {
     public function run()
     {
-        $this->data['role'] = isset($_REQUEST['qdrole']) ? $_REQUEST['qdrole'] : 'navigate';//lookup, navigate
-        $this->data['returnid'] = isset($_REQUEST['qdreturnid']) ? $_REQUEST['qdreturnid'] : '';//lookup, navigate
-        $this->data['view_style'] = 'compact';//compact, full
-        Qdmvc_Helper::requestCompact();
-
-        parent::run();
+       parent::run();
     }
 
     protected static function getViewClass()

@@ -69,26 +69,59 @@ class QdProductOrder extends QdRoot
         {
             if($this->done) {
                 if ($this->xRec()->done) {
-                    $this->pushValidateError('Không thể sửa khi Done = true');
+                    $this->pushValidateError('', 'Không thể sửa khi Done = true');
                     return false;
                 }
             }
         }
         return parent::save($validate);
     }
-    protected function motaOnValidate()
+    protected function countOnValidate($field_name)
     {
-        if($this->mota=='')
+        if($this->count<=0)
         {
-            $this->mota = $this->customer_name;
-            $this->pushValidateError('Mota tự động bằng Customer Name', 'info');
+            $this->pushValidateError($field_name, 'Quantity phải lớn hơn 0', 'error', 'count');
+        }
+    }
+    protected function customer_emailOnValidate($field_name)
+    {
+        if($this->$field_name!='')
+        {
+            if (!filter_var($this->$field_name, FILTER_VALIDATE_EMAIL)) {
+                $this->pushValidateError($field_name, 'Email không đúng định dạng', 'warning', $field_name);
+            }
+        }
+    }
+
+    protected function product_idOnValidate($field_name)
+    {
+        //check exit
+        if($this->$field_name>0)
+        {
+            if(QdProduct::GET($this->$field_name)==null)
+            {
+                $this->pushValidateError($field_name, 'Product không tồn tại!');
+                if(!$this->is_new_record())
+                {
+                    $this->$field_name = $this->xRec()->$field_name;
+                }
+            }
+        }
+    }
+
+    protected function motaOnValidate($field_name)
+    {
+        if($this->$field_name=='')
+        {
+            $this->$field_name = $this->customer_name;
+            $this->pushValidateError($field_name, 'Mota tự động bằng Customer Name', 'info');
         }
     }
     public function delete()
     {
         if($this->done)
         {
-            $this->pushValidateError('Không thể xóa khi Done = true');
+            $this->pushValidateError('', 'Không thể xóa khi Done = true');
             return false;
         }
         return parent::delete();

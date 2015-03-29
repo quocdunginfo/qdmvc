@@ -25,7 +25,7 @@ class Qdmvc_Dataport {
         }
         else
         {
-            array_push($this->msg, array('msg' => $msg, 'type' => $type));
+            array_push($this->msg, array('field' => '', 'msg' => $msg, 'type' => $type));
         }
     }
     public function run()

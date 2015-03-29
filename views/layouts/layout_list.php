@@ -160,6 +160,10 @@ class Qdmvc_Layout_List
     }
     public function render()
     {
+        if($this->data['view_style']=='compact')
+        {
+            Qdmvc_Helper::requestCompact();
+        }
         ?>
         <?= $this->preConfig() ?>
         <?= $this->externalGateway() ?>
