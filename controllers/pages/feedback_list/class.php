@@ -40,7 +40,7 @@ class Qdmvc_Page_Feedback_List extends Qdmvc_Page_Root
             )
         );
     }
-    protected static function getPageView()
+    protected function getPageView()
     {
         return array(
             'done' => false

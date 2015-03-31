@@ -471,7 +471,7 @@ class Qdmvc_Layout_Card
             <div class="row clearfix">
                 <?php
                 foreach ($this->page->getLayout() as $group => $config) :
-                    if (isset($config['Type']) && isset($config['Type']) == 'Group') :
+                    if (isset($config['Type']) && $config['Type'] == 'Group') :
                         if (isset($config['Fields'])) :
 
                             foreach ($config['Fields'] as $key => $f_config) :
@@ -562,12 +562,6 @@ class Qdmvc_Layout_Card
     protected function onNewOK()
     {
 
-    }
-
-    private function getPagePartURL()
-    {
-        $c = $this->page;
-        return $c::getPagePartURL();
     }
 
     private function linesBar()
@@ -778,6 +772,28 @@ class Qdmvc_Layout_Card
     protected function Bars()
     {
         $this->cardBar();
+        //render Page Part from Page Setup
+        foreach ($this->page->getLayout() as $group => $config) :
+            if (isset($config['Type']) && $config['Type'] == 'Part'):
+            ?>
+                <div>
+                    <div style='margin-top: 2px;'>
+                        <div style='margin-left: 4px; float: left;'>
+                            Part
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div style="height: 520px; width: 100%">
+                        <iframe id="pagePart_<?=$group?>" src="<?=$this->page->getPagePartURL()?>" frameborder="0" marginwidth="0" marginheight="0" scrolling="auto"
+                                width="100%" height="100%">
+                            <p>Your browser does not support iframes</p>
+                        </iframe>
+                    </div>
+                </div>
+            <?php
+            endif;
+        endforeach;
     }
 
     private function Bar()
@@ -790,7 +806,7 @@ class Qdmvc_Layout_Card
                     $("#jqxNavigationBar").jqxNavigationBar({
                         width: '100%',
                         expandMode: 'multiple',
-                        expandedIndexes: [0, 1]
+                        expandedIndexes: [0, 1, 2]
                     });
                 });
             })(jQuery);

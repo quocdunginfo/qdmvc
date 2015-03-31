@@ -32,24 +32,22 @@ class Qdmvc_Helper
     {
         return '[Not set]';
     }
-    public static function getCompactPageListLink($page_name)
+    public static function getCompactPageListLink($page_name, $filter_array=array())
     {
-        return admin_url("admin.php?page={$page_name}&qdrole=navigate");
+        $filter_string = '';
+        $count=0;
+        foreach($filter_array as $key=>$value)
+        {
+            $filter_string .= "&filterdatafield{$count}={$key}&filtervalue{$count}={$value}";
+            $count++;
+        }
+        return admin_url("admin.php?page={$page_name}&qdrole=navigate{$filter_string}");
     }
     public static function getCompactPagePartLink($page_name, $filterfield, $filtervalue)
     {
         return admin_url("admin.php?page={$page_name}&filterfield={$filterfield}&filtervalue={$filtervalue}");//quocdunginfo
     }
-    /*
-    public static function getSPCompactListLink()
-    {
-        return admin_url('admin.php?page=qd_sub_page_4&qdrole=navigate');
-    }
-    public static function getLSPCompactListLink()
-    {
-        return admin_url('admin.php?page=qd_sub_page_2&qdrole=navigate');
-    }
-    */
+
     public static function getNoneLink()
     {
         return 'javascript:void(0)';

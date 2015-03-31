@@ -11,9 +11,7 @@ class Qdmvc_Layout_CardNavigate extends Qdmvc_Layout_Card
     protected function getPageListURL()
     {
         $c = $this->page;
-        if ($c::getPageList() != '') {
-            return Qdmvc_Helper::getCompactPageListLink($c::getPageList());
-        }
+        return $c->getPageListURL();
     }
 
     protected function internalGateway()

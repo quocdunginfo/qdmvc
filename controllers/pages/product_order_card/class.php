@@ -16,9 +16,8 @@ class Qdmvc_Page_ProductOrder_Card extends Qdmvc_Page_Root
     protected static function initFields()
     {
         return array(
-            'Group1' => array(
+            'General' => array(
                 'Type' => 'Group',
-                'Name' => 'General',
                 'Fields' => array(
                     'id' => array(
                         'SourceExpr' => 'id',
@@ -55,31 +54,7 @@ class Qdmvc_Page_ProductOrder_Card extends Qdmvc_Page_Root
                         'SourceExpr' => 'mota'
                     )
                 )
-            ),
-            'Group2' => array(
-                'Type' => 'Part',
-                'Name' => 'Lines',
-                'PagePartID' => 'product_order_list',
-                /*
-                'SubPageLink' => array(
-                    'Field' => '',
-                    'Type' => 'FIELD',//'CONST',
-                    'Value' => ''
-                )*/
             )
-            /* SAMPLE
-            ,
-            'Group2' => array(
-                'Type' => 'Part',
-                'Name' => 'Lines',
-                'PagePartID' => '',
-                'SubPageLink' => array(
-                    'Field' => '',
-                    'Type' => 'FIELD',//'CONST',
-                    'Value' => ''
-                )
-            )
-            */
         );
     }
 

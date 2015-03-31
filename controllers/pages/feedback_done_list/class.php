@@ -9,7 +9,7 @@ Qdmvc::loadPage('root');
 Qdmvc::loadPage('feedback_list');
 class Qdmvc_Page_FeedbackDone_List extends Qdmvc_Page_Feedback_List
 {
-    protected static function getPageView()
+    protected function getPageView()
     {
         return array(
             'done' => true

@@ -24,7 +24,7 @@ class Qdmvc_Page_ProductOrder_List extends Qdmvc_Page_Root
         return 'product_order_list';
     }
 
-    protected static function getPageView()
+    protected function getCustomPageView()
     {
         return array(
             'done' => false
@@ -52,5 +52,4 @@ class Qdmvc_Page_ProductOrder_List extends Qdmvc_Page_Root
             )
         );
     }
-
 }

@@ -9,11 +9,11 @@ Qdmvc::loadPage('root');
 Qdmvc::loadPage('product_order_list');
 class Qdmvc_Page_ProductOrderDone_List extends Qdmvc_Page_ProductOrder_List
 {
-    protected static function getPageView()
+    protected function getCustomPageView()
     {
         return array(
-            'done' => true
-        );
+                'done' => true
+            );
     }
 
     protected static function getViewClass()

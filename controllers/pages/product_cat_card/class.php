@@ -16,16 +16,15 @@ class Qdmvc_Page_ProductCat_Card extends Qdmvc_Page_Root {
     {
         return 'product_cat_card';
     }
-    public function getPagePartURL()
+    public function getPagePartURL($part_name='')
     {
-        return Qdmvc_Helper::getCompactPagePartLink(static::getPageList(), $this->data['filter'][0]['filterfield'], $this->data['filter'][0]['filtervalue']);
+        return "http://localhost/mpd_2015/wp-admin/admin.php?page=product_card&qdrole=navigate&filterdatafield0=product_cat_id&filtervalue0=95";//quocdunginfo
     }
     protected static function initFields()
     {
         return array(
-            'Group1' => array(
+            'General' => array(
                 'Type' => 'Group',
-                'Name' => 'General',
                 'Fields' => array(
                     'id' => array(
                         'SourceExpr' => 'id',
@@ -51,36 +50,16 @@ class Qdmvc_Page_ProductCat_Card extends Qdmvc_Page_Root {
                     )
                 )
             ),
-            'Group2' => array(
+            'Lines' => array(
                 'Type' => 'Part',
                 'SubType' => 'Page',
-                'Name' => 'Lines',
-                'PagePartID' => 'product_list',
+                'PagePartID' => 'product_card',
                 'SubPageLink' => array(
                     'Field' => 'product_cat_id',
                     'Type' => 'FIELD',//'CONST'
                     'Value' => 'id'
                 )
-                /*
-                'SubPageLink' => array(
-                    'Field' => '',
-                    'Type' => 'FIELD',//'CONST',
-                    'Value' => ''
-                )*/
             )
-            /* SAMPLE
-            ,
-            'Group2' => array(
-                'Type' => 'Part',
-                'Name' => 'Lines',
-                'PagePartID' => '',
-                'SubPageLink' => array(
-                    'Field' => '',
-                    'Type' => 'FIELD',//'CONST',
-                    'Value' => ''
-                )
-            )
-            */
         );
     }
 }

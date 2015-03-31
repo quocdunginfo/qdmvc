@@ -150,10 +150,9 @@ class Qdmvc_Dataport {
 
         //pre filter
         $count = 99;
-        if(isset($_REQUEST['filterdatafield'.$count]))//quocdunginfo
-        {
+        while(isset($_REQUEST['filterdatafield'.$count])) {
             //$this->filter[$_REQUEST['filterdatafield'.$count]] = $_REQUEST['filtervalue'.$count];
-            $record->SETRANGE($_REQUEST['filterdatafield'.$count], $_REQUEST['filtervalue'.$count], true);
+            $record->SETRANGE($_REQUEST['filterdatafield' . $count], $_REQUEST['filtervalue' . $count], true);
             $count++;
         }
         $count = 0;
