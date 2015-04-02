@@ -15,6 +15,9 @@ class QdProductSetup extends QdRootSetup
         'df_pro_avatar' => array(
             'Caption' => array('en' => 'DF Product Ava', 'vn' => 'Hình mặc định Product'),
             'DataType' => 'Image'
+        ),
+        'advice_phone' => array(
+            'Caption' => array('en' => 'Advice Phone', 'vn' => 'SĐT tư vấn'),
         )
     );
 }
