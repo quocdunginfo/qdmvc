@@ -6,7 +6,7 @@ class QdProductSetup extends QdRootSetup
     protected static $fields_config = array(
         'id' => array(),
         'product_per_segment' => array(
-            'Caption' => array('en' => 'Pro Per Segment', 'vn' => '@'),
+            'Caption' => array('en' => 'Pro Per Segment', 'vn' => 'Số Lượng SP/1trang'),
         ),
         'df_pro_cat_avatar' => array(
             'Caption' => array('en' => 'DF Pro Cat Ava', 'vn' => 'Hình mặc định Pro Cat'),

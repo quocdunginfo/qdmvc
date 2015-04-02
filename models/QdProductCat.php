@@ -9,7 +9,9 @@ class QdProductCat extends QdRoot
     );*/
     protected static $fields_config = array(
         'id' => array(),
-        'name' => array(),
+        'name' => array(
+            'Caption' => array('vn' => 'Tên LSP'),
+        ),
         'avatar' => array(
             'Caption' => array('en' => 'Avatar', 'vn' => 'Hình đại diện'),
             'DataType' => 'Image',
@@ -20,7 +22,9 @@ class QdProductCat extends QdRoot
             'DataType' => 'Date',
             'Description' => 'Ngày sửa cuối'
         ),
-        'order' => array(),
+        'order' => array(
+            'Caption' => array('vn' => 'Thứ tự'),
+        ),
         'parent_id' => array(
             'Name' => 'parent_id',
             'Caption' => array('en' => 'Parent ID', 'vn' => 'Mã LSP cha'),

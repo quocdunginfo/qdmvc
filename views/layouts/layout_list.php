@@ -53,7 +53,7 @@ class Qdmvc_Layout_List
                     foreach($this->page->getLayout() as $key=>$config)//quocdunginfo
                     {
                         $f_name = $config['SourceExpr'];
-                        $caption = $this->page->getFieldCaption($f_name);
+                        $caption = $this->page->getFieldCaption($f_name, $this->data['language']);
                         $width = $this->page->getWidth($f_name);
 
                         ?>

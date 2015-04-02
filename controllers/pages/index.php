@@ -10,14 +10,16 @@ class Qdmvc_Page_Index {
         'main' => array(
             'Class'=>'Qdmvc_Page_Main',
             'Caption' => array(
-                'en' => 'Page Main'
+                'en' => 'Page Main',
+                'vn' => 'Trang chính',
             )
         ),
         'product_card' => array(
             'PageType' => 'Card',
             'Class'=>'Qdmvc_Page_Product_Card',
             'Caption' => array(
-                'en' => 'Product'
+                'en' => 'Product',
+                'vn' => 'Sản phẩm',
             ),
             'Model' => 'QdProduct',
             'DataPort' => 'product_port',
@@ -36,7 +38,8 @@ class Qdmvc_Page_Index {
             'PageType' => 'Card',
             'Class'=>'Qdmvc_Page_ProductCat_Card',
             'Caption' => array(
-                'en' => 'Product Cat'
+                'en' => 'Product Cat',
+                'vn' => 'Loại sản phẩm',
             ),
             'Model' => 'QdProductCat',
             'DataPort' => 'product_cat_port',
@@ -51,20 +54,12 @@ class Qdmvc_Page_Index {
             'Model' => 'QdProductCat',
             'DataPort' => 'product_cat_port'
         ),
-        'product_setup' => array(
-            'PageType' => 'Card',
-            'Class'=>'Qdmvc_Page_ProductSetup',
-            'Caption' => array(
-                'en' => 'Product Setup'
-            ),
-            'Model' => 'QdProductSetup',
-            'DataPort' => 'product_setup_port'
-        ),
         'product_order_card' => array(
             'PageType' => 'Card',
             'Class'=>'Qdmvc_Page_ProductOrder_Card',
             'Caption' => array(
-                'en' => 'Product Order'
+                'en' => 'Product Order',
+                'vn' => 'Đơn đặt hàng (Open)',
             ),
             'Model' => 'QdProductOrder',
             'DataPort' => 'product_order_port',
@@ -83,7 +78,8 @@ class Qdmvc_Page_Index {
             'PageType' => 'Card',
             'Class'=>'Qdmvc_Page_ProductOrderDone_Card',
             'Caption' => array(
-                'en' => 'Product Order Done'
+                'en' => 'Product Order Done',
+                'vn' => 'Đơn đặt hàng (Done)',
             ),
             'Model' => 'QdProductOrder',
             'DataPort' => 'product_order_port',
@@ -102,7 +98,8 @@ class Qdmvc_Page_Index {
             'PageType' => 'Card',
             'Class'=>'Qdmvc_Page_Feedback_Card',
             'Caption' => array(
-                'en' => 'Feedback'
+                'en' => 'Feedback',
+                'vn' => 'Phản hồi KH (Open)',
             ),
             'Model' => 'QdFeedback',
             'DataPort' => 'feedback_port',
@@ -121,7 +118,8 @@ class Qdmvc_Page_Index {
             'PageType' => 'Card',
             'Class'=>'Qdmvc_Page_FeedbackDone_Card',
             'Caption' => array(
-                'en' => 'Feedback Done'
+                'en' => 'Feedback Done',
+                'vn' => 'Phản hồi KH (Done)',
             ),
             'Model' => 'QdFeedback',
             'DataPort' => 'feedback_port',
@@ -136,6 +134,27 @@ class Qdmvc_Page_Index {
             'Model' => 'QdFeedback',
             'DataPort' => 'feedback_port'
         ),
+        'product_setup' => array(
+            'PageType' => 'Card',
+            'Class'=>'Qdmvc_Page_ProductSetup',
+            'Caption' => array(
+                'en' => 'Product Setup',
+                'vn' => 'Cấu hình Sản phẩm',
+            ),
+            'Model' => 'QdProductSetup',
+            'DataPort' => 'product_setup_port'
+        ),
+        'setup' => array(
+            'PageType' => 'Card',
+            'Class'=>'Qdmvc_Page_Setup',
+            'Caption' => array(
+                'en' => 'General Setup',
+                'vn' => 'Cấu hình chung',
+            ),
+            'Model' => 'QdSetup',
+            'DataPort' => 'setup_port'
+        ),
+        /*
         'note' => array(
             'PageType' => 'Card',
             'Class'=>'Qdmvc_Page_Note',
@@ -154,7 +173,7 @@ class Qdmvc_Page_Index {
             ),
             'Model' => 'QdNote',
             'DataPort' => 'note_port'
-        ),
+        ),//quocdunginfo*/
     );
     public static function getIndex()
     {

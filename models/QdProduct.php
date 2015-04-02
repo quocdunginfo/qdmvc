@@ -64,14 +64,30 @@ class QdProduct extends QdRoot
             'InitValue' => true,
         ),
         'id' => array(),
-        'name' => array(),
-        'code' => array(),
-        'xuatxu' => array(),
-        'congsuat' => array(),
-        'dongco' => array(),
-        'trongluong' => array(),
-        'baohanh' => array(),
-        'mota1' => array(),
+        'name' => array(
+            'Caption' => array('vn' => 'Tên SP'),
+        ),
+        'code' => array(
+            'Caption' => array('vn' => 'Mã SP'),
+        ),
+        'xuatxu' => array(
+            'Caption' => array('vn' => 'Xuất xứ'),
+        ),
+        'congsuat' => array(
+            'Caption' => array('vn' => 'Công suất'),
+        ),
+        'dongco' => array(
+            'Caption' => array('vn' => 'Động cơ'),
+        ),
+        'trongluong' => array(
+            'Caption' => array('vn' => 'Trọng lượng'),
+        ),
+        'baohanh' => array(
+            'Caption' => array('vn' => 'Bảo hành'),
+        ),
+        'mota1' => array(
+            'Caption' => array('vn' => 'Mô tả'),
+        ),
         'mota2' => array(),
         'mota3' => array(),
     );

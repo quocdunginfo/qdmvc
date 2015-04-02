@@ -4,7 +4,6 @@ class Qdmvc_RegisterAdminMenu
 {
     function __construct()
     {
-
         add_action('admin_menu', array($this, 'qd_register_custom_menu_page'));
     }
 
@@ -17,7 +16,7 @@ class Qdmvc_RegisterAdminMenu
         //return;
         foreach (Qdmvc_Page_Index::getIndex() as $p_name => $config) {
 
-            add_submenu_page('main', $config['Caption']['en'], $config['Caption']['en'], 'manage_options', $p_name, array($this, "{$p_name}"));
+            add_submenu_page('main', $config['Caption'][Qdmvc_Config::getLanguage()], $config['Caption'][Qdmvc_Config::getLanguage()], 'manage_options', $p_name, array($this, "{$p_name}"));
         }
     }
 

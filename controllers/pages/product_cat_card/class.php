@@ -18,7 +18,8 @@ class Qdmvc_Page_ProductCat_Card extends Qdmvc_Page_Root {
     }
     public function getPagePartURL($part_name='')
     {
-        return "http://localhost/mpd_2015/wp-admin/admin.php?page=product_card&qdrole=navigate&filterdatafield0=product_cat_id&filtervalue0=95";//quocdunginfo
+        return '';
+        //return "http://localhost/mpd_2015/wp-admin/admin.php?page=product_card&qdrole=navigate&filterdatafield0=product_cat_id&filtervalue0=95";//quocdunginfo
     }
     protected static function initFields()
     {
@@ -30,10 +31,11 @@ class Qdmvc_Page_ProductCat_Card extends Qdmvc_Page_Root {
                         'SourceExpr' => 'id',
                         'PrimaryKey' => true
                     ),
+                    /*
                     'date_modified' => array(
                         'SourceExpr' => 'date_modified',
                         'DataType' => static::getDataType('date_modified')
-                    ),
+                    ),*/
                     'name' => array(
                         'SourceExpr' => 'name'
                     ),
@@ -50,6 +52,7 @@ class Qdmvc_Page_ProductCat_Card extends Qdmvc_Page_Root {
                     )
                 )
             ),
+            /*
             'Lines' => array(
                 'Type' => 'Part',
                 'SubType' => 'Page',
@@ -59,7 +62,7 @@ class Qdmvc_Page_ProductCat_Card extends Qdmvc_Page_Root {
                     'Type' => 'FIELD',//'CONST'
                     'Value' => 'id'
                 )
-            )
+            )//quocdunginfo*/
         );
     }
 }

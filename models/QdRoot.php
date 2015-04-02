@@ -401,13 +401,14 @@ class QdRoot extends ActiveRecord\Model
     public static function getFieldCaption($field_name, $lang = 'en')
     {
         try {
-            if (isset(static::$fields_config[$field_name]) && !isset(static::$fields_config[$field_name]['Caption'])) {
-                return '@'.$field_name;
-            } else {
+            if(isset(static::$fields_config[$field_name]['Caption'][$lang]))
+            {
                 return static::$fields_config[$field_name]['Caption'][$lang];
             }
+            return '@'.$field_name;
         } catch (Exception $ex) {
-            return Qdmvc_Helper::getNoneText();
+            return '@'.$field_name;
+            //return Qdmvc_Helper::getNoneText();
         }
 
     }

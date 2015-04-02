@@ -445,6 +445,7 @@ class Qdmvc_Layout_Card
             }
             .qd-card-grid .qd-field-caption {
                 height: 100%;
+                width: 40%;
             }
             .qd-card-grid input[type=text] {
                 display: block;
@@ -489,7 +490,7 @@ class Qdmvc_Layout_Card
                                 <div class="col-md-6">
 
                                     <!-- Caption -->
-                                    <div class="qd-field-caption pull-left"><?= $this->page->getFieldCaption($f_name) ?>:</div>
+                                    <div class="qd-field-caption pull-left"><?= $this->page->getFieldCaption($f_name, $this->data['language']) ?>:</div>
                                     <!-- END Caption -->
                                     <div class="pull-right">
                                         <?php
@@ -675,7 +676,8 @@ class Qdmvc_Layout_Card
                             $("#qdnote").bind("click", function (event) {
                                 //To disable
                                 $("#qdnote").attr("disabled", "disabled");
-                                requestLookupWindow('http://localhost/mpd_2015/wp-admin/admin.php?page=note&&qdrole=navigate');
+                                //requestLookupWindow('http://localhost/mpd_2015/wp-admin/admin.php?page=note&qdrole=navigate');
+                                alert('Module is under constructing...');
 
                                 $("#qdnote").removeAttr("disabled");
                             });

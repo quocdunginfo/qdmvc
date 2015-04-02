@@ -17,6 +17,7 @@ class Qdmvc_Page_Root {
         $this->data['role'] = isset($_GET['qdrole']) ? $_GET['qdrole'] : '';//lookup, navigate
         $this->data['returnid'] = isset($_GET['qdreturnid']) ? $_GET['qdreturnid'] : '';//id
         $this->data['view_style'] = 'normal';
+        $this->data['language'] = Qdmvc_Config::getLanguage();
         if($this->data['role']=='lookup' || $this->data['role']=='navigate')
         {
             $this->data['view_style'] = 'compact';//compact, full

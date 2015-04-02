@@ -43,16 +43,25 @@ class QdProductOrder extends QdRoot
         'customer_name' => array(
             'Caption' => array('en' => 'Customer Name', 'vn' => 'Tên KH')
         ),
-        'customer_email' => array(),
-        'customer_address' => array(),
-        'customer_phone' => array(),
+        'customer_email' => array(
+            'Caption' => array('vn' => 'Email KH'),
+        ),
+        'customer_address' => array(
+            'Caption' => array('vn' => 'Địa chỉ KH'),
+        ),
+        'customer_phone' => array(
+            'Caption' => array('vn' => 'SĐT KH'),
+        ),
         'count' => array(
             'Caption' => array('en' => 'Quantity', 'vn' => 'SL đặt')
         ),
         'done' => array(
-            'DataType' => 'Boolean'
+            'DataType' => 'Boolean',
+            'Caption' => array('vn' => 'Hoàn tất'),
         ),
-        'mota' => array(),
+        'mota' => array(
+            'Caption' => array('vn' => 'Mô tả'),
+        ),
         'id' => array()
     );
     static $belongs_to = array(

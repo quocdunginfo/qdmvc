@@ -10,13 +10,13 @@ Qdmvc::loadRouter();
 class Qdmvc
 {
     private static $included_file = array(
+        'config/index',
         'native/register-admin-menu',
         'native/page-meta-box',
         'native/db-init',
         'native/shortcode',
         'native/menu-nav-provider',
         'notification/index',
-
     );
     //dependency plugins
     private static $dependencies = array('phpactiverecords', 'jqwidgets');
