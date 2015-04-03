@@ -26,60 +26,55 @@ class Qdmvc_Layout_Card
         ?>
         <script>
             var formValidation = [];
-            function formValidationError()
-            {
-                for(i=0;i<formValidation.length;i++)
-                {
-                    if(formValidation[i].type=='error')
-                    {
+            function formValidationError() {
+                for (i = 0; i < formValidation.length; i++) {
+                    if (formValidation[i].type == 'error') {
                         return true;
                     }
                 }
                 return false;
             }
-            function showMsg(msg)
-            {
-                (function($){
-                    //clear notification
-                    $('#jqxMsg').jqxNotification('closeAll');
-
+            function clearFormValidationMark() {
+                (function ($) {
                     //clear form validation mark and tooltip
                     var $inputs = $("#cardForm :input[type=text]");
-                    $inputs.each(function() {
+                    $inputs.each(function () {
                         $(this).css('border-color', '#ddd');//set to boootstrap default
                         try {
                             $(this).jqxTooltip('destroy');//{ content: '', position: 'bottom', name: ''});
-                        }catch (error)
-                        {
+                        } catch (error) {
                             console.log(error);
                         }
                     });
 
+                })(jQuery);
+            }
+            function showMsg(msg) {
+                (function ($) {
+                    //clear notification
+                    $('#jqxMsg').jqxNotification('closeAll');
+
                     //dis[lay new validation mark and msg bus
                     for (i = 0; i < msg.length; i++) {
                         var type = msg[i].type;
-                        var template = type==''?'success':type;
+                        var template = type == '' ? 'success' : type;
 
-                        if(msg[i].field != null && msg[i].field != '')
-                        {
+                        if (msg[i].field != null && msg[i].field != '') {
                             var field = $("#cardForm input[name='" + msg[i].field + "']");
-                            field.jqxTooltip({ content: msg[i].msg, position: 'bottom', name: msg[i].field});
+                            field.jqxTooltip({content: msg[i].msg, position: 'bottom', name: msg[i].field});
 
-                            if(type=='error')
-                            {
-                                field.css('border-color','red');
+                            if (type == 'error') {
+                                field.css('border-color', 'red');
                             }
-                            else if(type=='warning')
-                            {
-                                field.css('border-color','orange');
+                            else if (type == 'warning') {
+                                field.css('border-color', 'orange');
                             }
-                            else if(type=='info')
-                            {
-                                field.css('border-color','blue');
+                            else if (type == 'info') {
+                                field.css('border-color', 'blue');
                             }
                         }
 
-                        $('#jqxMsg').jqxNotification({ template: template });
+                        $('#jqxMsg').jqxNotification({template: template});
                         $("#jqxMsgContent").html(msg[i].msg);
                         $("#jqxMsg").jqxNotification("open");
                     }
@@ -280,8 +275,8 @@ class Qdmvc_Layout_Card
             //gate way to comunicate with parent windows
             function setObj(obj) {//do not change func name
                 (function ($) {
-                    //clear previous obj validation
-                    showMsg([]);
+                    //clear form validation mark but not error msg
+                    clearFormValidationMark();
                     //fill data
                     $("#cardForm").autofill(obj);
                     $("#cardForm input").change();
@@ -443,10 +438,12 @@ class Qdmvc_Layout_Card
             .qd-card-grid .col-md-6 {
                 height: 30px;
             }
+
             .qd-card-grid .qd-field-caption {
                 height: 100%;
                 width: 40%;
             }
+
             .qd-card-grid input[type=text] {
                 display: block;
                 width: 250px;
@@ -454,6 +451,7 @@ class Qdmvc_Layout_Card
                 -webkit-box-sizing: border-box;
                 box-sizing: border-box;
             }
+
             .qd-lookup-input {
                 position: relative;
             }
@@ -490,7 +488,10 @@ class Qdmvc_Layout_Card
                                 <div class="col-md-6">
 
                                     <!-- Caption -->
-                                    <div class="qd-field-caption pull-left"><?= $this->page->getFieldCaption($f_name, $this->data['language']) ?>:</div>
+                                    <div
+                                        class="qd-field-caption pull-left"><?= $this->page->getFieldCaption($f_name, $this->data['language']) ?>
+                                        :
+                                    </div>
                                     <!-- END Caption -->
                                     <div class="pull-right">
                                         <?php
@@ -624,6 +625,8 @@ class Qdmvc_Layout_Card
                                         $("#id").val(data.id).change();
 
                                         console.log(data.rows[0]);
+
+                                        clearFormValidationMark();
                                         setObj(data.rows[0]);
 
                                         formValidation = data.msg;
@@ -777,7 +780,7 @@ class Qdmvc_Layout_Card
         //render Page Part from Page Setup
         foreach ($this->page->getLayout() as $group => $config) :
             if (isset($config['Type']) && $config['Type'] == 'Part'):
-            ?>
+                ?>
                 <div>
                     <div style='margin-top: 2px;'>
                         <div style='margin-left: 4px; float: left;'>
@@ -787,7 +790,8 @@ class Qdmvc_Layout_Card
                 </div>
                 <div>
                     <div style="height: 520px; width: 100%">
-                        <iframe id="pagePart_<?=$group?>" src="<?=$this->page->getPagePartURL()?>" frameborder="0" marginwidth="0" marginheight="0" scrolling="auto"
+                        <iframe id="pagePart_<?= $group ?>" src="<?= $this->page->getPagePartURL() ?>" frameborder="0"
+                                marginwidth="0" marginheight="0" scrolling="auto"
                                 width="100%" height="100%">
                             <p>Your browser does not support iframes</p>
                         </iframe>
@@ -826,8 +830,7 @@ class Qdmvc_Layout_Card
     public function render()
     {
         //var_dump($this->data);
-        if($this->data['view_style']=='compact')
-        {
+        if ($this->data['view_style'] == 'compact') {
             Qdmvc_Helper::requestCompact();
         }
         ?>
