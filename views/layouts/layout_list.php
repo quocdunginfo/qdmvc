@@ -235,7 +235,8 @@ class Qdmvc_Layout_List
                             <?php
                             if($this->data['role']=='navigate')
                             {
-                                echo 'parent.setObj(args.row);';
+                                echo 'parent.clearFormValidationMark();';
+                                echo 'parent.setObj(args.row, true);';
                             }
                             ?>
                             console.log(args.row);
@@ -266,8 +267,6 @@ class Qdmvc_Layout_List
 
                                 var selectedRowData = $('#jqxgrid').jqxGrid('getrowdata', getselectedrowindexes[0]);
                                 console.log(selectedRowData);
-
-
 
                             }
                             */
