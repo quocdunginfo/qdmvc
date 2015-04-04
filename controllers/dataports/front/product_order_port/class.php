@@ -27,4 +27,10 @@ class Qdmvc_Dataport_FrontProductOrder extends Qdmvc_Dataport_ProductOrder
         $this->pushMsg('Không được phép sửa, ID='.$this->obj->id);
         $this->finish();
     }
+
+    protected function checkSecurity()
+    {
+        return true;
+    }
+
 }

@@ -26,4 +26,9 @@ class Qdmvc_Dataport_FrontFeedback extends Qdmvc_Dataport_Feedback
             }
         }
     }
+    protected function checkSecurity()
+    {
+        return true;
+    }
+
 }

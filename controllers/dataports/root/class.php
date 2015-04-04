@@ -28,9 +28,19 @@ class Qdmvc_Dataport {
             array_push($this->msg, array('field' => '', 'msg' => $msg, 'type' => $type));
         }
     }
+    protected function checkSecurity()
+    {
+        return is_user_logged_in();
+    }
     public function run()
     {
         header('Content-Type: application/json');
+        //check security
+        if(!$this->checkSecurity())
+        {
+            $this->pushMsg('You are not allowed to access dataport!', 'error');
+            $this->finish();
+        }
 
         $this->for_card = isset($_POST) && isset($_POST['submit']);
         if($this->for_card)

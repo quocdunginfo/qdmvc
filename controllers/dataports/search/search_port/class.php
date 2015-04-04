@@ -40,4 +40,5 @@ class Qdmvc_DataPort_Search {
         echo $this->getResult();
         $this->finish();
     }
+
 }
