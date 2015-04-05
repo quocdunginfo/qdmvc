@@ -58,12 +58,21 @@ class QdRoot extends ActiveRecord\Model
     }
 
     protected $fields_validation = array(
-        'error' => array()//'error' => array('msg' => 'MSG', 'type' => 'success')
+        //'0' => array('msg' => 'MSG', 'type' => 'success', 'hash' => md5)
     );
 
-    protected function pushValidateError($field_name, $msg, $type='error')
+    protected function pushValidateError($field_name='', $msg='', $type='error')
     {
-        array_push($this->fields_validation['error'], array('field' => $field_name, 'msg' => $msg, 'type' => $type));
+        $hash = md5($field_name.$msg.$type);
+        /*foreach($this->fields_validation as $item)
+        {
+            if($item['hash']==$hash)
+            {
+                 return;
+            }
+        }
+        array_push($this->fields_validation, array('field' => $field_name, 'msg' => $msg, 'type' => $type, 'hash' => $hash));*/
+        $this->fields_validation[$hash] = array('field' => $field_name, 'msg' => $msg, 'type' => $type);
     }
 
     private $_xRec = null;
@@ -85,7 +94,7 @@ class QdRoot extends ActiveRecord\Model
 
     public function GETVALIDATION()
     {
-        return $this->fields_validation['error'];
+        return $this->fields_validation;
     }
     protected function OnValidate($field_name){
 
@@ -93,21 +102,14 @@ class QdRoot extends ActiveRecord\Model
     public function VALIDATE()
     {
         //clear previous validation
-        $this->fields_validation['error'] = array();
+        //$this->fields_validation = array();
         //call validate trigger on all fields and then return array of error
         foreach (static::$fields_config as $key => $config) {
             if (method_exists($this, $key . 'OnValidate')) {
                 $this->{$key . 'OnValidate'}($key);
             }
-            /*
-            try {
-                $this->{$key . 'OnValidate'}();
-            }catch (Exception $ex)
-            {
-
-            }*/
         }
-        foreach($this->fields_validation['error'] as $item)
+        foreach($this->fields_validation as $item)
         {
             if($item['type']=='error')
             {

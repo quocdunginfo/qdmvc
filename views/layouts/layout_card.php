@@ -25,9 +25,9 @@ class Qdmvc_Layout_Card
     {
         ?>
         <script>
-            var formValidation = [];
+            var formValidation = {};
             function formValidationError() {
-                for (i = 0; i < formValidation.length; i++) {
+                for (i in formValidation) {
                     if (formValidation[i].type == 'error') {
                         return true;
                     }
@@ -53,15 +53,16 @@ class Qdmvc_Layout_Card
                 (function ($) {
                     //clear notification
                     $('#jqxMsg').jqxNotification('closeAll');
-
                     //dis[lay new validation mark and msg bus
-                    for (i = 0; i < msg.length; i++) {
-                        var type = msg[i].type;
+
+                    for(key in msg)
+                    {
+                        var type = msg[key].type;
                         var template = type == '' ? 'success' : type;
 
-                        if (msg[i].field != null && msg[i].field != '') {
-                            var field = $("#cardForm input[name='" + msg[i].field + "']");
-                            field.jqxTooltip({content: msg[i].msg, position: 'bottom', name: msg[i].field});
+                        if (msg[key].field != null && msg[key].field != '') {
+                            var field = $("#cardForm input[name='" + msg[key].field + "']");
+                            field.jqxTooltip({content: msg[key].msg, position: 'bottom', name: msg[key].field});
 
                             if (type == 'error') {
                                 field.css('border-color', 'red');
@@ -75,9 +76,13 @@ class Qdmvc_Layout_Card
                         }
 
                         $('#jqxMsg').jqxNotification({template: template});
-                        $("#jqxMsgContent").html(msg[i].msg);
+                        $("#jqxMsgContent").html(msg[key].msg);
                         $("#jqxMsg").jqxNotification("open");
                     }
+                    /*
+                    for (i = 0; i < msg.length; i++) {
+                        
+                    }*/
                 })(jQuery);
             }
         </script>

@@ -9,7 +9,7 @@ class Qdmvc_Dataport {
     protected static $model = '';
     protected $obj = null;
     protected $data = null;
-    protected $msg = array();//array(array('msg' => 'MSG', 'type' => 'error'), array('msg2' => 'MSG', 'type' => 'warning'))
+    protected $msg = array();//array(array('msg' => 'MSG', 'type' => 'error'), array('msg2' => 'MSG', 'type' => 'warning', 'hash' => md5))
     protected $action = 'update';
     private $for_card = true;
 
@@ -17,7 +17,7 @@ class Qdmvc_Dataport {
     {
 
     }
-    protected function pushMsg($msg, $type='')
+    protected function pushMsg($msg='', $type='')
     {
         if(is_array($msg))
         {
@@ -25,7 +25,8 @@ class Qdmvc_Dataport {
         }
         else
         {
-            array_push($this->msg, array('field' => '', 'msg' => $msg, 'type' => $type));
+            //array_push($this->msg, array('field' => '', 'msg' => $msg, 'type' => $type, 'hash' => md5(''.$msg.$type)));
+            $this->msg[md5(''.$msg.$type)] = array('field' => '', 'msg' => $msg, 'type' => $type);
         }
     }
     protected function checkSecurity()
