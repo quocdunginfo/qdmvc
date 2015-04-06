@@ -472,6 +472,7 @@ class QdRoot extends ActiveRecord\Model
             if(!static::ISFLOWFIELD($key))
             {
                 $this->{$key} = str_replace('\\"','"',$this->{$key});//quocdunginfo, need to find other approach
+                $this->{$key} = str_replace("\\'","'",$this->{$key});//quocdunginfo, need to find other approach
             }
         }
         //do validate and save
