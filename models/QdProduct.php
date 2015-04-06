@@ -71,7 +71,7 @@ class QdProduct extends QdRoot
             'Caption' => array('vn' => 'Mã SP'),
         ),
         'price' => array(
-            'Caption' => array('vn' => 'Gía'),
+            'Caption' => array('vn' => 'Giá'),
         ),
         'xuatxu' => array(
             'Caption' => array('vn' => 'Xuất xứ'),
