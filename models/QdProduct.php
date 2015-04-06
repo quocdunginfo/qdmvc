@@ -70,6 +70,9 @@ class QdProduct extends QdRoot
         'code' => array(
             'Caption' => array('vn' => 'Mã SP'),
         ),
+        'price' => array(
+            'Caption' => array('vn' => 'Gía'),
+        ),
         'xuatxu' => array(
             'Caption' => array('vn' => 'Xuất xứ'),
         ),
@@ -156,6 +159,13 @@ class QdProduct extends QdRoot
                 $this->pushValidateError($field_name, 'Code tự động in hoa và bằng Name', 'info');
                 $this->$field_name = strtoupper($this->name);
             }
+        }
+    }
+    protected function priceOnValidate($field_name)
+    {
+        if($this->$field_name!='' && $this->$field_name <= 0)
+        {
+            $this->pushValidateError($field_name, 'Price phải lớn hơn 0', 'error');
         }
     }
     protected function product_cat_idOnValidate($field_name)

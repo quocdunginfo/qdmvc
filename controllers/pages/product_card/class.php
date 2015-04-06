@@ -38,6 +38,9 @@ class Qdmvc_Page_Product_Card extends Qdmvc_Page_Root
                         'code' => array(
                             'SourceExpr' => 'code'
                         ),
+                        'price' => array(
+                            'SourceExpr' => 'price'
+                        ),
                         'congsuat' => array(
                             'SourceExpr' => 'congsuat'
                         ),

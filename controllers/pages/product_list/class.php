@@ -30,18 +30,19 @@ class Qdmvc_Page_Product_List extends Qdmvc_Page_Root
                 'SourceExpr' => 'code',
                 'Width' => 100
             ),
-			'xuatxu' => array(
-                'SourceExpr' => 'xuatxu',
+            'name' => array(
+                'SourceExpr' => 'name',
+                'Width' => 200
+            ),
+			'price' => array(
+                'SourceExpr' => 'price',
                 'Width' => 100
             ),
             '_product_cat_name' => array(
                 'SourceExpr' => '_product_cat_name',
                 'DataType' => static::getDataType('_product_cat_name')
             ),
-			'name' => array(
-                'SourceExpr' => 'name',
-                'Width' => 200
-            ),
+
         );
     }
 

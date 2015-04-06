@@ -163,12 +163,22 @@ class Qdmvc_Dataport {
         $count = 99;
         while(isset($_REQUEST['filterdatafield'.$count])) {
             //$this->filter[$_REQUEST['filterdatafield'.$count]] = $_REQUEST['filtervalue'.$count];
+            if($c::ISFLOWFIELD($_REQUEST['filterdatafield'.$count]))
+            {
+                $count++;
+                continue;
+            }
             $record->SETRANGE($_REQUEST['filterdatafield' . $count], $_REQUEST['filtervalue' . $count], true);
             $count++;
         }
         $count = 0;
         while(isset($_REQUEST['filterdatafield'.$count]))
         {
+            if($c::ISFLOWFIELD($_REQUEST['filterdatafield'.$count]))
+            {
+                $count++;
+                continue;
+            }
             //$this->filter[$_REQUEST['filterdatafield'.$count]] = $_REQUEST['filtervalue'.$count];
             $record->SETRANGE($_REQUEST['filterdatafield'.$count], $_REQUEST['filtervalue'.$count], false);
             $count++;
