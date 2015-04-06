@@ -56,7 +56,11 @@ class Qdmvc_Page_Product_Card extends Qdmvc_Page_Root
                         'active' => array(
                             'SourceExpr' => 'active',
                             'DataType' => static::getDataType('active')
-                        )
+                        ),
+                        'mota1' => array(
+                            'SourceExpr' => 'mota1',
+                            'DataType' => static::getDataType('mota1')
+                        ),
                     )
                 )
             );

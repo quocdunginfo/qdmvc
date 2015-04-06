@@ -466,6 +466,15 @@ class QdRoot extends ActiveRecord\Model
     }
     public function save($validate = true)
     {
+        //replace all \" to ", to prevent " loopback when saving
+        foreach(static::$fields_config as $key=>$value)
+        {
+            if(!static::ISFLOWFIELD($key))
+            {
+                $this->{$key} = str_replace('\\"','"',$this->{$key});//quocdunginfo, need to find other approach
+            }
+        }
+        //do validate and save
         if($this->VALIDATE())
         {
             return parent::save($validate);

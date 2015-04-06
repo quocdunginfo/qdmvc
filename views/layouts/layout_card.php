@@ -55,8 +55,7 @@ class Qdmvc_Layout_Card
                     $('#jqxMsg').jqxNotification('closeAll');
                     //dis[lay new validation mark and msg bus
 
-                    for(key in msg)
-                    {
+                    for (key in msg) {
                         var type = msg[key].type;
                         var template = type == '' ? 'success' : type;
 
@@ -80,9 +79,9 @@ class Qdmvc_Layout_Card
                         $("#jqxMsg").jqxNotification("open");
                     }
                     /*
-                    for (i = 0; i < msg.length; i++) {
-                        
-                    }*/
+                     for (i = 0; i < msg.length; i++) {
+
+                     }*/
                 })(jQuery);
             }
         </script>
@@ -253,6 +252,23 @@ class Qdmvc_Layout_Card
                         }
                     });
 
+                    //init window for editor
+                    $('#jqxwptexteditor').jqxWindow({
+                        showCollapseButton: false,
+                        //maxHeight: 600,
+                        //maxWidth: 1020,
+                        minHeight: 200,
+                        minWidth: 200,
+                        height: '80%',
+                        width: '100%',
+                        autoOpen: false,
+                        isModal: true,
+                        initContent: function () {
+                            //$('#tab').jqxTabs({ height: '100%', width:  '100%' });
+                            //$('#window').jqxWindow('focus');
+                        }
+                    });
+
                 });
             })(jQuery);
         </script>
@@ -268,6 +284,41 @@ class Qdmvc_Layout_Card
                         width="100%" height="100%">
                     <p>Your browser does not support iframes</p>
                 </iframe>
+            </div>
+        </div>
+        <div id="jqxwptexteditor">
+            <div id="windowHeader">
+                    <span>
+                        WYSIWYG Editor Window
+                    </span>
+            </div>
+            <div style="overflow: hidden;" id="wptexteditor_wrapper">
+                <div>
+                    <button type="button" id="wptexteditor_done">Done</button>
+                </div>
+                <?php wp_editor('', 'wptexteditor', $settings = array()); ?>
+                <script>
+                    var wptexteditor_returnid = 'notset';
+                    (function ($) {
+                        $(document).ready(function () {
+                            $('#wptexteditor_done').click(function () {
+                                var content = tinyMCE.get('wptexteditor').getContent();
+                                $('#' + wptexteditor_returnid).val(content);
+                                //close editor
+                                $('#jqxwptexteditor').jqxWindow('close');
+                            });
+                        });
+                    })(jQuery);
+                    function requestEditorWindow(initVal, returnId) {
+                        (function ($) {
+                            wptexteditor_returnid = returnId;
+                            console.log('WYSIWYG opened, returnId: '+wptexteditor_returnid);
+                            $('#jqxwptexteditor').jqxWindow('open');
+
+                            tinyMCE.get('wptexteditor').setContent(initVal);
+                        })(jQuery);
+                    }
+                </script>
             </div>
         </div>
     <?php
@@ -432,7 +483,27 @@ class Qdmvc_Layout_Card
         ?>
         <input <?= $value == 1 ? 'checked="checked"' : '' ?> type="checkbox" name="<?= $f_name ?>"
                                                              id="<?= $f_name ?>" value="1">
+    <?php
+    }
 
+    private function generateFieldWYSIWYG($f_name, $value = 0)
+    {
+        ?>
+        <div class="qd-lookup-input">
+            <input class="text-input" type="text" name="<?= $f_name ?>" id="<?= $f_name ?>" value="<?= $value ?>">
+
+            <button id="e<?= $f_name ?>" value="">...</button>
+
+            <script>
+                (function ($) {
+                    $(document).ready(function () {
+                        $("#e<?=$f_name?>").click(function () {
+                            requestEditorWindow($('#<?=$f_name?>').val(), '<?=$f_name?>');
+                        });
+                    });
+                })(jQuery);
+            </script>
+        </div>
     <?php
     }
 
@@ -441,7 +512,8 @@ class Qdmvc_Layout_Card
         ?>
         <style>
             .qd-card-grid .col-md-6 {
-                height: 30px;
+                /*height: 30px;*/
+                margin-bottom: 7px;
             }
 
             .qd-card-grid .qd-field-caption {
@@ -512,17 +584,20 @@ class Qdmvc_Layout_Card
                                                     if ($type == 'Date') {
                                                         $this->generateFieldDate($f_name, $f_val);
                                                     } else
-                                                        if (isset($f_lku)) {
-                                                            $this->generateFieldLookup($f_name, $f_val, $f_lku);
-                                                        } else {
-                                                            ?>
+                                                        if ($type == 'WYSIWYG') {
+                                                            $this->generateFieldWYSIWYG($f_name, $f_val);
+                                                        } else
+                                                            if (isset($f_lku)) {
+                                                                $this->generateFieldLookup($f_name, $f_val, $f_lku);
+                                                            } else {
+                                                                ?>
 
-                                                            <input class="text-input" type="text"
-                                                                   name="<?= $f_name ?>"
-                                                                   id="<?= $f_name ?>"
-                                                                   value="<?= $f_val ?>">
-                                                        <?php
-                                                        }
+                                                                <input class="text-input" type="text"
+                                                                       name="<?= $f_name ?>"
+                                                                       id="<?= $f_name ?>"
+                                                                       value="<?= $f_val ?>">
+                                                            <?php
+                                                            }
                                         ?>
                                     </div>
 

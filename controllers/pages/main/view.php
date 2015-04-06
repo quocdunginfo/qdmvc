@@ -6,3 +6,4 @@
  * Time: 9:27 PM
  */
 echo 'Page Main works!';
+?>

@@ -90,8 +90,12 @@ class QdProduct extends QdRoot
         ),
         'mota1' => array(
             'Caption' => array('vn' => 'Mô tả'),
+            'DataType' => 'WYSIWYG',
         ),
-        'mota2' => array(),
+        'mota2' => array(
+            'Caption' => array('vn' => 'Mô tả 2'),
+            'DataType' => 'WYSIWYG',
+        ),
         'mota3' => array(),
     );
     static $alias_attribute = array(
