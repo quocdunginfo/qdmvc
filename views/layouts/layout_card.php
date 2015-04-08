@@ -312,7 +312,7 @@ class Qdmvc_Layout_Card
                     function requestEditorWindow(initVal, returnId) {
                         (function ($) {
                             wptexteditor_returnid = returnId;
-                            console.log('WYSIWYG opened, returnId: '+wptexteditor_returnid);
+                            console.log('WYSIWYG opened, returnId: ' + wptexteditor_returnid);
                             $('#jqxwptexteditor').jqxWindow('open');
 
                             tinyMCE.get('wptexteditor').setContent(initVal);
@@ -841,6 +841,12 @@ class Qdmvc_Layout_Card
                             <span>
                                 <button class="qd-action-btn" type="button" id="qdnote">Notes</button>
                             </span>
+                            <span>
+                                <button class="qd-action-btn" type="button" id="starttour">Start tour</button>
+                            </span>
+                            <span>
+                                <button class="qd-action-btn" type="button" id="starttour2">Start tour 2</button>
+                            </span>
                         </div>
                     </div>
                 </form>
@@ -907,13 +913,130 @@ class Qdmvc_Layout_Card
     <?php
     }
 
-    public function render()
+    protected function style()
     {
         //var_dump($this->data);
         if ($this->data['view_style'] == 'compact') {
             Qdmvc_Helper::requestCompact();
         }
         ?>
+        <style>
+            #wpfooter {
+                display: none;
+            }
+        </style>
+    <?php
+    }
+
+    protected function getHelpTourPipes()
+    {
+        return array(
+            '#starttour' => array(
+                '#qdnew' => 20,
+                '#cardForm' => 40,
+                '#qdupdate' => 60,
+            ),
+            '#starttour2' => array(
+                '#qddelete' => 40,
+                '#qdnew' => 80,
+                '#qdupdate' => 20,
+                '#qdclone' => 60,
+            )
+        );
+    }
+
+    protected function getHelpTourNodes()
+    {
+        //range 1 => 2999
+        return array(
+            20 => array(
+                'Caption' => array(
+                    'en' => 'Create new record for input (but NOT saved yet)',
+                    'vn' => 'Tạo mới một record để nhập liệu (tuy nhiên KHÔNG lưu)'
+                )
+            ),
+            40 => array(
+                'Caption' => array(
+                    'en' => 'Input record property',
+                    'vn' => 'Nhập liệu cho từng thuộc tính'
+                )
+            ),
+            60 => array(
+                'Caption' => array(
+                    'en' => 'Press Save button',
+                    'vn' => 'Click nút lưu'
+                )
+            ),
+            80 => array(
+                'Caption' => array(
+                    'en' => 'Focus on this area to see new added record',
+                    'vn' => 'Quan sát ở đây để thấy record mới thêm'
+                )
+            ),
+        );
+    }
+
+    protected function helpTour()
+    {
+        ?>
+        <script>
+            function ClearHelpTourMetaData()
+            {
+                (function ($) {
+                    <?php
+                    foreach($this->getHelpTourPipes() as $triggerBtn=>$nodeIds)
+                    {
+                        foreach($nodeIds as $nodeId=>$priority)
+                        {
+                        ?>
+                        $('<?=$nodeId?>').removeAttr('data-intro');
+                        $('<?=$nodeId?>').removeAttr('data-step');
+                        <?php
+                        }
+                    }
+                    ?>
+                })(jQuery);
+            }
+            function HelpTourSetMetaData(elementId, intro, priority) {
+                (function ($) {
+                    $(elementId).attr('data-intro', intro);
+                    $(elementId).attr('data-step', priority);
+                })(jQuery);
+
+            }
+            (function ($) {
+                $(document).ready(function () {
+                    <?php foreach($this->getHelpTourPipes() as $tourPipe=>$mapping): ?>
+                    $('<?=$tourPipe?>').click(function () {
+                        //clear all node data-mark before start new Tour !!!!!!
+                        //...https://github.com/usablica/intro.js/blob/master/example/programmatic/index.html
+                        ClearHelpTourMetaData();
+                        <?php
+                            $count=1;
+                            foreach($mapping as $elementId=>$nodeNo):
+                            $intro = $this->getHelpTourNodes()[$nodeNo]['Caption']['vn'];
+                            $priority = $count;
+                            ?>
+                                HelpTourSetMetaData('<?=$elementId?>', '<?=$intro?>', <?=$priority?>);
+                            <?php
+                            $count++;
+                            endforeach;
+                            ?>
+                        introJs().start();
+                    });
+                    <?php endforeach; ?>
+                });
+            })(jQuery);
+        </script>
+    <?php
+    }
+
+    public function render()
+    {
+        ?>
+        <?= $this->style() ?>
+        <?= $this->helpTour() ?>
+
         <?= $this->formValidation() ?>
         <?= $this->progressSpinner() ?>
         <?= $this->preConfig() ?>
