@@ -48,11 +48,10 @@ class Qdmvc_Page_Setup extends Qdmvc_Page_Root {
                     ),
                     'df_language' => array(
                         'SourceExpr' => 'df_language',
-                        'DataType' => static::getDataType('df_language')
+                        'DataType' => static::getDataType('df_language'),
                     ),
                 )
             )
         );
     }
-
 }

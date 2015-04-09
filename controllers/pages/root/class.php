@@ -201,4 +201,9 @@ class Qdmvc_Page_Root {
     {
         return $this->data;
     }
+    public function getFieldOptions($f_name, $lang='en')
+    {
+        $c = static::getModel();
+        return $c::getFieldOptions($f_name, $lang);
+    }
 }

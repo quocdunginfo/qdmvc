@@ -57,13 +57,12 @@ class QdRoot extends ActiveRecord\Model
 
     }
 
-    protected $fields_validation = array(
-        //'0' => array('msg' => 'MSG', 'type' => 'success', 'hash' => md5)
+    protected $fields_validation = array(//'0' => array('msg' => 'MSG', 'type' => 'success', 'hash' => md5)
     );
 
-    protected function pushValidateError($field_name='', $msg='', $type='error')
+    protected function pushValidateError($field_name = '', $msg = '', $type = 'error')
     {
-        $hash = md5($field_name.$msg.$type);
+        $hash = md5($field_name . $msg . $type);
         /*foreach($this->fields_validation as $item)
         {
             if($item['hash']==$hash)
@@ -80,12 +79,9 @@ class QdRoot extends ActiveRecord\Model
     protected function xRec()
     {
         if ($this->_xRec == null) {
-            if($this->id>0)
-            {
+            if ($this->id > 0) {
                 $this->_xRec = static::GET($this->id);
-            }
-            else
-            {
+            } else {
                 $this->_xRec = null;
             }
         }
@@ -96,9 +92,12 @@ class QdRoot extends ActiveRecord\Model
     {
         return $this->fields_validation;
     }
-    protected function OnValidate($field_name){
+
+    protected function OnValidate($field_name)
+    {
 
     }
+
     public function VALIDATE()
     {
         //clear previous validation
@@ -109,10 +108,8 @@ class QdRoot extends ActiveRecord\Model
                 $this->{$key . 'OnValidate'}($key);
             }
         }
-        foreach($this->fields_validation as $item)
-        {
-            if($item['type']=='error')
-            {
+        foreach ($this->fields_validation as $item) {
+            if ($item['type'] == 'error') {
                 return false;
             }
         }
@@ -136,10 +133,9 @@ class QdRoot extends ActiveRecord\Model
         return static::$fields_config[$field_name]['name'];
     }
 
-    public static function GET($id=1)
+    public static function GET($id = 1)
     {
-        if(static::exists($id))
-        {
+        if (static::exists($id)) {
             return static::find($id);
         }
         return null;
@@ -403,13 +399,12 @@ class QdRoot extends ActiveRecord\Model
     public static function getFieldCaption($field_name, $lang = 'en')
     {
         try {
-            if(isset(static::$fields_config[$field_name]['Caption'][$lang]))
-            {
+            if (isset(static::$fields_config[$field_name]['Caption'][$lang])) {
                 return static::$fields_config[$field_name]['Caption'][$lang];
             }
-            return '@'.$field_name;
+            return '@' . $field_name;
         } catch (Exception $ex) {
-            return '@'.$field_name;
+            return '@' . $field_name;
             //return Qdmvc_Helper::getNoneText();
         }
 
@@ -464,25 +459,36 @@ class QdRoot extends ActiveRecord\Model
         }
         return $tmp;
     }
+
     public function save($validate = true)
     {
         //replace all \" to ", to prevent " loopback when saving
-        foreach(static::$fields_config as $key=>$value)
-        {
-            if(!static::ISFLOWFIELD($key))
-            {
-                $this->{$key} = str_replace('\\"','"',$this->{$key});//quocdunginfo, need to find other approach
-                $this->{$key} = str_replace("\\'","'",$this->{$key});//quocdunginfo, need to find other approach
+        foreach (static::$fields_config as $key => $value) {
+            if (!static::ISFLOWFIELD($key)) {
+                $this->{$key} = str_replace('\\"', '"', $this->{$key});//quocdunginfo, need to find other approach
+                $this->{$key} = str_replace("\\'", "'", $this->{$key});//quocdunginfo, need to find other approach
             }
         }
         //do validate and save
-        if($this->VALIDATE())
-        {
+        if ($this->VALIDATE()) {
             return parent::save($validate);
-        }
-        else
-        {
+        } else {
             return false;
+        }
+    }
+
+    public static function getFieldOptions($field_name, $lang = 'en')
+    {
+        try {
+            $tmp = array();
+            $t = static::$fields_config[$field_name]['Options'];
+            foreach ($t as $value => $config) {
+                $tmp[$value] = $config['Caption'][$lang];
+            }
+
+            return $tmp;
+        } catch (Exception $ex) {
+            return array();
         }
     }
 }

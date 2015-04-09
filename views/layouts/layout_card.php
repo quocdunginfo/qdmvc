@@ -375,7 +375,7 @@ class Qdmvc_Layout_Card
         <div id="jqxMsg">
             <span id="jqxMsgContent"></span>
         </div>
-        <div style="position: fixed; bottom: 0px; right: 0px">
+        <div style="position: fixed; bottom: 0px; right: 0px;">
             <div id="jqxMsgContainer">
 
             </div>
@@ -390,7 +390,18 @@ class Qdmvc_Layout_Card
                     });
                 })(jQuery);
             </script>
-            <button style="opacity: 0.8" id="qdmsgclear" class="btn btn-info pull-right">Clear all</button>
+            <button style="opacity: 0.8;" id="qdmsgclear" class="btn btn-info pull-right">MSG</button>
+            <!-- Single button -->
+            <div class="btn-group dropup pull-right">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                        aria-expanded="false">
+                    Help <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="#" id="tourPageCardNewRecord">New record ?</a></li>
+                    <li class="divider"></li>
+                </ul>
+            </div>
             <div style="clear: both"></div>
         </div>
     <?php
@@ -447,10 +458,20 @@ class Qdmvc_Layout_Card
     <?php
     }
 
+    private function generateFieldCombobox($f_name, $value, $options)
+    {
+        ?>
+        <select name="<?= $f_name ?>" id="<?= $f_name ?>">
+            <?php foreach ($options as $key=>$caption): ?>
+                <option value="<?=$key ?>" <?=$value==$key?'selected':''?>><?= $caption ?></option>
+            <?php endforeach; ?>
+        </select>
+    <?php
+    }
+
     private function generateFieldImage($f_name, $value)
     {
         ?>
-
         <div class="qd-lookup-input">
             <input class="text-input" type="text" name="<?= $f_name ?>" id="<?= $f_name ?>" value="<?= $value ?>">
 
@@ -553,6 +574,10 @@ class Qdmvc_Layout_Card
                             foreach ($config['Fields'] as $key => $f_config) :
                                 $type = $f_config['DataType'];
                                 $f_name = $f_config['SourceExpr'];
+                                if($type=='Option')
+                                {
+                                    $options = $this->page->getFieldOptions($f_name, $this->data['language']);
+                                }
                                 $f_val = $this->obj != null ? $this->obj->$f_name : '';
                                 $f_lku = $f_config['LookupURL'];
 
@@ -587,17 +612,19 @@ class Qdmvc_Layout_Card
                                                         if ($type == 'WYSIWYG') {
                                                             $this->generateFieldWYSIWYG($f_name, $f_val);
                                                         } else
-                                                            if (isset($f_lku)) {
-                                                                $this->generateFieldLookup($f_name, $f_val, $f_lku);
-                                                            } else {
-                                                                ?>
-
-                                                                <input class="text-input" type="text"
-                                                                       name="<?= $f_name ?>"
-                                                                       id="<?= $f_name ?>"
-                                                                       value="<?= $f_val ?>">
-                                                            <?php
-                                                            }
+                                                            if ($type == 'Option') {
+                                                                $this->generateFieldCombobox($f_name, $f_val, $options);
+                                                            } else
+                                                                if (isset($f_lku)) {
+                                                                    $this->generateFieldLookup($f_name, $f_val, $f_lku);
+                                                                } else {
+                                                                    ?>
+                                                                    <input class="text-input" type="text"
+                                                                           name="<?= $f_name ?>"
+                                                                           id="<?= $f_name ?>"
+                                                                           value="<?= $f_val ?>">
+                                                                <?php
+                                                                }
                                         ?>
                                     </div>
 
@@ -841,12 +868,6 @@ class Qdmvc_Layout_Card
                             <span>
                                 <button class="qd-action-btn" type="button" id="qdnote">Notes</button>
                             </span>
-                            <span>
-                                <button class="qd-action-btn" type="button" id="starttour">Start tour</button>
-                            </span>
-                            <span>
-                                <button class="qd-action-btn" type="button" id="starttour2">Start tour 2</button>
-                            </span>
                         </div>
                     </div>
                 </form>
@@ -931,17 +952,11 @@ class Qdmvc_Layout_Card
     protected function getHelpTourPipes()
     {
         return array(
-            '#starttour' => array(
+            '#tourPageCardNewRecord' => array(
                 '#qdnew' => 20,
                 '#cardForm' => 40,
                 '#qdupdate' => 60,
             ),
-            '#starttour2' => array(
-                '#qddelete' => 40,
-                '#qdnew' => 80,
-                '#qdupdate' => 20,
-                '#qdclone' => 60,
-            )
         );
     }
 
@@ -973,6 +988,18 @@ class Qdmvc_Layout_Card
                     'vn' => 'Quan sát ở đây để thấy record mới thêm'
                 )
             ),
+            100 => array(
+                'Caption' => array(
+                    'en' => 'Notification area, validation msg will raise beside here, click to clear msgs',
+                    'vn' => 'Khi lưu, các thông báo lỗi (nếu có) sẽ xuất hiện ở đây'
+                )
+            ),
+            101 => array(
+                'Caption' => array(
+                    'en' => 'Validation also marked on each field which cause error',
+                    'vn' => 'Đồng thời cũng sẽ đánh dấu trên Form các Field gây lỗi (màu viền: đỏ (lỗi), vàng (cảnh báo), xanh(dữ liệu tự động gán),...)'
+                )
+            )
         );
     }
 
@@ -980,8 +1007,7 @@ class Qdmvc_Layout_Card
     {
         ?>
         <script>
-            function ClearHelpTourMetaData()
-            {
+            function ClearHelpTourMetaData() {
                 (function ($) {
                     <?php
                     foreach($this->getHelpTourPipes() as $triggerBtn=>$nodeIds)
@@ -989,12 +1015,12 @@ class Qdmvc_Layout_Card
                         foreach($nodeIds as $nodeId=>$priority)
                         {
                         ?>
-                        $('<?=$nodeId?>').removeAttr('data-intro');
-                        $('<?=$nodeId?>').removeAttr('data-step');
-                        <?php
-                        }
+                    $('<?=$nodeId?>').removeAttr('data-intro');
+                    $('<?=$nodeId?>').removeAttr('data-step');
+                    <?php
                     }
-                    ?>
+                }
+                ?>
                 })(jQuery);
             }
             function HelpTourSetMetaData(elementId, intro, priority) {
@@ -1017,11 +1043,11 @@ class Qdmvc_Layout_Card
                             $intro = $this->getHelpTourNodes()[$nodeNo]['Caption']['vn'];
                             $priority = $count;
                             ?>
-                                HelpTourSetMetaData('<?=$elementId?>', '<?=$intro?>', <?=$priority?>);
-                            <?php
-                            $count++;
-                            endforeach;
-                            ?>
+                        HelpTourSetMetaData('<?=$elementId?>', '<?=$intro?>', <?=$priority?>);
+                        <?php
+                        $count++;
+                        endforeach;
+                        ?>
                         introJs().start();
                     });
                     <?php endforeach; ?>
@@ -1046,7 +1072,6 @@ class Qdmvc_Layout_Card
         <?= $this->lookupWindowLayout() ?>
         <?= $this->Bar() ?>
         <?= $this->msgPanelLayout() ?>
-
     <?php
     }
 }
