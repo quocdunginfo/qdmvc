@@ -187,7 +187,7 @@ class Qdmvc_Dataport {
                 continue;
             }
             //$this->filter[$_REQUEST['filterdatafield'.$count]] = $_REQUEST['filtervalue'.$count];
-            $record->SETRANGE($_REQUEST['filterdatafield'.$count], $_REQUEST['filtervalue'.$count], false);
+            $record->SETRANGE($_REQUEST['filterdatafield'.$count], $_REQUEST['filtervalue'.$count], true);//quocdunginfo
             $count++;
         }
 
