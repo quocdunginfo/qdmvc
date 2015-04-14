@@ -67,7 +67,7 @@ class QdProductCat extends QdRoot
         $query = add_query_arg( array('id' => $this->id), $query );
         return $query;*/
         $query =  get_site_url();
-        $query .= sprintf('/loai-san-pham/%s/%s', $this->id, Qdmvc_Helper::sanitize_title_with_dashes($this->name));
+        $query .= sprintf('/loaisp/%s/%s', $this->id, Qdmvc_Helper::sanitize_title_with_dashes($this->name));
         return $query;
     }
     public function getProductsSegmentURL($offset=0)

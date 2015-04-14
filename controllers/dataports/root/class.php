@@ -59,6 +59,10 @@ class Qdmvc_Dataport {
             {
                 $this->insert();
             }
+            else if ($this->action=='execute')
+            {
+                $this->callServerFn();
+            }
             $this->card_return();
         }
         else
@@ -66,7 +70,10 @@ class Qdmvc_Dataport {
             $this->list_return();
         }
     }
+    protected function callServerFn()
+    {
 
+    }
     protected function finish($msg_array=null, $result_array=null, $total=0, $id=0)
     {
         $re = array();
@@ -168,7 +175,7 @@ class Qdmvc_Dataport {
                 $count++;
                 continue;
             }
-            $record->SETRANGE($_REQUEST['filterdatafield' . $count], $_REQUEST['filtervalue' . $count], true);
+            $record->SETRANGE($_REQUEST['filterdatafield' . $count], $_REQUEST['filtervalue' . $count], false);
             $count++;
         }
         $count = 0;

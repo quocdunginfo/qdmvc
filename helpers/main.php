@@ -32,6 +32,10 @@ class Qdmvc_Helper
     {
         return '[Not set]';
     }
+    public function callServerFn($class, $fn, $params)
+    {
+        return $class::$fn;
+    }
     public static function getCompactPageListLink($page_name, $filter_array=array())
     {
         $filter_string = '';

@@ -49,7 +49,8 @@ class Qdmvc_Page_Index {
             'PageType' => 'List',
             'Class'=>'Qdmvc_Page_ProductCat_List',
             'Caption' => array(
-                'en' => 'Product Cat List'
+                'en' => 'Product Cat List',
+                'vn' => 'Product Cat List',
             ),
             'Model' => 'QdProductCat',
             'DataPort' => 'product_cat_port'
@@ -69,7 +70,8 @@ class Qdmvc_Page_Index {
             'PageType' => 'List',
             'Class'=>'Qdmvc_Page_ProductOrder_List',
             'Caption' => array(
-                'en' => 'Product Order List'
+                'en' => 'Product Order List',
+                'vn' => 'Product Order List',
             ),
             'Model' => 'QdProductOrder',
             'DataPort' => 'product_order_port'
@@ -89,7 +91,8 @@ class Qdmvc_Page_Index {
             'PageType' => 'List',
             'Class'=>'Qdmvc_Page_ProductOrderDone_List',
             'Caption' => array(
-                'en' => 'Product Order Done List'
+                'en' => 'Product Order Done List',
+                'vn' => 'Product Order Done List'
             ),
             'Model' => 'QdProductOrder',
             'DataPort' => 'product_order_port'
@@ -109,7 +112,8 @@ class Qdmvc_Page_Index {
             'PageType' => 'List',
             'Class'=>'Qdmvc_Page_Feedback_List',
             'Caption' => array(
-                'en' => 'Feedback List'
+                'en' => 'Feedback List',
+                'vn' => 'Feedback List'
             ),
             'Model' => 'QdFeedback',
             'DataPort' => 'feedback_port'
@@ -129,7 +133,8 @@ class Qdmvc_Page_Index {
             'PageType' => 'List',
             'Class'=>'Qdmvc_Page_FeedbackDone_List',
             'Caption' => array(
-                'en' => 'Feedback Done List'
+                'en' => 'Feedback Done List',
+                'vn' => 'Feedback Done List'
             ),
             'Model' => 'QdFeedback',
             'DataPort' => 'feedback_port'
@@ -154,12 +159,12 @@ class Qdmvc_Page_Index {
             'Model' => 'QdSetup',
             'DataPort' => 'setup_port'
         ),
-        /*
         'note' => array(
             'PageType' => 'Card',
             'Class'=>'Qdmvc_Page_Note',
             'Caption' => array(
-                'en' => 'Note'
+                'en' => 'Note',
+                'vn' => 'Note'
             ),
             'Model' => 'QdNote',
             'DataPort' => 'note_port',
@@ -169,11 +174,12 @@ class Qdmvc_Page_Index {
             'PageType' => 'List',
             'Class'=>'Qdmvc_Page_Note_list',
             'Caption' => array(
-                'en' => 'Note List'
+                'en' => 'Note List',
+                'vn' => 'Note List'
             ),
             'Model' => 'QdNote',
             'DataPort' => 'note_port'
-        ),//quocdunginfo*/
+        ),
     );
     public static function getIndex()
     {

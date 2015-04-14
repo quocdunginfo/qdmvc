@@ -455,6 +455,8 @@ class QdRoot extends ActiveRecord\Model
             foreach (static::getFieldsConfig() as $key => $value) {
                 $arr[$key] = $item->$key;
             }
+            //system preserved field
+            $arr['__sys_note_url'] = Qdmvc_Helper::getCompactPageListLink('note', array('model' => get_class($item), 'model_id' => $item->id));
             array_push($tmp, $arr);
         }
         return $tmp;

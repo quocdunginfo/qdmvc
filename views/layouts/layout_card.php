@@ -223,6 +223,7 @@ class Qdmvc_Layout_Card
         <script>
             // prepare the data
             var data_port = '<?=$this->data['data_port']?>';
+            var current_obj = null;
             //ajax_loader
             var ajax_loader;
         </script>
@@ -328,11 +329,16 @@ class Qdmvc_Layout_Card
     {
         ?>
         <script>
+            function getObj()
+            {
+                return current_obj;
+            }
             //gate way to comunicate with parent windows
             function setObj(obj) {//do not change func name
                 (function ($) {
                     //clear form validation mark but not error msg
                     clearFormValidationMark();
+                    current_obj = obj;
                     //fill data
                     $("#cardForm").autofill(obj);
                     $("#cardForm input").change();
@@ -651,7 +657,6 @@ class Qdmvc_Layout_Card
                 $(document).ready(function () {
                     //add cardBar
                     //$('#jqxNavigationBar').jqxNavigationBar('insert', 0, 'Card', 'Content');
-
                 });
             })(jQuery);
         </script>
@@ -786,8 +791,8 @@ class Qdmvc_Layout_Card
                             $("#qdnote").bind("click", function (event) {
                                 //To disable
                                 $("#qdnote").attr("disabled", "disabled");
-                                //requestLookupWindow('http://localhost/mpd_2015/wp-admin/admin.php?page=note&qdrole=navigate');
-                                alert('Module is under constructing...');
+                                requestLookupWindow(getObj()['__sys_note_url']);
+                                //alert('Module is under constructing...');
 
                                 $("#qdnote").removeAttr("disabled");
                             });
