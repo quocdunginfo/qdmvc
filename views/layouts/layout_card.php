@@ -90,6 +90,7 @@ class Qdmvc_Layout_Card
                 //set window iframe source
                 //alert(src);
                 (function ($) {
+                    $("#windowFrame").contents().find("body").html('');//do a trick to hide previous result
                     $('#windowFrame').attr('src', src);
                     $('#jqxlookupwin').jqxWindow('open');
                 })(jQuery);
