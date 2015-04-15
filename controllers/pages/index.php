@@ -29,7 +29,8 @@ class Qdmvc_Page_Index {
             'PageType' => 'List',
             'Class'=>'Qdmvc_Page_Product_List',
             'Caption' => array(
-                'en' => 'Product List'
+                'en' => 'Product List',
+                'vn' => 'Product List'
             ),
             'Model' => 'QdProduct',
             'DataPort' => 'product_port'
