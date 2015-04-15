@@ -33,12 +33,9 @@ class Qdmvc_Page_ProductOrder_List extends Qdmvc_Page_Root
 
     protected static function initFields()
     {
-        return array(
-            'id' => array(
-                'SourceExpr' => 'id',
-                'PrimaryKey' => true,
-                'Width' => 50
-            ),
+        return array_merge(
+            parent::initFields(),
+            array(
             '_product_name' => array(
                 'SourceExpr' => '_product_name',
                 'Width' => 100
@@ -50,6 +47,6 @@ class Qdmvc_Page_ProductOrder_List extends Qdmvc_Page_Root
                 'SourceExpr' => 'count',
                 'Width' => 100
             )
-        );
+        ));
     }
 }

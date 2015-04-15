@@ -242,11 +242,34 @@ class QdRoot extends ActiveRecord\Model
      * @param $field
      * @param $value
      */
+    protected static function ISPK($field)
+    {
+        if(strtolower($field)==strtolower(static::$primary_key))
+        {
+            return true;
+        }
+        return false;
+    }
     public function SETRANGE($field, $value, $exact = true)
     {
-        $this->record_filter['filter'][$field]['value'] = $value;
-        $this->record_filter['filter'][$field]['exact'] = $exact;
+        //ignore filter on FLOWFIELD
+        if(!static::ISFLOWFIELD($field))
+        {
+            if(static::ISPK($field))
+            {
+                $exact = true;//force filter exact on PK field
+            }
+            $this->record_filter['filter'][$field]['value'] = $value;
+            $this->record_filter['filter'][$field]['exact'] = $exact;
+        }
         return $this;
+    }
+
+    public static function getInitObj()
+    {
+        $c = get_called_class();
+        $obj = new $c();
+        return $obj;
     }
 
     /**
@@ -446,6 +469,10 @@ class QdRoot extends ActiveRecord\Model
         }
         return parent::__get($field_name);
     }
+    public function getClassName()
+    {
+        return get_class($this);
+    }
 
     public static function toJSON($list)
     {
@@ -456,7 +483,7 @@ class QdRoot extends ActiveRecord\Model
                 $arr[$key] = $item->$key;
             }
             //system preserved field
-            $arr['__sys_note_url'] = Qdmvc_Helper::getCompactPageListLink('note', array('model' => get_class($item), 'model_id' => $item->id));
+            $arr['__sys_note_url'] = Qdmvc_Helper::getCompactPageListLink('note', array('model' => $item->getClassName(), 'model_id' => $item->id));
             array_push($tmp, $arr);
         }
         return $tmp;

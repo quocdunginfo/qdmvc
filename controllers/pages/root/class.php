@@ -18,6 +18,7 @@ class Qdmvc_Page_Root {
         $this->data['returnid'] = isset($_GET['qdreturnid']) ? $_GET['qdreturnid'] : '';//id
         $this->data['view_style'] = 'normal';
         $this->data['language'] = Qdmvc_Config::getLanguage();
+        $this->data['init_obj'] = $this->getInitObj();
         if($this->data['role']=='lookup' || $this->data['role']=='navigate')
         {
             $this->data['view_style'] = 'compact';//compact, full
@@ -57,8 +58,13 @@ class Qdmvc_Page_Root {
     }
     protected static function initFields()
     {
-        //mac dinh lay het field ben model dem qua
-
+        return array(
+            'id' => array(
+                'SourceExpr' => 'id',
+                'PrimaryKey' => true,
+                'Width' => 70
+            )
+        );
     }
     public function run()
     {
@@ -132,6 +138,28 @@ class Qdmvc_Page_Root {
 
     }
     /*
+     * json init object
+     */
+    public function getInitObj()
+    {
+        $c = static::getModel();
+        //if run page root direct
+        if(!class_exists($c))
+        {
+            return null;
+        }
+        $obj = $c::getInitObj();
+        //set pre filter
+        $arr = static::getPageView();
+        foreach($arr as $field=>$value)
+        {
+            $obj->{$field} = $value;
+        }
+        //convert to JSON
+        $re = $c::toJSON(array($obj));
+        return json_encode($re[0]);
+    }
+    /*
      * Trả về Caption của 1 field nào đó, thông qua Setup trong Model tương ứng
      */
     public function getFieldCaption($field_name, $lang='en')
@@ -183,6 +211,7 @@ class Qdmvc_Page_Root {
         {
             return Qdmvc_Page_Index::getIndex()[static::getPage()]['Model'];
         }
+        return '';
     }
     public static function getCaption($lang='en')
     {

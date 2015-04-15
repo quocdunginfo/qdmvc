@@ -10,4 +10,12 @@ class QdNote extends QdRoot
         'model' => array(),
         'model_id' => array()
     );
+
+    public static function getInitObj()
+    {
+        $obj = new QdNote();
+        $obj->content = 'Mặc định';
+        return $obj;
+    }
+
 }

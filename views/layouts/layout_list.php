@@ -240,14 +240,15 @@ class Qdmvc_Layout_List
                                 echo 'parent.setObj(args.row, true);';
                             }
                             ?>
-                            console.log(args.row);
                         }catch(error)
                         {
                             console.log(error);
                         }
                     });
                     $('#jqxgrid').on('rowdoubleclick', function (event) {
-                        parent.doubleClickObj(event.args.row);
+                        rbindex = event.args.rowindex;
+                        obj = $(this).jqxGrid('getrowdata', rbindex);
+                        parent.doubleClickObj(obj);
                     });
                     $("#jqxgrid").on("pagechanged", function (event) {
                         console.log('jqxgrid page changed');

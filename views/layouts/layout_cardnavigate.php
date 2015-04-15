@@ -39,6 +39,8 @@ class Qdmvc_Layout_CardNavigate extends Qdmvc_Layout_Card
             function doubleClickObj(obj) {//do not change func name
                 (function ($) {
                     $('#jqxNavigationBar').jqxNavigationBar('expandAt', 0);
+                    //set obj too
+                    setObj(obj);
                 })(jQuery);
             }
         </script>

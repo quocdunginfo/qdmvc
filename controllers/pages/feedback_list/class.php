@@ -26,19 +26,16 @@ class Qdmvc_Page_Feedback_List extends Qdmvc_Page_Root
 
     protected static function initFields()
     {
-        return array(
-            'id' => array(
-                'SourceExpr' => 'id',
-                'PrimaryKey' => true,
-                'Width' => 50
-            ),
+        return array_merge(
+            parent::initFields(),
+            array(
             'customer_name' => array(
                 'SourceExpr' => 'customer_name'
             ),
             'customer_email' => array(
                 'SourceExpr' => 'customer_email'
             )
-        );
+        ));
     }
     protected function getPageView()
     {

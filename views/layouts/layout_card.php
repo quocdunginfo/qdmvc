@@ -224,6 +224,7 @@ class Qdmvc_Layout_Card
             // prepare the data
             var data_port = '<?=$this->data['data_port']?>';
             var current_obj = null;
+            var init_obj = <?=$this->data['init_obj']?>;
             //ajax_loader
             var ajax_loader;
         </script>
@@ -238,13 +239,13 @@ class Qdmvc_Layout_Card
                 $(document).ready(function () {
                     //init window for lookup
                     $('#jqxlookupwin').jqxWindow({
-                        showCollapseButton: false,
-                        //maxHeight: 600,
-                        //maxWidth: 1020,
+                        showCollapseButton: true,
+                        maxHeight: 1024,
+                        maxWidth: 2048,
                         minHeight: 200,
                         minWidth: 200,
                         height: '80%',
-                        width: '100%',
+                        width: '90%',
                         autoOpen: false,
                         isModal: true,
                         initContent: function () {
@@ -343,6 +344,7 @@ class Qdmvc_Layout_Card
                     $("#cardForm").autofill(obj);
                     $("#cardForm input").change();
                     //$('#jqxNavigationBar').jqxNavigationBar('collapseAt', 0);
+                    console.log('layout_cardnavigate -> setObj: ');console.log(obj);
                 })(jQuery);
             }
             function setLookupResult(value, txtId) {
@@ -767,6 +769,9 @@ class Qdmvc_Layout_Card
                                 try {
                                     $("#qdnew").attr("disabled", "disabled");
                                     document.getElementById("cardForm").reset();
+                                    //set init obj
+                                    setObj(init_obj);
+                                    //force set id = 0
                                     $("#id").val("0").change();
                                     $("#qdnew").removeAttr("disabled");
 
@@ -778,6 +783,9 @@ class Qdmvc_Layout_Card
 
                             //card button event
                             $("#qdclone").bind("click", function (event) {
+                                if (!confirm("Xác nhận ?")) {
+                                    return false;
+                                }
                                 //To disable
                                 $("#qdclone").attr("disabled", "disabled");
                                 $("#id").val("0").change();

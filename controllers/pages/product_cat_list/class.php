@@ -6,6 +6,7 @@
  * Time: 11:35 PM
  */
 Qdmvc::loadPage('root');
+
 class Qdmvc_Page_ProductCat_List extends Qdmvc_Page_Root
 {
     public function run()
@@ -20,24 +21,21 @@ class Qdmvc_Page_ProductCat_List extends Qdmvc_Page_Root
 
     protected static function initFields()
     {
-        return array(
-            'id' => array(
-                'SourceExpr' => 'id',
-                'PrimaryKey' => true,
-                'Width' => 50
-            ),
-            'parent_id' => array(
-                'SourceExpr' => 'parent_id',
-                'Width' => 100
-            ),
-            'order' => array(
-                'SourceExpr' => 'order',
-                'Width' => 100
-            ),
-            'name' => array(
-                'SourceExpr' => 'name'
-            ),
-        );
+        return array_merge(
+            parent::initFields(),
+            array(
+                'parent_id' => array(
+                    'SourceExpr' => 'parent_id',
+                    'Width' => 100
+                ),
+                'order' => array(
+                    'SourceExpr' => 'order',
+                    'Width' => 100
+                ),
+                'name' => array(
+                    'SourceExpr' => 'name'
+                ),
+            ));
     }
 
     public static function getPage()

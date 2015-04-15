@@ -193,4 +193,12 @@ class QdProduct extends QdRoot
             $this->pushValidateError($field_name, 'Tự động gán Avatar mặc định cho Product', 'info');
         }
     }
+
+    public static function getInitObj()
+    {
+        $obj = new QdProduct();
+        $obj->trongluong = 'KG';
+        return $obj;
+    }
+
 }

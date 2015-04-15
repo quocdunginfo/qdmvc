@@ -34,6 +34,14 @@ class Qdmvc_Page_Note extends Qdmvc_Page_Root {
                     ),
                     'content' => array(
                         'SourceExpr' => 'content'
+                    ),
+                    'model' => array(
+                        'SourceExpr' => 'model',
+                        'ReadOnly' => true
+                    ),
+                    'model_id' => array(
+                        'SourceExpr' => 'model_id',
+                        'ReadOnly' => true
                     )
                 )
             )

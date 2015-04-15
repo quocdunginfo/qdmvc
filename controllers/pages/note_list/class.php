@@ -26,16 +26,13 @@ class Qdmvc_Page_Note_List extends Qdmvc_Page_Root
 
     protected static function initFields()
     {
-        return array(
-            'id' => array(
-                'SourceExpr' => 'id',
-                'PrimaryKey' => true,
-                'Width' => 50
-            ),
+        return array_merge(
+            parent::initFields(),
+            array(
             'content' => array(
                 'SourceExpr' => 'content',
             )
-        );
+        ));
     }
 
 }

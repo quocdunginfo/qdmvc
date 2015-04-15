@@ -13,6 +13,7 @@ class Qdmvc_Page_Product_List extends Qdmvc_Page_Root
     {
         parent::run();
     }
+
     protected static function getViewClass()
     {
         return 'Qdmvc_View_Product_List';
@@ -20,29 +21,26 @@ class Qdmvc_Page_Product_List extends Qdmvc_Page_Root
 
     protected static function initFields()
     {
-        return array(
-            'id' => array(
-                'SourceExpr' => 'id',
-                'PrimaryKey' => true,
-                'Width' => 50
-            ),
-            'code' => array(
-                'SourceExpr' => 'code',
-                'Width' => 100
-            ),
-            'name' => array(
-                'SourceExpr' => 'name',
-                'Width' => 200
-            ),
-			'price' => array(
-                'SourceExpr' => 'price',
-                'Width' => 100
-            ),
-            '_product_cat_name' => array(
-                'SourceExpr' => '_product_cat_name',
-                'DataType' => static::getDataType('_product_cat_name')
-            ),
-
+        return array_merge(
+            parent::initFields(),
+            array(
+                'code' => array(
+                    'SourceExpr' => 'code',
+                    'Width' => 100
+                ),
+                'name' => array(
+                    'SourceExpr' => 'name',
+                    'Width' => 200
+                ),
+                'price' => array(
+                    'SourceExpr' => 'price',
+                    'Width' => 100
+                ),
+                '_product_cat_name' => array(
+                    'SourceExpr' => '_product_cat_name',
+                    'DataType' => static::getDataType('_product_cat_name')
+                ),
+            )
         );
     }
 
