@@ -13,4 +13,11 @@ echo 'Page Main works!';
 
 //$obj = QdProduct::GET(75);
 //var_dump($obj->getImages()->GETLIST()[0]->path);//OK
+
+$record = new QdImage();
+$record->SETRANGE('model', 'QdProduct');
+$record->SETRANGE('model_id', 75);
+$list = $record->GETLIST();
+
+var_dump($list);
 ?>

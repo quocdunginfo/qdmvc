@@ -257,14 +257,6 @@ class QdRoot extends ActiveRecord\Model
         $record->SETRANGE('model_id', $this->id);
         return $record;
     }
-    public function GETMAX($field, $get_value=true)
-    {
-        return 0;//quocdunginfo
-        $query = array_merge(static::_generateQuery($this->record_filter), array('select' => "max(`{$field}`)"));
-        $c = static::getCalledClassName();
-        $obj = $c::find('all', $query);
-        return $get_value?$obj->{$field}:$obj;
-    }
     public function SETRANGE($field, $value, $exact = true)
     {
         //ignore filter on FLOWFIELD
