@@ -241,12 +241,12 @@ class Qdmvc_Layout_Card
                     //init window for lookup
                     $('#jqxlookupwin').jqxWindow({
                         showCollapseButton: true,
-                        maxHeight: 1024,
-                        maxWidth: 2048,
+                        maxHeight: 9999,
+                        maxWidth: 9999,
                         minHeight: 200,
                         minWidth: 200,
-                        height: '80%',
-                        width: '90%',
+                        height: '85%',
+                        width: '99%',
                         autoOpen: false,
                         isModal: true,
                         initContent: function () {
@@ -805,6 +805,14 @@ class Qdmvc_Layout_Card
 
                                 $("#qdnote").removeAttr("disabled");
                             });
+                            $("#qdimage").bind("click", function (event) {
+                                //To disable
+                                $("#qdimage").attr("disabled", "disabled");
+                                requestLookupWindow(getObj()['__sys_image_url']);
+                                //alert('Module is under constructing...');
+
+                                $("#qdimage").removeAttr("disabled");
+                            });
 
 
                             $("#qddelete").bind("click", function (event) {
@@ -881,6 +889,9 @@ class Qdmvc_Layout_Card
                             </span>
                             <span>
                                 <button class="qd-action-btn" type="button" id="qdnote">Notes</button>
+                            </span>
+                            <span>
+                                <button class="qd-action-btn" type="button" id="qdimage">Images</button>
                             </span>
                         </div>
                     </div>

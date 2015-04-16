@@ -6,4 +6,11 @@
  * Time: 9:27 PM
  */
 echo 'Page Main works!';
+//$record = new QdImage();
+//$obj = $record->GETMAX('order');
+//$record->order= 5;
+//echo $record->GETMAX('order', true);
+
+//$obj = QdProduct::GET(75);
+//var_dump($obj->getImages()->GETLIST()[0]->path);//OK
 ?>

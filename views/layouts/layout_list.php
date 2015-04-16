@@ -42,6 +42,7 @@ class Qdmvc_Layout_List
             }
             ?>
                 {name: '__sys_note_url'},/*Xem trong QdRoot jSON sys fields*/
+                {name: '__sys_image_url'},/*Xem trong QdRoot jSON sys fields*/
             ];
             var cellbeginedit = function (row, datafield, columntype, value) {
                 //check field can edit when linked to Header page

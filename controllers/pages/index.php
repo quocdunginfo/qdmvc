@@ -181,6 +181,27 @@ class Qdmvc_Page_Index {
             'Model' => 'QdNote',
             'DataPort' => 'note_port'
         ),
+        'image' => array(
+            'PageType' => 'Card',
+            'Class'=>'Qdmvc_Page_Image',
+            'Caption' => array(
+                'en' => 'Image',
+                'vn' => 'Image'
+            ),
+            'Model' => 'QdImage',
+            'DataPort' => 'image_port',
+            'PageList' => 'image_list'
+        ),
+        'image_list' => array(
+            'PageType' => 'List',
+            'Class'=>'Qdmvc_Page_Image_list',
+            'Caption' => array(
+                'en' => 'Image List',
+                'vn' => 'Image List'
+            ),
+            'Model' => 'QdImage',
+            'DataPort' => 'image_port'
+        ),
     );
     public static function getIndex()
     {

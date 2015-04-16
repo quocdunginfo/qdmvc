@@ -250,6 +250,21 @@ class QdRoot extends ActiveRecord\Model
         }
         return false;
     }
+    public function getImages()
+    {
+        $record = new QdImage();
+        $record->SETRANGE('model', $this->getCalledClassName());
+        $record->SETRANGE('model_id', $this->id);
+        return $record;
+    }
+    public function GETMAX($field, $get_value=true)
+    {
+        return 0;//quocdunginfo
+        $query = array_merge(static::_generateQuery($this->record_filter), array('select' => "max(`{$field}`)"));
+        $c = static::getCalledClassName();
+        $obj = $c::find('all', $query);
+        return $get_value?$obj->{$field}:$obj;
+    }
     public function SETRANGE($field, $value, $exact = true)
     {
         //ignore filter on FLOWFIELD
@@ -469,6 +484,10 @@ class QdRoot extends ActiveRecord\Model
         }
         return parent::__get($field_name);
     }
+    public static function getCalledClassName()
+    {
+        return get_called_class();
+    }
     public function getClassName()
     {
         return get_class($this);
@@ -477,13 +496,20 @@ class QdRoot extends ActiveRecord\Model
     public static function toJSON($list)
     {
         $tmp = array();
+        $class_name = null;
         foreach ($list as $item) {
+            if($class_name==null)
+            {
+                $class_name = $item->getClassName();
+            }
             $arr = array();
             foreach (static::getFieldsConfig() as $key => $value) {
                 $arr[$key] = $item->$key;
             }
             //system preserved field
-            $arr['__sys_note_url'] = Qdmvc_Helper::getCompactPageListLink('note', array('model' => $item->getClassName(), 'model_id' => $item->id));
+            $arr['__sys_note_url'] = Qdmvc_Helper::getCompactPageListLink('note', array('model' => $class_name, 'model_id' => $item->id));
+            $arr['__sys_image_url'] = Qdmvc_Helper::getCompactPageListLink('image', array('model' => $class_name, 'model_id' => $item->id));
+
             array_push($tmp, $arr);
         }
         return $tmp;
