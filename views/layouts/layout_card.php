@@ -245,7 +245,7 @@ class Qdmvc_Layout_Card
                         maxWidth: 9999,
                         minHeight: 200,
                         minWidth: 200,
-                        height: '85%',
+                        height: '99%',
                         width: '99%',
                         autoOpen: false,
                         isModal: true,

@@ -8,6 +8,7 @@
 class Qdmvc_Page_Index {
     private static $index = array(
         'main' => array(
+            'Active'=>false,
             'Class'=>'Qdmvc_Page_Main',
             'Caption' => array(
                 'en' => 'Page Main',
@@ -15,6 +16,7 @@ class Qdmvc_Page_Index {
             )
         ),
         'product_card' => array(
+            'Active'=>true,
             'PageType' => 'Card',
             'Class'=>'Qdmvc_Page_Product_Card',
             'Caption' => array(
@@ -26,6 +28,7 @@ class Qdmvc_Page_Index {
             'PageList' => 'product_list'
         ),
         'product_list' => array(
+            'Active'=>false,
             'PageType' => 'List',
             'Class'=>'Qdmvc_Page_Product_List',
             'Caption' => array(
@@ -36,6 +39,7 @@ class Qdmvc_Page_Index {
             'DataPort' => 'product_port'
         ),
         'product_cat_card' => array(
+            'Active'=>true,
             'PageType' => 'Card',
             'Class'=>'Qdmvc_Page_ProductCat_Card',
             'Caption' => array(
@@ -47,6 +51,7 @@ class Qdmvc_Page_Index {
             'PageList' => 'product_cat_list'
         ),
         'product_cat_list' => array(
+            'Active'=>false,
             'PageType' => 'List',
             'Class'=>'Qdmvc_Page_ProductCat_List',
             'Caption' => array(
@@ -57,6 +62,7 @@ class Qdmvc_Page_Index {
             'DataPort' => 'product_cat_port'
         ),
         'product_order_card' => array(
+            'Active'=>true,
             'PageType' => 'Card',
             'Class'=>'Qdmvc_Page_ProductOrder_Card',
             'Caption' => array(
@@ -68,6 +74,7 @@ class Qdmvc_Page_Index {
             'PageList' => 'product_order_list'
         ),
         'product_order_list' => array(
+            'Active'=>false,
             'PageType' => 'List',
             'Class'=>'Qdmvc_Page_ProductOrder_List',
             'Caption' => array(
@@ -78,6 +85,7 @@ class Qdmvc_Page_Index {
             'DataPort' => 'product_order_port'
         ),
         'product_order_done_card' => array(
+            'Active'=>true,
             'PageType' => 'Card',
             'Class'=>'Qdmvc_Page_ProductOrderDone_Card',
             'Caption' => array(
@@ -89,6 +97,7 @@ class Qdmvc_Page_Index {
             'PageList' => 'product_order_done_list'
         ),
         'product_order_done_list' => array(
+            'Active'=>false,
             'PageType' => 'List',
             'Class'=>'Qdmvc_Page_ProductOrderDone_List',
             'Caption' => array(
@@ -99,6 +108,7 @@ class Qdmvc_Page_Index {
             'DataPort' => 'product_order_port'
         ),
         'feedback_card' => array(
+            'Active'=>true,
             'PageType' => 'Card',
             'Class'=>'Qdmvc_Page_Feedback_Card',
             'Caption' => array(
@@ -110,6 +120,7 @@ class Qdmvc_Page_Index {
             'PageList' => 'feedback_list'
         ),
         'feedback_list' => array(
+            'Active'=>false,
             'PageType' => 'List',
             'Class'=>'Qdmvc_Page_Feedback_List',
             'Caption' => array(
@@ -120,6 +131,7 @@ class Qdmvc_Page_Index {
             'DataPort' => 'feedback_port'
         ),
         'feedback_done_card' => array(
+            'Active'=>true,
             'PageType' => 'Card',
             'Class'=>'Qdmvc_Page_FeedbackDone_Card',
             'Caption' => array(
@@ -131,6 +143,7 @@ class Qdmvc_Page_Index {
             'PageList' => 'feedback_done_list'
         ),
         'feedback_done_list' => array(
+            'Active'=>false,
             'PageType' => 'List',
             'Class'=>'Qdmvc_Page_FeedbackDone_List',
             'Caption' => array(
@@ -141,6 +154,7 @@ class Qdmvc_Page_Index {
             'DataPort' => 'feedback_port'
         ),
         'product_setup' => array(
+            'Active'=>true,
             'PageType' => 'Card',
             'Class'=>'Qdmvc_Page_ProductSetup',
             'Caption' => array(
@@ -151,6 +165,7 @@ class Qdmvc_Page_Index {
             'DataPort' => 'product_setup_port'
         ),
         'setup' => array(
+            'Active'=>true,
             'PageType' => 'Card',
             'Class'=>'Qdmvc_Page_Setup',
             'Caption' => array(
@@ -161,6 +176,7 @@ class Qdmvc_Page_Index {
             'DataPort' => 'setup_port'
         ),
         'note' => array(
+            'Active'=>true,
             'PageType' => 'Card',
             'Class'=>'Qdmvc_Page_Note',
             'Caption' => array(
@@ -172,6 +188,7 @@ class Qdmvc_Page_Index {
             'PageList' => 'note_list'
         ),
         'note_list' => array(
+            'Active'=>false,
             'PageType' => 'List',
             'Class'=>'Qdmvc_Page_Note_list',
             'Caption' => array(
@@ -182,6 +199,7 @@ class Qdmvc_Page_Index {
             'DataPort' => 'note_port'
         ),
         'image' => array(
+            'Active'=>true,
             'PageType' => 'Card',
             'Class'=>'Qdmvc_Page_Image',
             'Caption' => array(
@@ -193,6 +211,7 @@ class Qdmvc_Page_Index {
             'PageList' => 'image_list'
         ),
         'image_list' => array(
+            'Active'=>false,
             'PageType' => 'List',
             'Class'=>'Qdmvc_Page_Image_list',
             'Caption' => array(
@@ -202,9 +221,45 @@ class Qdmvc_Page_Index {
             'Model' => 'QdImage',
             'DataPort' => 'image_port'
         ),
+        'navigation' => array(
+            'Active'=>false,
+            'PageType' => 'Card',
+            'Class'=>'Qdmvc_Page_Navigation',
+            'Caption' => array(
+                'en' => 'Navigation',
+                'vn' => 'Navigation'
+            ),
+            'Model' => 'QdNote',
+            'DataPort' => 'note_port',
+            'PageList' => 'note_list'
+        ),
     );
     public static function getIndex()
     {
         return static::$index;
+    }
+    public static function buildJSONTree($lang='en')
+    {
+        $re = array();
+        $count=1;
+        foreach(static::$index as $key=>$config)
+        {
+            $tmp = array();
+            $active = isset($config['Active'])?$config['Active']:true;
+            if(!$active)
+            {
+                continue;
+            }
+
+            $text = isset($config['Caption']) && isset($config['Caption'][$lang])?$config['Caption'][$lang]:$key;
+            $tmp['text'] = $text;
+            $tmp['id'] = $count;
+            $tmp['parentid'] = -1;
+            $tmp['value'] = Qdmvc_Helper::getCompactPageListLink($key);
+
+            array_push($re, $tmp);
+            $count++;
+        }
+        return json_encode($re);
     }
 }

@@ -209,10 +209,14 @@ class Qdmvc_Helper
                 #wpadminbar, #adminmenuback, #adminmenuwrap, #wpfooter {
                     display: none !important;
                 }
-
+                #wpbody-content{
+                    padding-bottom: 0px;
+                }
                 #wpcontent, #wpbody {
                     margin: 0px !important;
                     padding: 0px !important;
+                    /*width: 100%;*/
+                    /*height: 100%;*/
                 }
 
                 html.wp-toolbar {

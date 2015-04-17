@@ -17,11 +17,6 @@ class QdProductCat extends QdRoot
             'DataType' => 'Image',
             'Description' => 'Hình đại diện'
         ),
-        'date_modified' => array(
-            'Caption' => array('en' => 'Date modified', 'vn' => 'Ngày sửa cuối'),
-            'DataType' => 'Date',
-            'Description' => 'Ngày sửa cuối'
-        ),
         'order' => array(
             'Caption' => array('vn' => 'Thứ tự'),
         ),
