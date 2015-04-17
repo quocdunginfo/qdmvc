@@ -72,7 +72,8 @@ class Qdmvc_Page_Root {
         $c = static::getViewClass();
         if($c!='')
         {
-            (new $c($this))->render();
+            $tmp = new $c($this);
+            $tmp->render();
         }
     }
     protected static function getViewClass()
@@ -95,7 +96,8 @@ class Qdmvc_Page_Root {
     public static function getWidth($f_name)
     {
         try{
-            return static::getLayout()[$f_name]['Width'];
+            $tmp = static::getLayout();
+            return $tmp[$f_name]['Width'];
         }catch (Exception $ex)
         {
             return '';
@@ -180,9 +182,11 @@ class Qdmvc_Page_Root {
      */
     protected function getPageList()
     {
-        if(isset(Qdmvc_Page_Index::getIndex()[static::getPage()]['PageList']))
+        $index = Qdmvc_Page_Index::getIndex();
+        $page = $index[static::getPage()];
+        if(isset($page['PageList']))
         {
-            return Qdmvc_Page_Index::getIndex()[static::getPage()]['PageList'];
+            return $page['PageList'];
         }
     }
     /*
@@ -197,9 +201,11 @@ class Qdmvc_Page_Root {
      */
     public static function getDataPort()
     {
-        if(isset(Qdmvc_Page_Index::getIndex()[static::getPage()]['DataPort']))
+        $index = Qdmvc_Page_Index::getIndex();
+        $page = $index[static::getPage()];
+        if(isset($page['DataPort']))
         {
-            return Qdmvc_Page_Index::getIndex()[static::getPage()]['DataPort'];
+            return $page['DataPort'];
         }
     }
     /*
@@ -207,17 +213,21 @@ class Qdmvc_Page_Root {
      */
     public static function getModel()
     {
-        if(isset(Qdmvc_Page_Index::getIndex()[static::getPage()]['Model']))
+        $index = Qdmvc_Page_Index::getIndex();
+        $page = $index[static::getPage()];
+        if(isset($page['Model']))
         {
-            return Qdmvc_Page_Index::getIndex()[static::getPage()]['Model'];
+            return $page['Model'];
         }
         return '';
     }
     public static function getCaption($lang='en')
     {
-        if(isset(Qdmvc_Page_Index::getIndex()[static::getPage()]['Caption'][$lang]))
+        $index = Qdmvc_Page_Index::getIndex();
+        $page = $index[static::getPage()];
+        if(isset($page['Caption'][$lang]))
         {
-            return Qdmvc_Page_Index::getIndex()[static::getPage()]['Caption'][$lang];
+            return $page['Caption'][$lang];
         }
         else {
             return 'Default Page Root Caption';

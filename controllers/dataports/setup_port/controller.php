@@ -5,4 +5,5 @@
  * Date: 20/03/2015
  * Time: 11:42 PM
  */
-(new Qdmvc_Dataport_Setup())->run();
+$obj = new Qdmvc_Dataport_Setup();
+$obj->run();

@@ -48,4 +48,5 @@ class Qdmvc_Router {
     }
 
 }
-(new Qdmvc_Router())->run();
+$obj = new Qdmvc_Router();
+$obj->run();

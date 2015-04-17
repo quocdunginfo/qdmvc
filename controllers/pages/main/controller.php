@@ -1,2 +1,3 @@
 <?php
-(new Qdmvc_Page_Main())->run();
+$obj = new Qdmvc_Page_Main();
+$obj->run();

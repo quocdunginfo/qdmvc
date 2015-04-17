@@ -5,4 +5,5 @@
  * Date: 20/03/2015
  * Time: 11:59 PM
  */
-(new Qdmvc_Dataport_FrontFeedback())->run();
+$obj = new Qdmvc_Dataport_FrontFeedback();
+$obj->run();

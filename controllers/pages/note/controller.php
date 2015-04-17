@@ -5,4 +5,5 @@
  * Date: 08/02/2015
  * Time: 11:35 PM
  */
-(new Qdmvc_Page_Note())->run();
+$obj = new Qdmvc_Page_Note();
+$obj->run();

@@ -6,4 +6,5 @@
  * Time: 11:35 PM
  */
 
-(new Qdmvc_Page_ProductCat_List())->run();
+$obj = new Qdmvc_Page_ProductCat_List();
+$obj->run();

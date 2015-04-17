@@ -326,7 +326,8 @@ class QdRoot extends ActiveRecord\Model
                 }
             }
             //cache
-            $this->qd_flowfields_attr[$flowfield_name] = $c->GETLIST()[0]->{$ff_config['Field']};
+            $tmp = $c->GETLIST();
+			$this->qd_flowfields_attr[$flowfield_name] = $tmp[0]->{$ff_config['Field']};
             //return
             return $this->qd_flowfields_attr[$flowfield_name];
         }

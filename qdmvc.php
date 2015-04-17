@@ -107,7 +107,7 @@ class Qdmvc
         return (Qdmvc::getPluginDir('views/'.$path));
     }
 
-    protected static function getModel($path='')
+    public static function getModel($path='')//Power net new server need public
     {
         return (Qdmvc::getPluginDir('models/'.$path));
     }

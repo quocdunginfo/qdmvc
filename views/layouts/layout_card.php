@@ -1065,7 +1065,8 @@ class Qdmvc_Layout_Card
                         <?php
                             $count=1;
                             foreach($mapping as $elementId=>$nodeNo):
-                            $intro = $this->getHelpTourNodes()[$nodeNo]['Caption']['vn'];
+                            $tmp = $this->getHelpTourNodes();
+                            $intro = $tmp[$nodeNo]['Caption']['vn'];
                             $priority = $count;
                             ?>
                         HelpTourSetMetaData('<?=$elementId?>', '<?=$intro?>', <?=$priority?>);

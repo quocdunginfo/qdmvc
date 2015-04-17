@@ -14,7 +14,8 @@ class Qdmvc_Config {
     {
         if(static::$language==null)
         {
-            static::$language = QdSetup::GET()->df_language;
+            $tmp = QdSetup::GET();
+            static::$language = $tmp->df_language;
         }
         return static::$language;
     }
