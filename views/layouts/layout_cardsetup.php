@@ -17,6 +17,8 @@ class Qdmvc_Layout_CardSetup extends Qdmvc_Layout_Card
                     $("#qdnew").hide();
                     $("#qdclone").hide();
                     $("#qddelete").hide();
+                    $("#qdnote").hide();
+                    $("#qdimage").hide();
                 });
             })(jQuery);
         </script>
