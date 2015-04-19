@@ -8,28 +8,28 @@
  */
 class QdRoot extends ActiveRecord\Model
 {
-    /*
     protected static $fields_config = array(
         //SAMPLE FIELD CONFIG
-        '_product_cat_name' => array(
-            'Name' => 'product_cat_name',
-            'Caption' => array('en' => 'Product Cat Name', 'vn' => 'Tên loại SP'),
-            'DataType' => 'Text',//'Image', 'Date'
-            'FieldClass' => 'FlowField',
-            'FieldClass_FlowField' => array(
-                'Method' => 'Lookup',
-                'Table' => 'QdProductCat',
-                'Field' => 'name',
-                'TableFilter' =>  array(
-                    0 => array(
-                        'Field' => 'id',
-                        'Type' => 'FIELD',
-                        'Value' => 'product_cat_id'
-                    )
-                )
-            )
-        )
-    );*/
+        'id' => array(),
+        '__sys_note_url' => array(
+            'FieldClass' => 'System'
+        ),
+        '__sys_image_url' => array(
+            'FieldClass' => 'System'
+        ),
+        '__lasteditor_name' => array(
+            'Name' => '_lasteditor_name',
+            'Caption' => array('en' => 'Last editor name', 'vn' => 'Sửa bởi'),
+            'DataType' => 'Text',
+            'FieldClass' => 'System',
+        ),
+        '__owner_name' => array(
+            'Name' => '_lasteditor_name',
+            'Caption' => array('en' => 'Owner name', 'vn' => 'Tạo bởi'),
+            'DataType' => 'Text',
+            'FieldClass' => 'System',
+        ),
+    );
     static $primary_key = 'id';
 
     static $before_update = array('on_before_update'); # new records only
@@ -40,6 +40,7 @@ class QdRoot extends ActiveRecord\Model
     public function on_before_update()
     {
         $this->date_modified = new DateTime();
+        $this->lasteditor_id = get_current_user_id();
     }
 
     static $before_create = array('on_before_create'); # new records only
@@ -50,6 +51,7 @@ class QdRoot extends ActiveRecord\Model
     public function on_before_create()
     {
         $this->date_created = new DateTime();
+        $this->owner_id = get_current_user_id();
     }
 
     protected static function  addFieldConfig()
@@ -100,10 +102,9 @@ class QdRoot extends ActiveRecord\Model
 
     public function VALIDATE()
     {
-        //clear previous validation
-        //$this->fields_validation = array();
+        $tmp = static::getFieldsConfig();
         //call validate trigger on all fields and then return array of error
-        foreach (static::$fields_config as $key => $config) {
+        foreach ($tmp as $key => $config) {
             if (method_exists($this, $key . 'OnValidate')) {
                 $this->{$key . 'OnValidate'}($key);
             }
@@ -130,7 +131,8 @@ class QdRoot extends ActiveRecord\Model
      */
     public static function getPF($field_name)//get Physical Field
     {
-        return static::$fields_config[$field_name]['name'];
+        $config = static::getFieldsConfig();
+        return $config[$field_name]['name'];
     }
 
     public static function GET($id = 1)
@@ -148,7 +150,8 @@ class QdRoot extends ActiveRecord\Model
     public static function getDataType($field_name)
     {
         try {
-            return static::$fields_config[$field_name]['DataType'];
+            $config = static::getFieldsConfig();
+            return $config[$field_name]['DataType'];
         } catch (Exception $ex) {
             return 'Text';
         }
@@ -158,14 +161,15 @@ class QdRoot extends ActiveRecord\Model
     public static function getTableRelation($field_name)
     {
         try {
-            return static::$fields_config[$field_name]['TableRelation']['Table'];
+            $config = static::getFieldsConfig();
+            return $config[$field_name]['TableRelation']['Table'];
         } catch (Exception $ex) {
             return '';
         }
     }
 
     protected $record_filter = array(
-        'filter_default' => array(),//array('field' => 'value_filter');
+        'filter_default' => array(),//array('field' => array('value' => 'value_filter', 'exact' => true));
         'filter' => array(),//array('field' => array('value' => 'value_filter', 'exact' => true));
         'limit' => 10,
         'offset' => 0,
@@ -179,6 +183,21 @@ class QdRoot extends ActiveRecord\Model
     {
         $this->record_filter['filter_default'] = $filter;
         return $this->SETFILTER($filter);
+    }
+
+    public function delete($location='')
+    {
+        $class_name = $this->getCalledClassName();
+        if($class_name!='QdLog')
+        {
+            $location .= "|{$class_name}|delete";
+            $action = QdLog::$ACTION_DELETE;
+            //write log
+            $this->writeLog($action, $location);//quocdunginfo
+        }
+
+        $re = parent::delete();
+        return $re;
     }
 
     public function REMOVEFILTERDEFAULT()
@@ -311,11 +330,12 @@ class QdRoot extends ActiveRecord\Model
         return $this;
     }
 
-    protected $qd_flowfields_attr = array();
+    protected $qd_cached_attr = array();
 
     protected function CALCFIELDS($flowfield_name)
     {
-        $ff_config = static::$fields_config[$flowfield_name]['FieldClass_FlowField'];
+        $config = static::getFieldsConfig();
+        $ff_config = $config[$flowfield_name]['FieldClass_FlowField'];
         if ($ff_config['Method'] == 'Lookup') {
             $ff_config_tf = $ff_config['TableFilter'];
             $c = new $ff_config['Table'];//init new object
@@ -327,9 +347,9 @@ class QdRoot extends ActiveRecord\Model
             }
             //cache
             $tmp = $c->GETLIST();
-			$this->qd_flowfields_attr[$flowfield_name] = $tmp[0]->{$ff_config['Field']};
+			$this->qd_cached_attr[$flowfield_name] = $tmp[0]->{$ff_config['Field']};
             //return
-            return $this->qd_flowfields_attr[$flowfield_name];
+            return $this->qd_cached_attr[$flowfield_name];
         }
     }
 
@@ -347,7 +367,8 @@ class QdRoot extends ActiveRecord\Model
      */
     public function GETLIST()
     {
-        return static::all(static::_generateQuery($this->record_filter));
+        $query = static::_generateQuery($this->record_filter);
+        return static::all($query);
     }
 
     /**
@@ -358,11 +379,10 @@ class QdRoot extends ActiveRecord\Model
     {
         if (is_array($record['filter']) && count($record['filter']) > 0) {
             $where = '';
-            foreach ($record['filter'] as $key => $value) {
-                if ($value['exact'] == true) {
-                    $where .= "`{$key}` = '{$value['value']}' " . $record['filter_relation'] . " ";//quocdunginfo
+            foreach ($record['filter'] as $key => $config) {
+                if ($config['exact'] == true) {
+                    $where .= "`{$key}` = '{$config['value']}' " . $record['filter_relation'] . " ";//quocdunginfo
                 } else {
-                    $where .= "`{$key}` LIKE '%{$value['value']}%' " . $record['filter_relation'] . " ";//quocdunginfo
                 }
             }
             if (strtoupper($record['filter_relation']) == 'AND') {
@@ -400,13 +420,13 @@ class QdRoot extends ActiveRecord\Model
         return $re;
     }
 
-    protected static $fields_config = array();
     protected static $lookup_fields = null;
 
     protected static function ISLOOKUPFIELD($field_name)
     {
         try {
-            return static::$fields_config[$field_name]['TableRelation']['Table'] != '';
+            $config = static::getFieldsConfig();
+            return $config[$field_name]['TableRelation']['Table'] != '';
         } catch (Exception $e) {
             return false;
         }
@@ -417,8 +437,9 @@ class QdRoot extends ActiveRecord\Model
         if (static::$lookup_fields != null) {
             return static::$lookup_fields;
         } else {
+            $tmp = static::getFieldsConfig();
             static::$lookup_fields = array();
-            foreach (static::$fields_config as $field => $config) {
+            foreach ($tmp as $field => $config) {
                 if (static::ISLOOKUPFIELD($field)) {
                     array_push(static::$lookup_fields, $field);
                 }
@@ -430,8 +451,9 @@ class QdRoot extends ActiveRecord\Model
     public static function getFieldCaption($field_name, $lang = 'en')
     {
         try {
-            if (isset(static::$fields_config[$field_name]['Caption'][$lang])) {
-                return static::$fields_config[$field_name]['Caption'][$lang];
+            $config = static::getFieldsConfig();
+            if (isset($config[$field_name]['Caption'][$lang])) {
+                return $config[$field_name]['Caption'][$lang];
             }
             return '@' . $field_name;
         } catch (Exception $ex) {
@@ -449,7 +471,8 @@ class QdRoot extends ActiveRecord\Model
     public static function ISREADONLY($f_name)
     {
         try {
-            return (static::$fields_config[$f_name]['ReadOnly'] || static::ISFLOWFIELD($f_name));
+            $config = static::getFieldsConfig();
+            return ($config[$f_name]['ReadOnly'] || static::ISFLOWFIELD($f_name));
         } catch (Exception $ex) {
             return false;
         }
@@ -458,26 +481,61 @@ class QdRoot extends ActiveRecord\Model
     public static function ISFLOWFIELD($flowfield_name)
     {
         try {
-            return static::$fields_config[$flowfield_name]['FieldClass'] == 'FlowField';
+            $config = static::getFieldsConfig();
+            return $config[$flowfield_name]['FieldClass'] == 'FlowField';
         } catch (Exception $ex) {
             return false;
         }
     }
-
+    public static function ISSYSTEMFIELD($field_name='')
+    {
+        try {
+            $config = static::getFieldsConfig();
+            return $config[$field_name]['FieldClass'] == 'System';
+        } catch (Exception $ex) {
+            return false;
+        }
+    }
     public function __get($field_name)
     {
+        //check cached value
+        if (is_array($this->qd_cached_attr) && isset($this->qd_cached_attr[$field_name])) {
+            return $this->qd_cached_attr[$field_name];
+        }
+        //calculate field value
         if (static::ISFLOWFIELD($field_name)) {
-            //check cached value
-            if (is_array($this->qd_flowfields_attr) && isset($this->qd_flowfields_attr[$field_name])) {
-                return $this->qd_flowfields_attr[$field_name];
-            } else {
-                //CALC FlowField First
-                return $this->CALCFIELDS($field_name);
+            //CALC FlowField First
+            return $this->CALCFIELDS($field_name);
+        }else if (static::ISSYSTEMFIELD($field_name)) {
+            $class_name = $this->getClassName();
+            //system preserved field
+            if($field_name=='__sys_note_url')
+            {
+                return $this->qd_cached_attr[$field_name] = Qdmvc_Helper::getCompactPageListLink('note', array('model' => $class_name, 'model_id' => $this->id));
+            }else if($field_name=='__sys_image_url')
+            {
+                return $this->qd_cached_attr[$field_name] = Qdmvc_Helper::getCompactPageListLink('image', array('model' => $class_name, 'model_id' => $this->id));
+            }else if($field_name=='__lasteditor_name')
+            {
+                if($this->lasteditor_id >0 )
+                {
+                    $user_info = get_userdata($this->lasteditor_id);
+                    return $this->qd_cached_attr[$field_name] = $user_info->user_login;
+                }
+                return Qdmvc_Helper::getNoneText();
+            }else if($field_name=='__owner_name')
+            {
+                if($this->owner_id > 0)
+                {
+                    $user_info = get_userdata($this->owner_id);
+                    return $this->qd_cached_attr[$field_name] = $user_info->user_login;
+                }
+                return Qdmvc_Helper::getNoneText();
             }
         }
         return parent::__get($field_name);
     }
-    public static function getCalledClassName()
+    public function getCalledClassName()
     {
         return get_called_class();
     }
@@ -489,47 +547,65 @@ class QdRoot extends ActiveRecord\Model
     public static function toJSON($list)
     {
         $tmp = array();
-        $class_name = null;
         foreach ($list as $item) {
-            if($class_name==null)
-            {
-                $class_name = $item->getClassName();
-            }
             $arr = array();
             foreach (static::getFieldsConfig() as $key => $value) {
                 $arr[$key] = $item->$key;
             }
-            //system preserved field
-            $arr['__sys_note_url'] = Qdmvc_Helper::getCompactPageListLink('note', array('model' => $class_name, 'model_id' => $item->id));
-            $arr['__sys_image_url'] = Qdmvc_Helper::getCompactPageListLink('image', array('model' => $class_name, 'model_id' => $item->id));
-
             array_push($tmp, $arr);
         }
         return $tmp;
     }
 
-    public function save($validate = true)
+    public function __set($name, $value)
+    {
+        //prevent set ERROR on 2 special type
+        if(static::ISFLOWFIELD($name) || static::ISSYSTEMFIELD($name))
+        {
+            return $value;
+        }
+        return parent::__set($name, $value);
+    }
+
+    public function save($validate = true, $location='')
     {
         //replace all \" to ", to prevent " loopback when saving
-        foreach (static::$fields_config as $key => $value) {
-            if (!static::ISFLOWFIELD($key)) {
+        $config = static::getFieldsConfig();
+        foreach ($config as $key => $value) {
+            if (!static::ISFLOWFIELD($key) && !static::ISSYSTEMFIELD($key)) {
                 $this->{$key} = str_replace('\\"', '"', $this->{$key});//quocdunginfo, need to find other approach
                 $this->{$key} = str_replace("\\'", "'", $this->{$key});//quocdunginfo, need to find other approach
             }
         }
         //do validate and save
         if ($this->VALIDATE()) {
-            return parent::save($validate);
+            $action = $this->is_new_record()?QdLog::$ACTION_INSERT:QdLog::$ACTION_MODIFY;
+            $re = parent::save($validate);
+            $class_name = $this->getCalledClassName();
+            $location .= "|{$class_name}|save";
+            if($re && $class_name!='QdLog')
+            {
+                //write log
+                $this->writeLog($action, $location);//quocdunginfo
+            }
+            return $re;
         } else {
             return false;
         }
+    }
+    protected function writeLog($action=0, $location='')
+    {
+        $location .= '|writeLog';
+        $obj = QdLog::getInitObj($this->getCalledClassName(), $this->id, $action, $location);
+        $obj->save();
     }
 
     public static function getFieldOptions($field_name, $lang = 'en')
     {
         try {
             $tmp = array();
-            $t = static::$fields_config[$field_name]['Options'];
+            $config = static::getFieldsConfig();
+            $t = $config[$field_name]['Options'];
             foreach ($t as $value => $config) {
                 $tmp[$value] = $config['Caption'][$lang];
             }

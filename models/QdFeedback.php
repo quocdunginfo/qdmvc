@@ -4,22 +4,24 @@ class QdFeedback extends QdRoot
 {
     static $table_name = 'mpd_feedback';
 
-    protected static $fields_config = array(
-        'customer_name' => array(
-            'Caption' => array('en' => 'Customer Name', 'vn' => 'Tên KH')
-        ),
-        'customer_email' => array(
-            'Caption' => array('en' => 'Customer Email', 'vn' => 'Email KH')
-        ),
-        'content' => array(
-            'Caption' => array('en' => 'Content', 'vn' => 'Nội dung')
-        ),
-        'done' => array(
-            'Caption' => array('en' => 'Done', 'vn' => 'Hoàn tất'),
-            'DataType' => 'Boolean'
-        ),
-        'id' => array()
-    );
+    public static function getFieldsConfig()
+    {
+        return array_merge(parent::getFieldsConfig(), array(
+            'customer_name' => array(
+                'Caption' => array('en' => 'Customer Name', 'vn' => 'Tên KH')
+            ),
+            'customer_email' => array(
+                'Caption' => array('en' => 'Customer Email', 'vn' => 'Email KH')
+            ),
+            'content' => array(
+                'Caption' => array('en' => 'Content', 'vn' => 'Nội dung')
+            ),
+            'done' => array(
+                'Caption' => array('en' => 'Done', 'vn' => 'Hoàn tất'),
+                'DataType' => 'Boolean'
+            ),
+        ));
+    }
     /*
     protected function contentOnValidate($field_name)
     {
@@ -54,7 +56,7 @@ class QdFeedback extends QdRoot
     }
     */
 
-    public function save($validate = true)
+    public function save($validate = true, $location='')
     {
         if(!$this->is_new_record())
         {
@@ -65,17 +67,17 @@ class QdFeedback extends QdRoot
                 }
             }
         }
-        return parent::save($validate);
+        return parent::save($validate, $location);
     }
 
-    public function delete()
+    public function delete($location='')
     {
         if($this->done)
         {
             $this->pushValidateError('', 'Không thể xóa khi Done = true');
             return false;
         }
-        return parent::delete();
+        return parent::delete($location);
     }
 
 }

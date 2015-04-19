@@ -109,12 +109,12 @@ class Qdmvc_Dataport {
 
     protected function beforeInsertAssign()
     {
-        $this->obj->owner_id = get_current_user_id();
+
     }
 
     protected function beforeUpdateAssign()
     {
-        $this->obj->lasteditor_id = get_current_user_id();
+
     }
     protected function insert()
     {
@@ -124,12 +124,19 @@ class Qdmvc_Dataport {
         $this->beforeInsertAssign();
         $this->assign();
 
-        if($this->obj->save())
+        $class_name = $this->getCalledClass();
+        $location = "|{$class_name}|insert";
+        if($this->obj->save(true, $location))
         {
             $this->pushMsg('Thêm thành công, ID='.$this->obj->id);
         }
         $this->pushMsg($this->obj->GETVALIDATION());
     }
+    public function getCalledClass()
+    {
+        return get_called_class();
+    }
+
     protected function update()
     {
         //update
@@ -137,7 +144,9 @@ class Qdmvc_Dataport {
         $this->obj = $c::GET($this->data["id"]);
         $this->beforeInsertAssign();
         $this->assign();
-        if($this->obj->save())
+        $class_name = $this->getCalledClass();
+        $location = "|{$class_name}|update";
+        if($this->obj->save(true, $location))
         {
             $this->pushMsg('Cập nhật thành công, ID='.$this->obj->id);
         }
@@ -147,7 +156,9 @@ class Qdmvc_Dataport {
     {
         $c = static::$model;
         $this->obj = $c::find($this->data['id']);
-        if($this->obj->delete())
+        $class_name = $this->getCalledClass();
+        $location = "|{$class_name}|delete";
+        if($this->obj->delete($location))
         {
             $this->pushMsg('Xóa thành công, ID='.$this->obj->id);
         }
@@ -181,7 +192,7 @@ class Qdmvc_Dataport {
             $count++;
         }
 
-        //$record->SETFILTER($this->filter);
+
         $record->SETLIMIT($pagesize);
         $record->SETOFFSET($recordstartindex);
         $record->SETORDERBY('id', 'desc');
@@ -194,7 +205,7 @@ class Qdmvc_Dataport {
         //assign value
         $c = static::$model;
         foreach ($c::getFieldsConfig() as $key => $value) {
-            if($c::ISFLOWFIELD($key))
+            if($c::ISFLOWFIELD($key) || $c::ISSYSTEMFIELD($key))
             {
                 continue;
             }

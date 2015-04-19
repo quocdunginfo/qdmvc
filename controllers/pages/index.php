@@ -221,6 +221,29 @@ class Qdmvc_Page_Index {
             'Model' => 'QdImage',
             'DataPort' => 'image_port'
         ),
+        'log' => array(
+            'Active'=>true,
+            'PageType' => 'Card',
+            'Class'=>'Qdmvc_Page_Log',
+            'Caption' => array(
+                'en' => 'Log',
+                'vn' => 'Log'
+            ),
+            'Model' => 'QdLog',
+            'DataPort' => 'log_port',
+            'PageList' => 'log_list'
+        ),
+        'log_list' => array(
+            'Active'=>false,
+            'PageType' => 'List',
+            'Class'=>'Qdmvc_Page_Log_list',
+            'Caption' => array(
+                'en' => 'Log List',
+                'vn' => 'Log List'
+            ),
+            'Model' => 'QdLog',
+            'DataPort' => 'log_port'
+        ),
         'navigation' => array(
             'Active'=>false,
             'PageType' => 'Card',

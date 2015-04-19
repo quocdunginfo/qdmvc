@@ -6,7 +6,7 @@
  * Time: 10:03 PM
  */
 Qdmvc::loadDataPort('root');
-class Qdmvc_Dataport_Feedback extends Qdmvc_Dataport
+class Qdmvc_DataPort_Feedback extends Qdmvc_Dataport
 {
     protected static $model = 'QdFeedback';
 }

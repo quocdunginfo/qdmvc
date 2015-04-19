@@ -4,12 +4,14 @@ class QdNote extends QdRoot
 {
     static $table_name = 'mpd_note';
 
-    protected static $fields_config = array(
-        'id' => array(),
-        'content' => array(),
-        'model' => array(),
-        'model_id' => array()
-    );
+    public static function getFieldsConfig()
+    {
+        return array_merge(parent::getFieldsConfig(), array(
+            'content' => array(),
+            'model' => array(),
+            'model_id' => array()
+        ));
+    }
 
     public static function getInitObj()
     {

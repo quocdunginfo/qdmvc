@@ -2,7 +2,7 @@
 Qdmvc::loadDataPort('root');
 Qdmvc::loadDataPort('feedback_port');
 
-class Qdmvc_Dataport_FrontFeedback extends Qdmvc_Dataport_Feedback
+class Qdmvc_DataPort_FrontFeedback extends Qdmvc_DataPort_Feedback
 {
     private static $submit_fields = array('customer_name', 'customer_email', 'content');
     protected function delete()

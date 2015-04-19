@@ -5,5 +5,5 @@
  * Date: 20/03/2015
  * Time: 11:55 PM
  */
-$obj = new Qdmvc_Dataport_ProductOrder();
+$obj = new Qdmvc_DataPort_ProductOrder();
 $obj->run();
