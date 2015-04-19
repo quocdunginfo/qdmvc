@@ -383,6 +383,7 @@ class QdRoot extends ActiveRecord\Model
                 if ($config['exact'] == true) {
                     $where .= "`{$key}` = '{$config['value']}' " . $record['filter_relation'] . " ";//quocdunginfo
                 } else {
+                    $where .= "`{$key}` LIKE '%{$config['value']}%' " . $record['filter_relation'] . " ";//quocdunginfo
                 }
             }
             if (strtoupper($record['filter_relation']) == 'AND') {
