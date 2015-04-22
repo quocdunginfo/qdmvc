@@ -1,5 +1,4 @@
 <?php
-Qdmvc::loadDataPort('root');
 Qdmvc::loadDataPort('product_order_port');
 class Qdmvc_DataPort_FrontProductOrder extends Qdmvc_DataPort_ProductOrder
 {

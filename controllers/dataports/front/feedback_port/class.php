@@ -1,5 +1,4 @@
 <?php
-Qdmvc::loadDataPort('root');
 Qdmvc::loadDataPort('feedback_port');
 
 class Qdmvc_DataPort_FrontFeedback extends Qdmvc_DataPort_Feedback

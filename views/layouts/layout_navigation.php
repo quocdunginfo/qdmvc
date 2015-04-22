@@ -8,9 +8,12 @@
  */
 class Qdmvc_Layout_Navigation
 {
-    function __construct()
+    protected $page = null;
+    protected $data = null;
+    function __construct($page)
     {
-
+        $this->page = $page;
+        $this->data = $page->getData();
     }
 
     public function render()
@@ -24,7 +27,7 @@ class Qdmvc_Layout_Navigation
 
                     $("#splitter").jqxSplitter({width: '99%', height: height, panels: [{size: 250}]});
                     // Create jqxTree
-                    var data = <?=Qdmvc_Page_Index::buildJSONTree()?>;
+                    var data = <?=Qdmvc_Page_Index::buildJSONTree($this->data['language'])?>;
                     // prepare the data
                     var source =
                     {

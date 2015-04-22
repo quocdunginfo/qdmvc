@@ -508,7 +508,7 @@ class QdRoot extends ActiveRecord\Model
             //CALC FlowField First
             return $this->CALCFIELDS($field_name);
         }else if (static::ISSYSTEMFIELD($field_name)) {
-            $class_name = $this->getClassName();
+            $class_name = $this->getCalledClassName();
             //system preserved field
             if($field_name=='__sys_note_url')
             {
