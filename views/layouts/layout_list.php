@@ -143,7 +143,7 @@ class Qdmvc_Layout_List
 
                                 var row = $('#jqxgrid').jqxGrid('getrowdata', getselectedrowindexes[0]);
                                 try {
-                                    parent.setLookupResult(row.id, "<?=$this->data['returnid']?>");
+                                    parent.setLookupResult(row.<?=$this->data['getfield']?>, "<?=$this->data['returnid']?>");
 
                                 }catch(error)
                                 {

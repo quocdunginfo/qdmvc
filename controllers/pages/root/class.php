@@ -15,10 +15,11 @@ class Qdmvc_Page_Root {
         $this->data['data_port'] = Qdmvc_Helper::getDataPortPath(static::getDataPort(), $this->getPageView());
         //pre value for page List
         $this->data['role'] = isset($_GET['qdrole']) ? $_GET['qdrole'] : '';//lookup, navigate
-        $this->data['returnid'] = isset($_GET['qdreturnid']) ? $_GET['qdreturnid'] : '';//id
+        $this->data['returnid'] = isset($_GET['qdreturnid']) ? $_GET['qdreturnid'] : '';
+        $this->data['getfield'] = isset($_GET['qdgetfield']) ? $_GET['qdgetfield'] : 'id';//id
         $this->data['view_style'] = 'normal';
         $this->data['language'] = Qdmvc_Config::getLanguage();
-        $this->data['init_obj'] = $this->getInitObj();
+        $this->data['init_obj'] = $this->getInitObjJSON();
         if($this->data['role']=='lookup' || $this->data['role']=='navigate')
         {
             $this->data['view_style'] = 'compact';//compact, full
@@ -117,16 +118,21 @@ class Qdmvc_Page_Root {
         $c = static::getModel();
         return $c::getDataType($field_name);
     }
-    protected static function getTableRelation($field_name)
-    {
-        $c = static::getModel();
-        return $c::getTableRelation($field_name);
-    }
     protected static function getLookupURL($field_name)
     {
-        //get Table relation
-        $model = static::getTableRelation($field_name);
-        return Qdmvc_Helper::getLookupPath(static::getDefaultLookupPage($model),$field_name);
+        $c = static::getModel();
+        $tbrelation = $c::getTableRelation($field_name);
+        $tbfilter = $tbrelation['TableFilter'];
+        $filter_arr = array();
+        $df_lk_page = static::getDefaultLookupPage($tbrelation['Table']);
+        $getfield = $tbrelation['Field'];
+
+        foreach($tbfilter as $item)
+        {
+            $filter_arr[$item['Field']] = $item['Value'];
+        }
+
+        return Qdmvc_Helper::getLookupPath($df_lk_page, $field_name, $filter_arr, $getfield);
     }
     protected function loadView($name='view')
     {
@@ -142,7 +148,7 @@ class Qdmvc_Page_Root {
     /*
      * json init object
      */
-    public function getInitObj()
+    protected function getInitObj()
     {
         $c = static::getModel();
         //if run page root direct
@@ -157,6 +163,12 @@ class Qdmvc_Page_Root {
         {
             $obj->{$field} = $value;
         }
+        return $obj;
+    }
+    private function getInitObjJSON()
+    {
+        $obj = $this->getInitObj();
+        $c = static::getModel();
         //convert to JSON
         $re = $c::toJSON(array($obj));
         return json_encode($re[0]);

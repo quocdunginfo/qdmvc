@@ -162,9 +162,9 @@ class QdRoot extends ActiveRecord\Model
     {
         try {
             $config = static::getFieldsConfig();
-            return $config[$field_name]['TableRelation']['Table'];
+            return $config[$field_name]['TableRelation'];
         } catch (Exception $ex) {
-            return '';
+            return array();
         }
     }
 

@@ -56,9 +56,16 @@ class Qdmvc_Helper
     {
         return 'javascript:void(0)';
     }
-    public static function getLookupPath($page_list, $return_id, $getfield='id', $multi=0)
+    public static function getLookupPath($page_list, $return_id, $prefilter=array(), $getfield='id', $multi=0)
     {
-        return get_admin_url(null, "admin.php?page={$page_list}&qdrole=lookup&qdreturnid={$return_id}&qdgetfield={$getfield}&qdmulti=0");
+        $filter = '';
+        $count=0;
+        foreach($prefilter as $key=>$val)
+        {
+            $filter .= "&filterdatafield{$count}={$key}&filtervalue{$count}={$val}";
+            $count++;
+        }
+        return get_admin_url(null, "admin.php?page={$page_list}&qdrole=lookup&qdreturnid={$return_id}&qdgetfield={$getfield}&qdmulti={$multi}{$filter}");
     }
     public static function getSlider($metaslider_shortcode)
     {
@@ -206,7 +213,7 @@ class Qdmvc_Helper
         ?>
         <style>
             @media all, screen {
-                #wpadminbar, #adminmenuback, #adminmenuwrap, #wpfooter {
+                #wpadminbar, #adminmenuback, #adminmenuwrap, #wpfooter, #update-nag, .update-nag {
                     display: none !important;
                 }
                 #wpbody-content{
